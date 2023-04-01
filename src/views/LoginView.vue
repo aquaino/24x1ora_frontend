@@ -1,42 +1,81 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import { Message, Key } from '@element-plus/icons-vue';
+import { usersApi } from '@/api/resources/users';
+import { useUserStore } from '@/stores/user';
+import type { FormInstance, FormRules } from 'element-plus';
+import LoginHeader from '@/components/login/LoginHeader.vue';
 
-// Data
-const email = ref('');
-const password = ref('');
+const userStore = useUserStore();
+const formRef = ref<FormInstance>();
 
-// Methods
-async function login() {
-  console.log('login');
+/* Data */
+const form = reactive({
+  email: '',
+  password: '',
+});
+
+const requiredMessage = 'Questo campo è obbligatorio';
+('Questo campo è obbligatorio');
+const formRules = reactive<FormRules>({
+  email: [
+    { required: true, message: requiredMessage, trigger: 'none' },
+    { type: 'email', message: 'Inserisci un indirizzo email valido', trigger: 'none' },
+  ],
+  password: [{ required: true, message: requiredMessage, trigger: 'none' }],
+});
+
+const alert = ref({
+  type: 'error',
+  text: '',
+});
+
+/* Methods */
+
+async function login(formRef: FormInstance | undefined) {
+  userStore.$reset();
+  if (!formRef) return;
+  await formRef.validate(async (valid) => {
+    if (valid) {
+      try {
+        const user = await usersApi.login(form.email, form.password);
+        userStore.setAccessToken('test');
+        // Save user data
+      } catch (error) {
+        console.log(error);
+        alert.value = { type: 'error', text: 'Si è verificato un errore.' };
+      }
+    }
+  });
 }
 </script>
 
 <template>
   <ElRow justify="center">
-    <ElCol :sm="12" :md="6">
-      <ElCard class="box-card">
+    <ElCol :xs="20" :sm="12" :md="8">
+      <LoginHeader />
+      <ElCard>
         <template #header>
           <div class="card-header">
             <h2>Accedi al portale</h2>
           </div>
         </template>
-        <ElForm @submit.prevent="login()">
-          <ElFormItem>
-            <ElInput type="email" placeholder="Email" v-model="email" required>
+        <ElForm
+          ref="formRef"
+          @submit.prevent="login(formRef)"
+          :model="form"
+          :rules="formRules"
+          status-icon
+        >
+          <ElFormItem prop="email" required>
+            <ElInput placeholder="Email" v-model="form.email">
               <template #prefix>
                 <ElIcon class="el-input__icon"><message /></ElIcon>
               </template>
             </ElInput>
           </ElFormItem>
-          <ElFormItem>
-            <ElInput
-              type="password"
-              placeholder="Password"
-              show-password
-              v-model="password"
-              required
-            >
+          <ElFormItem prop="password" required>
+            <ElInput placeholder="Password" show-password v-model="form.password">
               <template #prefix>
                 <ElIcon class="el-input__icon"><key /></ElIcon>
               </template>
@@ -46,14 +85,25 @@ async function login() {
             <el-button type="primary" native-type="submit">Accedi</el-button>
           </ElFormItem>
         </ElForm>
-        {{ email }} {{ password }}
+        <ElDivider />
+        <div>
+          Non sei registrato?
+          <ElLink>
+            <RouterLink :to="{ name: 'register' }">Registrati ora.</RouterLink>
+          </ElLink>
+        </div>
+        <ElAlert v-show="alert.text" :type="alert.type" :title="alert.text" show-icon />
       </ElCard>
     </ElCol>
   </ElRow>
 </template>
 
-<style scoped lang="css">
+<style scoped>
 .el-row {
   padding: 100px 0;
+}
+
+.el-alert {
+  margin-top: 1.5rem;
 }
 </style>

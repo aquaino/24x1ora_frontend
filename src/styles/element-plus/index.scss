@@ -1,7 +1,10 @@
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'primary': (
+      'base': #c01f2e,
+    ),
+  )
+);
+
 @use 'element-plus/theme-chalk/src/reset.scss';
-
-// @forward 'element-plus/theme-chalk/src/common/var.scss' with (
-
-// );
-
 @use 'element-plus/theme-chalk/src/index.scss' as *;
