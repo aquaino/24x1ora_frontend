@@ -4,12 +4,14 @@ import { Message, Key } from '@element-plus/icons-vue';
 import { usersApi } from '@/api/resources/users';
 import { useUserStore } from '@/stores/user';
 import type { FormInstance, FormRules } from 'element-plus';
-import LoginHeader from '@/components/login/LoginHeader.vue';
+import { useRouter } from 'vue-router';
 
 const userStore = useUserStore();
+const router = useRouter();
 const formRef = ref<FormInstance>();
 
 /* Data */
+
 const form = reactive({
   email: '',
   password: '',
@@ -38,9 +40,10 @@ async function login(formRef: FormInstance | undefined) {
   await formRef.validate(async (valid) => {
     if (valid) {
       try {
-        const user = await usersApi.login(form.email, form.password);
-        userStore.setAccessToken('test');
         // Save user data
+        // const user = await usersApi.login(form.email, form.password);
+        // userStore.setAccessToken('test');
+        router.push({ name: 'home' });
       } catch (error) {
         console.log(error);
         alert.value = { type: 'error', text: 'Si è verificato un errore.' };
@@ -51,59 +54,50 @@ async function login(formRef: FormInstance | undefined) {
 </script>
 
 <template>
-  <ElRow justify="center">
-    <ElCol :xs="20" :sm="12" :md="8">
-      <LoginHeader />
-      <ElCard>
-        <template #header>
-          <div class="card-header">
-            <h2>Accedi al portale</h2>
-          </div>
-        </template>
-        <ElForm
-          ref="formRef"
-          @submit.prevent="login(formRef)"
-          :model="form"
-          :rules="formRules"
-          status-icon
-        >
-          <ElFormItem prop="email" required>
-            <ElInput placeholder="Email" v-model="form.email">
-              <template #prefix>
-                <ElIcon class="el-input__icon"><message /></ElIcon>
-              </template>
-            </ElInput>
-          </ElFormItem>
-          <ElFormItem prop="password" required>
-            <ElInput placeholder="Password" show-password v-model="form.password">
-              <template #prefix>
-                <ElIcon class="el-input__icon"><key /></ElIcon>
-              </template>
-            </ElInput>
-          </ElFormItem>
-          <ElFormItem>
-            <el-button type="primary" native-type="submit">Accedi</el-button>
-          </ElFormItem>
-        </ElForm>
-        <ElDivider />
-        <div>
-          Non sei registrato?
-          <ElLink>
-            <RouterLink :to="{ name: 'register' }">Registrati ora.</RouterLink>
-          </ElLink>
-        </div>
-        <ElAlert v-show="alert.text" :type="alert.type" :title="alert.text" show-icon />
-      </ElCard>
-    </ElCol>
-  </ElRow>
+  <ElCard>
+    <template #header>
+      <div class="card-header">
+        <h2>Accedi al portale</h2>
+      </div>
+    </template>
+    <ElForm
+      ref="formRef"
+      @submit.prevent="login(formRef)"
+      :model="form"
+      :rules="formRules"
+      status-icon
+    >
+      <ElFormItem prop="email" required>
+        <ElInput placeholder="Email" v-model="form.email">
+          <template #prefix>
+            <ElIcon class="el-input__icon"><message /></ElIcon>
+          </template>
+        </ElInput>
+      </ElFormItem>
+      <ElFormItem prop="password" required>
+        <ElInput placeholder="Password" show-password v-model="form.password">
+          <template #prefix>
+            <ElIcon class="el-input__icon"><key /></ElIcon>
+          </template>
+        </ElInput>
+      </ElFormItem>
+      <ElFormItem>
+        <el-button type="primary" native-type="submit">Accedi</el-button>
+      </ElFormItem>
+    </ElForm>
+    <ElDivider />
+    <div>
+      Non sei registrato?
+      <ElLink>
+        <RouterLink :to="{ name: 'register' }">Registrati ora.</RouterLink>
+      </ElLink>
+    </div>
+    <ElAlert
+      v-show="alert.text"
+      :type="alert.type"
+      :title="alert.text"
+      show-icon
+      style="margin-top: 1.5rem"
+    />
+  </ElCard>
 </template>
-
-<style scoped>
-.el-row {
-  padding: 100px 0;
-}
-
-.el-alert {
-  margin-top: 1.5rem;
-}
-</style>

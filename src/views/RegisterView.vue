@@ -4,7 +4,6 @@ import { usersApi } from '@/api/resources/users';
 import { useUserStore } from '@/stores/user';
 import type { UserInputWihtConfirmPassword } from '@/api/resources/users';
 import type { FormInstance, FormRules } from 'element-plus';
-import LoginHeader from '@/components/login/LoginHeader.vue';
 
 const userStore = useUserStore();
 const formRef = ref<FormInstance>();
@@ -84,60 +83,51 @@ async function resetForm(formRef: FormInstance | undefined) {
 </script>
 
 <template>
-  <ElRow justify="center">
-    <ElCol :xs="20" :sm="16" :md="12">
-      <LoginHeader />
-      <ElCard>
-        <template #header>
-          <div class="card-header">
-            <h2>Registrati al portale</h2>
-          </div>
-        </template>
-        <ElForm
-          ref="formRef"
-          @submit.prevent="register(formRef)"
-          :model="form"
-          :rules="formRules"
-          status-icon
-          label-width="auto"
+  <ElCard>
+    <template #header>
+      <div class="card-header">
+        <h2>Registrati al portale</h2>
+      </div>
+    </template>
+    <ElForm
+      ref="formRef"
+      @submit.prevent="register(formRef)"
+      :model="form"
+      :rules="formRules"
+      status-icon
+      label-width="auto"
+    >
+      <ElFormItem label="Nome e cognome" prop="name" required>
+        <ElInput v-model="form.name" />
+      </ElFormItem>
+      <ElFormItem label="Indirizzo email" prop="email" required>
+        <ElInput v-model="form.email"> </ElInput>
+      </ElFormItem>
+      <ElDivider />
+      <ElFormItem label="Password" prop="password" required>
+        <ElInput show-password v-model="form.password"> </ElInput>
+      </ElFormItem>
+      <ElFormItem label="Conferma password" prop="confirmPassword" required>
+        <ElInput show-password v-model="form.confirmPassword"> </ElInput>
+      </ElFormItem>
+      <ElFormItem>
+        <ElButton type="primary" native-type="submit">Registrati</ElButton>
+        <ElButton @click="resetForm(formRef)">Reset</ElButton>
+        <ElButton
+          @click="$router.push({ name: 'login' })"
+          id="back-button"
+          text
+          style="margin-left: auto"
+          >Indietro</ElButton
         >
-          <ElFormItem label="Nome e cognome" prop="name" required>
-            <ElInput v-model="form.name" />
-          </ElFormItem>
-          <ElFormItem label="Indirizzo email" prop="email" required>
-            <ElInput v-model="form.email"> </ElInput>
-          </ElFormItem>
-          <ElDivider />
-          <ElFormItem label="Password" prop="password" required>
-            <ElInput show-password v-model="form.password"> </ElInput>
-          </ElFormItem>
-          <ElFormItem label="Conferma password" prop="confirmPassword" required>
-            <ElInput show-password v-model="form.confirmPassword"> </ElInput>
-          </ElFormItem>
-          <ElFormItem>
-            <ElButton type="primary" native-type="submit">Registrati</ElButton>
-            <ElButton @click="resetForm(formRef)">Reset</ElButton>
-            <ElButton @click="$router.push({ name: 'login' })" id="back-button" text
-              >Indietro</ElButton
-            >
-          </ElFormItem>
-        </ElForm>
-        <ElAlert v-show="alert.text" :type="alert.type" :title="alert.text" show-icon />
-      </ElCard>
-    </ElCol>
-  </ElRow>
+      </ElFormItem>
+    </ElForm>
+    <ElAlert
+      v-show="alert.text"
+      :type="alert.type"
+      :title="alert.text"
+      show-icon
+      style="margin-top: 1.5rem"
+    />
+  </ElCard>
 </template>
-
-<style scoped lang="css">
-.el-row {
-  padding: 100px 0;
-}
-
-.el-alert {
-  margin-top: 1.5rem;
-}
-
-#back-button {
-  margin-left: auto;
-}
-</style>
