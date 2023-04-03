@@ -4,9 +4,9 @@ export interface User {
   name: string;
   email: string;
   isAdmin: boolean;
+  id: number;
   updated_at: string;
   created_at: string;
-  id: number;
   access?: string;
 }
 
@@ -25,7 +25,7 @@ const resource = '/users';
 export const usersApi = {
   async login(email: string, password: string): Promise<any> {
     const response = await apiClient
-      .post('/login', {
+      .post('/auth/login', {
         email: email,
         password: password,
       })
@@ -46,5 +46,12 @@ export const usersApi = {
         throw error;
       });
     return response.data;
+  },
+
+  async profile(): Promise<any> {
+    const response = await apiClient.get(`${resource}/profile`).catch((error) => {
+      throw error;
+    });
+    return response.data.user;
   },
 };

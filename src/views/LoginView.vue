@@ -40,13 +40,22 @@ async function login(formRef: FormInstance | undefined) {
   await formRef.validate(async (valid) => {
     if (valid) {
       try {
-        // Save user data
-        // const user = await usersApi.login(form.email, form.password);
-        // userStore.setAccessToken('test');
+        // Authenticate and save user data
+        const authData = await usersApi.login(form.email, form.password);
+        userStore.setAccessToken(authData.token);
+        const userData = await usersApi.profile();
+        userStore.setUserData(userData);
         router.push({ name: 'home' });
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
-        alert.value = { type: 'error', text: 'Si è verificato un errore.' };
+        if (error.response.status === 401) {
+          alert.value = { type: 'error', text: 'Credenziali non valide.' };
+        } else {
+          alert.value = {
+            type: 'error',
+            text: 'Si è verificato un problema, riprovare più tardi.',
+          };
+        }
       }
     }
   });

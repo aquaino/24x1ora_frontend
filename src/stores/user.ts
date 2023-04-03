@@ -1,29 +1,37 @@
 import { defineStore } from 'pinia';
 import type { User } from '@/api/resources/users';
 
+interface UserData {
+  id: number | null;
+  name: string | null;
+  email: string | null;
+  isAdmin: boolean | null;
+  access: string | null;
+}
+
 interface UserState {
-  user: User | null;
+  user: UserData;
 }
 
 export const useUserStore = defineStore('user', {
   state: (): UserState => ({
-    user: null,
+    user: {
+      id: null,
+      name: null,
+      email: null,
+      isAdmin: null,
+      access: null,
+    },
   }),
   actions: {
     setAccessToken(token: string) {
-      if (this.user) {
-        this.user.access = token;
-      }
+      this.user.access = token;
     },
     setUserData(data: User) {
-      if (this.user) {
-        this.user.name = 'test';
-        this.user.email = 'test';
-        this.user.isAdmin = true;
-        this.user.updated_at = 'test';
-        this.user.created_at = 'test';
-        this.user.id = 9;
-      }
+      this.user.name = data.name;
+      this.user.email = data.email;
+      this.user.isAdmin = data.isAdmin;
+      this.user.id = data.id;
     },
   },
   persist: true,
