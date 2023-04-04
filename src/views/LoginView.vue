@@ -91,7 +91,7 @@ async function login(formRef: FormInstance | undefined) {
         </ElInput>
       </ElFormItem>
       <ElFormItem>
-        <el-button type="primary" native-type="submit">Accedi</el-button>
+        <el-button type="primary" native-type="submit" title="Accedi al portale">Accedi</el-button>
       </ElFormItem>
     </ElForm>
     <ElDivider />

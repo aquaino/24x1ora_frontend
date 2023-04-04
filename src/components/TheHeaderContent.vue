@@ -24,8 +24,14 @@ function logout() {
       <ElImage src="/logo.png" alt="Logo 24x1Ora Buttrio" style="width: 130px" fit="contain" />
       <h2>{{ appName }}</h2>
     </RouterLink>
-    <ElButton @click="logout()" type="danger" plain :icon="SwitchButton" style="margin-left: auto"
-      >Logout</ElButton
+    <ElButton
+      @click="logout()"
+      type="danger"
+      plain
+      :icon="SwitchButton"
+      title="Disconnettiti dal portale"
+      style="margin-left: auto"
+      >Esci</ElButton
     >
   </div>
 </template>

@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useUserStore } from '@/stores/user';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import LoginLayout from '@/layouts/LoginLayout.vue';
 
@@ -27,19 +28,39 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: DefaultLayout,
-      redirect: '/home',
+      redirect: '/events',
       meta: {
         requireLogin: true,
       },
       children: [
         {
-          path: '/home',
-          name: 'home',
-          component: () => import('@/views/HomeView.vue'),
+          path: '/events',
+          name: 'events',
+          component: () => import('@/views/EventsView.vue'),
+        },
+        {
+          path: '/events/:id/races',
+          name: 'races',
+          component: () => import('@/views/RacesView.vue'),
+        },
+        {
+          path: '/events/:eventId/races/:raceId/subscribe',
+          name: 'subscribe',
+          component: () => import('@/views/SubscribeView.vue'),
         },
       ],
     },
   ],
+});
+
+// Navigation guard to check against authentication
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore();
+  if (to.matched.some((record) => record.meta.requireLogin) && !userStore.user.access) {
+    next({ name: 'login', query: { to: to.path } });
+  } else {
+    next();
+  }
 });
 
 export default router;
