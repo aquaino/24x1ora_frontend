@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue';
 import { usersApi } from '@/api/resources/users';
 import { useUserStore } from '@/stores/user';
 import type { UserInputWihtConfirmPassword } from '@/api/resources/users';
+import { resetForm } from '@/utils';
 import type { FormInstance, FormRules } from 'element-plus';
 
 const userStore = useUserStore();
@@ -75,11 +76,6 @@ async function register(formRef: FormInstance | undefined) {
     }
   });
 }
-
-async function resetForm(formRef: FormInstance | undefined) {
-  if (!formRef) return;
-  formRef.resetFields();
-}
 </script>
 
 <template>
@@ -111,13 +107,15 @@ async function resetForm(formRef: FormInstance | undefined) {
         <ElInput show-password v-model="form.confirmPassword"> </ElInput>
       </ElFormItem>
       <ElFormItem>
-        <ElButton type="primary" native-type="submit">Registrati</ElButton>
-        <ElButton @click="resetForm(formRef)">Reset</ElButton>
+        <ElButton type="primary" native-type="submit" title="Registrati sul portale"
+          >Registrati</ElButton
+        >
+        <ElButton @click="resetForm(formRef)" title="Ripristina il form">Reset</ElButton>
         <ElButton
           @click="$router.push({ name: 'login' })"
-          id="back-button"
           text
           style="margin-left: auto"
+          title="Torna indietro"
           >Indietro</ElButton
         >
       </ElFormItem>

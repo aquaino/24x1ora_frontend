@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import type { Ref } from 'vue';
+import AppPageTitle from '@/components/shared/AppPageTitle.vue';
 import { eventsApi } from '@/api/resources/events';
 import type { RaceEvent, Race } from '@/api/resources/events';
 import { useRoute } from 'vue-router';
@@ -34,17 +35,18 @@ onMounted(async () => {
 
 <template>
   <div>
-    <div v-if="event" style="text-align: center; margin-bottom: 2rem">
-      <h1 style="margin-bottom: 0.5rem">Gare dell'evento "{{ event['name'] }}"</h1>
-      <div>Elenco di tutte le gare relative all'evento corrente</div>
-    </div>
+    <AppPageTitle
+      title="Gare dell'evento"
+      subtitle="Elenco di tutte le gare relative all'evento corrente"
+    />
+
     <ElRow justify="center" :gutter="20" v-loading="loading">
       <ElCol
         v-for="race in races"
         :key="`race-${race.id}`"
         :xs="20"
         :sm="12"
-        :md="8"
+        :md="6"
         style="margin-bottom: 20px"
       >
         <ElCard shadow="hover">
@@ -68,7 +70,13 @@ onMounted(async () => {
             @click="
               $router.push({
                 name: 'subscribe',
-                params: { eventId: event ? event['id'] : 0, raceId: race.id },
+                params: {
+                  eventId: event ? event['id'] : 0,
+                  raceId: race.id,
+                },
+                query: {
+                  raceName: race.type.name,
+                },
               })
             "
             title="Iscriviti alla gara"
@@ -79,5 +87,14 @@ onMounted(async () => {
         </ElCard>
       </ElCol>
     </ElRow>
+    <div style="text-align: center">
+      <ElButton
+        @click="$router.push({ name: 'events' })"
+        text
+        style="margin-left: auto"
+        title="Torna indietro"
+        >Indietro</ElButton
+      >
+    </div>
   </div>
 </template>

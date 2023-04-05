@@ -19,7 +19,7 @@ function logout() {
 </script>
 
 <template>
-  <div style="display: flex; align-items: center">
+  <div style="display: flex; align-items: center; height: 100%">
     <RouterLink :to="{ name: 'home' }" style="display: flex">
       <ElImage src="/logo.png" alt="Logo 24x1Ora Buttrio" style="width: 130px" fit="contain" />
       <h2>{{ appName }}</h2>

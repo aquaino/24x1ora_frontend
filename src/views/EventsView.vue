@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import type { Ref } from 'vue';
+import AppPageTitle from '@/components/shared/AppPageTitle.vue';
 import { eventsApi } from '@/api/resources/events';
 import type { RaceEvent } from '@/api/resources/events';
 import { formatDateTime } from '@/utils';
@@ -28,10 +29,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div style="text-align: center; margin-bottom: 2rem">
-    <h1 style="margin-bottom: 0.5rem">Eventi</h1>
-    <div>Elenco di tutti gli eventi disponibili</div>
-  </div>
+  <AppPageTitle title="Eventi" subtitle="Elenco di tutti gli eventi disponibili" />
+
   <ElRow justify="center" :gutter="20" v-loading="loading">
     <ElCol
       v-for="event in events"

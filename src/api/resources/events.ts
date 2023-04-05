@@ -38,6 +38,17 @@ export interface RaceEvent {
   updated_at: string;
 }
 
+export interface Runner {
+  first_name: string;
+  last_name: string;
+  member_iuta: boolean;
+  member_csm: boolean;
+  fidal_id: string;
+  csi_id: string;
+  other_id: string;
+  birth_date: string;
+}
+
 const resource = '/events';
 
 export const eventsApi = {
@@ -53,5 +64,16 @@ export const eventsApi = {
       });
       return response.data.events;
     }
+  },
+
+  async subscribe(eventId: number, raceId: number, runner: Runner) {
+    const response = await apiClient
+      .post(`${resource}/${eventId}/races/${raceId}/teams`, {
+        runner: runner,
+      })
+      .catch((error) => {
+        throw error;
+      });
+    return response.data;
   },
 };
