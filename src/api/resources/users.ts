@@ -20,10 +20,22 @@ export interface UserInputWihtConfirmPassword extends UserInput {
   confirmPassword: string;
 }
 
+export interface LoginData {
+  status: boolean;
+  token: string;
+  token_type: string;
+  expires_in: number;
+}
+
+export interface RegisterData {
+  status: boolean;
+  user: User;
+}
+
 const resource = '/users';
 
 export const usersApi = {
-  async login(email: string, password: string): Promise<any> {
+  async login(email: string, password: string): Promise<LoginData> {
     const response = await apiClient
       .post('/auth/login', {
         email: email,
@@ -35,7 +47,7 @@ export const usersApi = {
     return response.data;
   },
 
-  async register(user: UserInput | UserInputWihtConfirmPassword): Promise<any> {
+  async register(user: UserInput | UserInputWihtConfirmPassword): Promise<RegisterData> {
     const response = await apiClient
       .post(`${resource}/register`, {
         name: user.name,
@@ -48,7 +60,7 @@ export const usersApi = {
     return response.data;
   },
 
-  async profile(): Promise<any> {
+  async profile(): Promise<User> {
     const response = await apiClient.get(`${resource}/profile`).catch((error) => {
       throw error;
     });

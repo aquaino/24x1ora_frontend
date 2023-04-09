@@ -63,11 +63,9 @@ async function login(formRef: FormInstance | undefined) {
 </script>
 
 <template>
-  <ElCard>
+  <ElCard shadow="never">
     <template #header>
-      <div class="card-header">
-        <h2>Accedi al portale</h2>
-      </div>
+      <h2>Accedi al portale</h2>
     </template>
     <ElForm
       ref="formRef"

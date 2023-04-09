@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useUserStore } from '@/stores/user';
+import { useRouter } from 'vue-router';
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_APP_BACKEND_URL,
@@ -20,31 +21,23 @@ apiClient.interceptors.request.use(
   },
 );
 
-// Interceptor to refresh access token
-// apiClient.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   async (error) => {
-//     const originalRequest = error.config;
-//     const store = useAppStore();
-//     // If refresh token expired, logout
-//     if (error.response.status === 401 && originalRequest.url.includes('/token/refresh')) {
-//       store.$reset();
-//       router.push({ name: 'Login' });
-//       return Promise.reject(error);
-//     }
-//     // Else if access token expired and it's not a retry, refresh
-//     else if (error.response.status === 401 && !originalRequest._retry) {
-//       originalRequest._retry = true;
-//       if (store.user.refresh) {
-//         await store.refreshToken();
-//         return apiClient(originalRequest);
-//       }
-//     }
+// Interceptor to check token expiration
+apiClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const store = useUserStore();
+    // If  token expired, logout
+    if (error.response.status === 401) {
+      store.$reset();
+      const router = useRouter();
+      router.push({ name: 'Login' });
+      return Promise.reject(error);
+    }
 
-//     return Promise.reject(error);
-//   },
-// );
+    return Promise.reject(error);
+  },
+);
 
 export default apiClient;

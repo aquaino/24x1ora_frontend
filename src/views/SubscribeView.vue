@@ -5,12 +5,18 @@ import { useRoute } from 'vue-router';
 import type { FormInstance, FormRules } from 'element-plus';
 import { resetForm } from '@/utils';
 import { eventsApi, type Runner } from '@/api/resources/events';
-import { DateTime } from 'luxon';
 
 const route = useRoute();
 const formRef = ref<FormInstance>();
 
 /* Data */
+
+const eventId = route.params.eventId as string;
+const raceId = route.params.raceId as string;
+const availableDiscount = route.query.availableDiscount
+  ? Math.round(parseInt(route.query.availableDiscount as string))
+  : 0;
+const raceName = route.query.raceName;
 
 const form = reactive<Runner>({
   first_name: '',
@@ -42,11 +48,8 @@ async function subscribe(formRef: FormInstance | undefined) {
   await formRef.validate(async (valid) => {
     if (valid) {
       try {
-        await eventsApi.subscribe(
-          parseInt(route.params.eventId as string),
-          parseInt(route.params.raceId as string),
-          form,
-        );
+        await eventsApi.subscribe(parseInt(eventId), parseInt(raceId), form);
+        resetForm(formRef);
         alert.value = { type: 'success', text: 'Iscrizione effettuata con successo.' };
       } catch (error) {
         console.log(error);
@@ -59,16 +62,15 @@ async function subscribe(formRef: FormInstance | undefined) {
 
 <template>
   <AppPageTitle
-    :title="`Iscrizione alla gara &quot;${route.query.raceName}&quot;`"
+    :title="`Iscrizione alla gara &quot;${raceName}&quot;`"
     subtitle="Compila il form sottostante per iscriverti alla gara"
+    :back-to="{ name: 'races', params: { id: route.params.eventId } }"
   />
   <ElRow justify="center">
     <ElCol :xs="20" :sm="16" :md="12">
-      <ElCard>
+      <ElCard shadow="never">
         <template #header>
-          <div class="card-header">
-            <h2>Informazioni partecipante</h2>
-          </div>
+          <h2>Informazioni partecipante</h2>
         </template>
         <div style="display: flex; justify-content: space-between; align-items: center">
           <ElForm
@@ -86,21 +88,34 @@ async function subscribe(formRef: FormInstance | undefined) {
               <ElInput v-model="form.last_name"> </ElInput>
             </ElFormItem>
             <ElFormItem label="Data di nascita" prop="birth_date">
-              <ElDatePicker v-model="form.birth_date" type="date" style="width: 100%" />
+              <ElDatePicker
+                v-model="form.birth_date"
+                type="date"
+                value-format="YYYY-MM-DD"
+                style="width: 100%"
+              />
             </ElFormItem>
             <ElFormItem label="Membro IUTA" prop="memberIUTA">
               <ElSwitch v-model="form.member_iuta" />
+              <small v-if="availableDiscount" class="help-text"
+                >Attivare se si è membri dell'Associazione Italiana Ultramaratona e Trail. Si avrà
+                diritto al <strong>{{ availableDiscount }}% di sconto</strong>.</small
+              >
             </ElFormItem>
-            <ElFormItem label="Membro CSM" prop="memberCSM">
+            <ElFormItem label="Membro CSMI" prop="member_csm">
               <ElSwitch v-model="form.member_csm" />
+              <small v-if="availableDiscount" class="help-text"
+                >Attivare se si è membri del Club Super Marathon Italia. Si avrà diritto al
+                <strong>{{ availableDiscount }}% di sconto</strong>.</small
+              >
             </ElFormItem>
-            <ElFormItem label="Tessera FIDAL" prop="fidalID">
+            <ElFormItem label="Tessera FIDAL" prop="fidal_id">
               <ElInput v-model="form.fidal_id"> </ElInput>
             </ElFormItem>
-            <ElFormItem label="Tessera CSI" prop="csiID">
+            <ElFormItem label="Tessera CSI" prop="csi_id">
               <ElInput v-model="form.csi_id"> </ElInput>
             </ElFormItem>
-            <ElFormItem label="Altra tessera" prop="otherID">
+            <ElFormItem label="Altra tessera" prop="other_id">
               <ElInput v-model="form.other_id"> </ElInput>
             </ElFormItem>
             <ElFormItem>
@@ -112,13 +127,6 @@ async function subscribe(formRef: FormInstance | undefined) {
                 >Conferma</ElButton
               >
               <ElButton @click="resetForm(formRef)" title="Ripristina il form">Reset</ElButton>
-              <ElButton
-                @click="$router.push({ name: 'races', params: { id: route.params.eventId } })"
-                text
-                style="margin-left: auto"
-                title="Torna indietro"
-                >Indietro</ElButton
-              >
             </ElFormItem>
           </ElForm>
         </div>
@@ -133,3 +141,10 @@ async function subscribe(formRef: FormInstance | undefined) {
     </ElCol>
   </ElRow>
 </template>
+
+<style scoped>
+.help-text {
+  color: var(--el-text-color-regular);
+  line-height: 16px;
+}
+</style>

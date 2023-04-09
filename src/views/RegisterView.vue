@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/user';
 import type { UserInputWihtConfirmPassword } from '@/api/resources/users';
 import { resetForm } from '@/utils';
 import type { FormInstance, FormRules } from 'element-plus';
+import { ArrowLeftBold } from '@element-plus/icons-vue';
 
 const userStore = useUserStore();
 const formRef = ref<FormInstance>();
@@ -35,7 +36,6 @@ const checkPasswords = function (rule: any, value: any, callback: any) {
 const requiredMessage = 'Questo campo è obbligatorio';
 
 const formRules = reactive<FormRules>({
-  name: [{ required: true, message: requiredMessage, trigger: 'none' }],
   email: [
     { required: true, message: requiredMessage, trigger: 'none' },
     {
@@ -79,10 +79,17 @@ async function register(formRef: FormInstance | undefined) {
 </script>
 
 <template>
-  <ElCard>
+  <ElCard shadow="never">
     <template #header>
-      <div class="card-header">
-        <h2>Registrati al portale</h2>
+      <div style="display: flex; align-items: center">
+        <ElButton
+          @click="$router.push({ name: 'login' })"
+          :icon="ArrowLeftBold"
+          circle
+          text
+          title="Indietro"
+        />
+        <h2 style="margin: 0">Registrati al portale</h2>
       </div>
     </template>
     <ElForm
@@ -93,7 +100,7 @@ async function register(formRef: FormInstance | undefined) {
       status-icon
       label-width="auto"
     >
-      <ElFormItem label="Nome e cognome" prop="name" required>
+      <ElFormItem label="Nome e cognome" prop="name">
         <ElInput v-model="form.name" />
       </ElFormItem>
       <ElFormItem label="Indirizzo email" prop="email" required>
@@ -111,13 +118,6 @@ async function register(formRef: FormInstance | undefined) {
           >Registrati</ElButton
         >
         <ElButton @click="resetForm(formRef)" title="Ripristina il form">Reset</ElButton>
-        <ElButton
-          @click="$router.push({ name: 'login' })"
-          text
-          style="margin-left: auto"
-          title="Torna indietro"
-          >Indietro</ElButton
-        >
       </ElFormItem>
     </ElForm>
     <ElAlert
@@ -129,3 +129,9 @@ async function register(formRef: FormInstance | undefined) {
     />
   </ElCard>
 </template>
+
+<style scoped>
+::v-deep .el-card__header {
+  padding: 13px;
+}
+</style>

@@ -5,6 +5,7 @@ import AppPageTitle from '@/components/shared/AppPageTitle.vue';
 import { eventsApi } from '@/api/resources/events';
 import type { RaceEvent } from '@/api/resources/events';
 import { formatDateTime } from '@/utils';
+import AppCard from '@/components/shared/AppCard.vue';
 
 /* Data */
 
@@ -15,7 +16,7 @@ const events: Ref<RaceEvent[]> = ref(Array());
 
 async function getEvents() {
   try {
-    events.value = await eventsApi.get();
+    events.value = (await eventsApi.get()) as RaceEvent[];
     loading.value = false;
   } catch (error) {
     console.log(error);
@@ -40,38 +41,32 @@ onMounted(async () => {
       :md="8"
       style="margin-bottom: 20px"
     >
-      <ElCard :body-style="{ padding: '0px' }" shadow="hover">
-        <img
-          src="partenza_2019.jpg"
-          alt="Partenza edizione 2019"
-          style="width: 100%; display: block"
-        />
-        <div style="padding: 20px">
+      <AppCard
+        image="partenza_2019.jpg"
+        image-alt="Partenza edizione 2019"
+        shadow="hover"
+        :title="event.name"
+        :subtitle="formatDateTime(event.date)"
+      >
+        <template #content>
           <div>
-            <h2 style="margin-bottom: 0">{{ event.name }}</h2>
-            <div>{{ formatDateTime(event.date) }}</div>
+            Inizio iscrizioni:
+            {{ event.subscription_from ? formatDateTime(event.subscription_from) : 'Non definito' }}
           </div>
-          <div style="margin-top: 1rem">
-            <div>
-              Inizio iscrizioni:
-              {{
-                event.subscription_from ? formatDateTime(event.subscription_from) : 'Non definito'
-              }}
-            </div>
-            <div>
-              Termine iscrizioni:
-              {{ event.subscription_to ? formatDateTime(event.subscription_to) : 'Non definito' }}
-            </div>
+          <div>
+            Termine iscrizioni:
+            {{ event.subscription_to ? formatDateTime(event.subscription_to) : 'Non definito' }}
           </div>
+        </template>
+        <template #footer>
           <ElButton
             @click="$router.push({ name: 'races', params: { id: event.id } })"
             title="Visualizza le gare dell'evento"
             type="primary"
-            style="margin-top: 1rem"
             >Visualizza gare</ElButton
           >
-        </div>
-      </ElCard>
+        </template>
+      </AppCard>
     </ElCol>
   </ElRow>
 </template>
