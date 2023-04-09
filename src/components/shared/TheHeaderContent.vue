@@ -27,7 +27,7 @@ function logout() {
     <div>
       <ElButton
         @click="$router.push({ name: 'subscriptions' })"
-        plain
+        type="primary"
         :icon="Tickets"
         title="Visualizza iscrizioni attive"
         >Iscrizioni</ElButton
@@ -35,7 +35,6 @@ function logout() {
       <ElButton
         @click="logout()"
         type="danger"
-        plain
         :icon="SwitchButton"
         title="Disconnettiti dal portale"
         >Esci</ElButton

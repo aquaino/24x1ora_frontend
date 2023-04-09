@@ -6,6 +6,7 @@ import { eventsApi } from '@/api/resources/events';
 import AppPageTitle from '@/components/shared/AppPageTitle.vue';
 import AppCard from '@/components/shared/AppCard.vue';
 import { formatDateTime, formatDate } from '@/utils';
+import { Ticket } from '@element-plus/icons-vue';
 
 /* Data */
 const eventIds: Ref<number[]> = ref(Array());
@@ -53,7 +54,7 @@ onMounted(async () => {
   />
 
   <div v-if="loading" v-loading="loading"></div>
-  <div v-else-if="subscriptions.length === 0" style="text-align: center">
+  <div v-else-if="subscriptions.length === 0" class="is-text-center">
     Nessuna iscrizione inserita
   </div>
   <div
@@ -61,7 +62,7 @@ onMounted(async () => {
     v-for="subscription in subscriptions"
     :key="`subscription-${subscription.teams[0].id}`"
   >
-    <h2 style="text-align: center; margin-bottom: 1.5rem">{{ subscription.event.name }}</h2>
+    <h2 class="is-text-center" style="margin-bottom: 1.5rem">{{ subscription.event.name }}</h2>
     <ElRow justify="center" :gutter="20">
       <ElCol
         v-for="team in subscription.teams"
@@ -73,17 +74,29 @@ onMounted(async () => {
       >
         <AppCard shadow="hover" :title="team.name" :subtitle="team.type.name">
           <template #content>
-            <div>
-              Data:
-              {{ formatDate(subscription.event.date) }}
+            <div class="is-flex is-justify-space-between is-align-center">
+              <div>
+                <div>
+                  Data:
+                  {{ formatDate(subscription.event.date) }}
+                </div>
+                <div>
+                  Partenza: {{}} {{ subscription.event.start_hour + team.type.start_offset }}:00
+                </div>
+                <div>Durata: {{ team.type.duration / 60 }}h</div>
+              </div>
+              <div class="is-text-center" style="font-size: 1.25rem; font-weight: 300">
+                <ElIcon size="32" color="var(--el-color-info-light-5)"><Ticket /></ElIcon>
+                <div>{{ team.price }}€</div>
+              </div>
             </div>
-            <div>
-              Partenza: {{}} {{ subscription.event.start_hour + team.type.start_offset }}:00
-            </div>
-            <div>Durata: {{ team.type.duration / 60 }}h</div>
+            <div class="small-text">Inserita: {{ formatDateTime(team.created_at, 'ISO') }}</div>
           </template>
           <template #footer>
-            <small>Inserita: {{ formatDateTime(team.created_at, 'ISO') }}</small>
+            <div class="is-margin-top-05">
+              <ElButton type="primary" title="Modifica iscrizione">Modifica</ElButton>
+              <ElButton type="danger" title="Elimina iscrizione" disabled>Elimina</ElButton>
+            </div>
           </template>
         </AppCard>
       </ElCol>

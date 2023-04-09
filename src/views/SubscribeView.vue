@@ -97,17 +97,18 @@ async function subscribe(formRef: FormInstance | undefined) {
             </ElFormItem>
             <ElFormItem label="Membro IUTA" prop="memberIUTA">
               <ElSwitch v-model="form.member_iuta" />
-              <small v-if="availableDiscount" class="help-text"
-                >Attivare se si è membri dell'Associazione Italiana Ultramaratona e Trail. Si avrà
-                diritto al <strong>{{ availableDiscount }}% di sconto</strong>.</small
-              >
+              <div v-if="availableDiscount" class="small-text">
+                Attivare se si è membri dell'Associazione Italiana Ultramaratona e Trail per avere
+                diritto al <strong>{{ availableDiscount }}% di sconto</strong> sul costo
+                dell'iscrizione.
+              </div>
             </ElFormItem>
             <ElFormItem label="Membro CSMI" prop="member_csm">
               <ElSwitch v-model="form.member_csm" />
-              <small v-if="availableDiscount" class="help-text"
-                >Attivare se si è membri del Club Super Marathon Italia. Si avrà diritto al
-                <strong>{{ availableDiscount }}% di sconto</strong>.</small
-              >
+              <div v-if="availableDiscount" class="small-text">
+                Attivare se si è membri del Club Super Marathon Italia per avere diritto al
+                <strong>{{ availableDiscount }}% di sconto</strong> sul costo dell'iscrizione.
+              </div>
             </ElFormItem>
             <ElFormItem label="Tessera FIDAL" prop="fidal_id">
               <ElInput v-model="form.fidal_id"> </ElInput>
@@ -120,7 +121,7 @@ async function subscribe(formRef: FormInstance | undefined) {
             </ElFormItem>
             <ElFormItem>
               <ElButton
-                type="primary"
+                type="success"
                 native-type="submit"
                 title="Conferma iscrizione"
                 @click.prevent="subscribe(formRef)"
@@ -141,10 +142,3 @@ async function subscribe(formRef: FormInstance | undefined) {
     </ElCol>
   </ElRow>
 </template>
-
-<style scoped>
-.help-text {
-  color: var(--el-text-color-regular);
-  line-height: 16px;
-}
-</style>

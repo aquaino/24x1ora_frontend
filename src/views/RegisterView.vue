@@ -85,6 +85,7 @@ async function register(formRef: FormInstance | undefined) {
         <ElButton
           @click="$router.push({ name: 'login' })"
           :icon="ArrowLeftBold"
+          type="primary"
           circle
           text
           title="Indietro"

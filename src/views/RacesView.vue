@@ -7,6 +7,7 @@ import type { RaceEvent, Race } from '@/api/resources/events';
 import { useRoute } from 'vue-router';
 import AppCard from '@/components/shared/AppCard.vue';
 import { formatDate } from '@/utils';
+import { Ticket } from '@element-plus/icons-vue';
 
 const route = useRoute();
 
@@ -16,6 +17,7 @@ const eventId = route.params.id as string;
 const event: Ref<RaceEvent> | Ref<null> = ref(null);
 const loading = ref(true);
 const races: Ref<Race[]> = ref(Array());
+const eventName = route.query.eventName;
 
 /* Methods */
 
@@ -38,7 +40,7 @@ onMounted(async () => {
 <template>
   <div>
     <AppPageTitle
-      title="Gare dell'evento"
+      :title="'Gare dell\'evento ' + `&quot;${eventName}&quot;`"
       subtitle="Elenco di tutte le gare relative all'evento corrente"
       :back-to="{ name: 'events' }"
     />
@@ -54,7 +56,7 @@ onMounted(async () => {
       >
         <AppCard shadow="hover" :smaller-title="race.type.name">
           <template #content>
-            <div style="display: flex; justify-content: space-between; align-items: center">
+            <div class="is-flex is-justify-space-between is-align-center">
               <div>
                 <div v-if="event">
                   <div>
@@ -66,7 +68,10 @@ onMounted(async () => {
                 <div>Durata: {{ race.type.duration / 60 }}h</div>
                 <div>Corridori per squadra: {{ race.type.runners_per_team }}</div>
               </div>
-              <div style="font-size: 1.25rem; font-weight: 300">{{ race.price }}€</div>
+              <div class="is-text-center" style="font-size: 1.25rem; font-weight: 300">
+                <ElIcon size="32" color="var(--el-color-info-light-5)"><Ticket /></ElIcon>
+                <div>{{ race.price }}€</div>
+              </div>
             </div>
           </template>
           <template #footer>

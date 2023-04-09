@@ -60,7 +60,15 @@ onMounted(async () => {
         </template>
         <template #footer>
           <ElButton
-            @click="$router.push({ name: 'races', params: { id: event.id } })"
+            @click="
+              $router.push({
+                name: 'races',
+                params: { id: event.id },
+                query: {
+                  eventName: event.name,
+                },
+              })
+            "
             title="Visualizza le gare dell'evento"
             type="primary"
             >Visualizza gare</ElButton

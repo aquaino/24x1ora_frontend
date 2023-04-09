@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useUserStore } from '@/stores/user';
-import { useRouter } from 'vue-router';
+import router from '@/router';
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_APP_BACKEND_URL,
@@ -31,8 +31,7 @@ apiClient.interceptors.response.use(
     // If  token expired, logout
     if (error.response.status === 401) {
       store.$reset();
-      const router = useRouter();
-      router.push({ name: 'Login' });
+      router.push({ name: 'login' });
       return Promise.reject(error);
     }
 

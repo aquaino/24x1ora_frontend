@@ -53,6 +53,11 @@ const router = createRouter({
           name: 'subscriptions',
           component: () => import('@/views/SubscriptionsView.vue'),
         },
+        {
+          path: '/:pathMatch(.*)*',
+          name: 'not-found',
+          component: () => import('@/views/NotFoundView.vue'),
+        },
       ],
     },
   ],

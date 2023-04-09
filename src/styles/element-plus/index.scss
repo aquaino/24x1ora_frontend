@@ -9,6 +9,48 @@
 @use 'element-plus/theme-chalk/src/reset.scss';
 @use 'element-plus/theme-chalk/src/index.scss' as *;
 
+/* General */
+
 body {
   margin: 0;
+}
+
+/* Margins */
+
+.is-margin-top-05 {
+  margin-top: 0.5rem;
+}
+
+.is-margin-top-1 {
+  margin-top: 1rem;
+}
+
+.is-margin-bottom-0 {
+  margin-top: 0;
+}
+
+.is-text-center {
+  text-align: center;
+}
+
+/* Flex */
+
+.is-flex {
+  display: flex;
+}
+
+.is-justify-space-between {
+  justify-content: space-between;
+}
+
+.is-align-center {
+  align-items: center;
+}
+
+/* Typography */
+
+.small-text {
+  color: var(--el-text-color-regular);
+  font-size: 12px;
+  line-height: 14px;
 }

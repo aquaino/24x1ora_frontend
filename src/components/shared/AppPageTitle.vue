@@ -16,6 +16,7 @@ const props = defineProps<{
       <el-button
         v-if="typeof backTo !== 'undefined'"
         :icon="ArrowLeftBold"
+        type="primary"
         circle
         text
         title="Indietro"
