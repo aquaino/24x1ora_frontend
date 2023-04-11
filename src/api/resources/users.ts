@@ -1,5 +1,7 @@
 import apiClient from '../client';
 
+const resource = 'users';
+
 export interface User {
   name: string;
   email: string;
@@ -32,8 +34,6 @@ export interface RegisterData {
   user: User;
 }
 
-const resource = '/users';
-
 export const usersApi = {
   async login(email: string, password: string): Promise<LoginData> {
     const response = await apiClient
@@ -49,7 +49,7 @@ export const usersApi = {
 
   async register(user: UserInput | UserInputWihtConfirmPassword): Promise<RegisterData> {
     const response = await apiClient
-      .post(`${resource}/register`, {
+      .post(`/${resource}/register`, {
         name: user.name,
         email: user.email,
         password: user.password,
@@ -61,7 +61,7 @@ export const usersApi = {
   },
 
   async profile(): Promise<User> {
-    const response = await apiClient.get(`${resource}/profile`).catch((error) => {
+    const response = await apiClient.get(`/${resource}/profile`).catch((error) => {
       throw error;
     });
     return response.data.user;

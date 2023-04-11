@@ -2,7 +2,7 @@
 import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
-import { SwitchButton, Tickets } from '@element-plus/icons-vue';
+import { Calendar, SwitchButton, Tickets } from '@element-plus/icons-vue';
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -22,21 +22,31 @@ function logout() {
   <div style="display: flex; align-items: center; justify-content: space-between; height: 100%">
     <RouterLink :to="{ name: 'home' }" style="display: flex">
       <ElImage src="/logo.png" alt="Logo 24x1Ora Buttrio" style="width: 130px" fit="contain" />
-      <h2>{{ appName }}</h2>
+      <h2 class="hidden-xs-only">{{ appName }}</h2>
     </RouterLink>
     <div>
       <ElButton
+        @click="$router.push({ name: 'events' })"
+        :icon="Calendar"
+        title="Visualizza eventi"
+        link
+        >Eventi</ElButton
+      >
+      <ElButton
         @click="$router.push({ name: 'subscriptions' })"
-        type="primary"
         :icon="Tickets"
         title="Visualizza iscrizioni attive"
+        link
         >Iscrizioni</ElButton
       >
+      <ElDivider direction="vertical" />
       <ElButton
         @click="logout()"
         type="danger"
         :icon="SwitchButton"
-        title="Disconnettiti dal portale"
+        title="Disconnettiti dal
+      portale"
+        link
         >Esci</ElButton
       >
     </div>
