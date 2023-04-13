@@ -2,7 +2,7 @@
 import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
-import { Calendar, SwitchButton, Tickets } from '@element-plus/icons-vue';
+import { Calendar, SwitchButton, Tickets, User } from '@element-plus/icons-vue';
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -40,6 +40,9 @@ function logout() {
         >Iscrizioni</ElButton
       >
       <ElDivider direction="vertical" />
+      <ElButton @click="$router.push({ name: 'user' })" :icon="User" title="Gestisci profilo" link
+        >Profilo</ElButton
+      >
       <ElButton
         @click="logout()"
         type="danger"
