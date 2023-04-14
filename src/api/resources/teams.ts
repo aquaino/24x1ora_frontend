@@ -4,6 +4,7 @@ import type { RaceEvent, RaceType } from './events';
 const resource = 'teams';
 
 export interface Runner {
+  id: number | null;
   first_name: string;
   last_name: string;
   member_iuta: boolean;
@@ -12,6 +13,12 @@ export interface Runner {
   csi_id: string;
   other_id: string;
   birth_date: string;
+}
+
+export interface RunnerUpdate extends Partial<Runner> {
+  id: number;
+  first_name: string;
+  last_name: string;
 }
 
 export interface Team {
@@ -55,5 +62,13 @@ export const teamsApi = {
       const teams: Team[] = response.data.teams;
       return { event, teams };
     }
+  },
+
+  async update(eventId: number, teamId: number, runnerData: RunnerUpdate) {
+    await apiClient
+      .patch(`events/${eventId}/${resource}/${teamId}`, { runners: [runnerData] })
+      .catch((error) => {
+        throw error;
+      });
   },
 };

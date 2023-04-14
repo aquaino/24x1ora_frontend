@@ -7,6 +7,7 @@
 );
 
 @use 'element-plus/theme-chalk/src/reset.scss';
+@use 'element-plus/theme-chalk/src/display.scss';
 @use 'element-plus/theme-chalk/src/index.scss' as *;
 
 /* General */
@@ -25,6 +26,14 @@ body {
   margin-top: 1rem;
 }
 
+.is-margin-bottom-15 {
+  margin-bottom: 1.5rem;
+}
+
+.is-margin-bottom-2 {
+  margin-bottom: 2rem;
+}
+
 .is-margin-bottom-0 {
   margin-top: 0;
 }
@@ -41,6 +50,14 @@ body {
 
 .is-justify-space-between {
   justify-content: space-between;
+}
+
+.is-justify-center {
+  justify-content: center;
+}
+
+.is-align-items-baseline {
+  align-items: baseline;
 }
 
 .is-align-center {

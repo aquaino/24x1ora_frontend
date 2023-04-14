@@ -11,8 +11,8 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div style="margin-bottom: 2rem">
-    <div style="display: flex; align-items: baseline; justify-content: center">
+  <div class="is-margin-bottom-2">
+    <div class="is-flex is-justify-center is-align-items-baseline">
       <el-button
         v-if="typeof backTo !== 'undefined'"
         :icon="ArrowLeftBold"
@@ -20,10 +20,10 @@ const props = defineProps<{
         circle
         text
         title="Indietro"
-        @click="$router.push(backTo)"
+        @click="$router.push(props.backTo as RouteLocationRaw)"
       />
       <h1>{{ props.title }}</h1>
     </div>
-    <div v-if="subtitle" style="text-align: center">{{ subtitle }}</div>
+    <div v-if="subtitle" class="is-text-center">{{ subtitle }}</div>
   </div>
 </template>

@@ -36,22 +36,32 @@ const router = createRouter({
         {
           path: '/events',
           name: 'events',
-          component: () => import('@/views/EventsView.vue'),
+          component: () => import('@/views/ListEventsView.vue'),
         },
         {
           path: '/events/:id/races',
           name: 'races',
-          component: () => import('@/views/RacesView.vue'),
+          component: () => import('@/views/ListEventRacesView.vue'),
         },
         {
           path: '/events/:eventId/races/:raceId/subscribe',
           name: 'subscribe',
-          component: () => import('@/views/SubscribeView.vue'),
+          component: () => import('@/views/CreateIndividualTeamView.vue'),
         },
         {
           path: '/subscriptions',
           name: 'subscriptions',
-          component: () => import('@/views/SubscriptionsView.vue'),
+          component: () => import('@/views/ListUserTeamsView.vue'),
+        },
+        {
+          path: '/events/:eventId/teams/:teamId/edit',
+          name: 'update-subscription',
+          component: () => import('@/views/UpdateIndividualTeamView.vue'),
+        },
+        {
+          path: '/user',
+          name: 'user',
+          component: () => import('@/views/UserProfileView.vue'),
         },
         {
           path: '/:pathMatch(.*)*',
@@ -71,6 +81,12 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
+});
+
+// Navigation guard to set page title
+router.beforeEach((to, from, next) => {
+  document.title = import.meta.env.VITE_APP_NAME;
+  next();
 });
 
 export default router;

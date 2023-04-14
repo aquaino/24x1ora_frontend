@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import type { Ref } from 'vue';
-import type { RaceEvent, Team } from '@/api/resources/events';
+import type { RaceEvent } from '@/api/resources/events';
+import type { Team } from '@/api/resources/teams';
 import { eventsApi } from '@/api/resources/events';
 import AppPageTitle from '@/components/shared/AppPageTitle.vue';
 import AppCard from '@/components/shared/AppCard.vue';
 import { formatDateTime, formatDate } from '@/utils';
 import { Ticket } from '@element-plus/icons-vue';
+import { teamsApi } from '@/api/resources/teams';
 
 /* Data */
 const eventIds: Ref<number[]> = ref(Array());
@@ -28,10 +30,9 @@ async function getEventIds() {
 async function getSubscriptions() {
   try {
     for (let index = 0; index < eventIds.value.length; index++) {
-      const eventAndTeams = await eventsApi.getTeams(eventIds.value[index]);
-      subscriptions.value.push(eventAndTeams);
+      const eventAndTeams = await teamsApi.get(eventIds.value[index]);
+      subscriptions.value.push(eventAndTeams as { event: RaceEvent; teams: Team[] });
     }
-
     loading.value = false;
   } catch (error) {
     console.log(error);
@@ -54,15 +55,13 @@ onMounted(async () => {
   />
 
   <div v-if="loading" v-loading="loading"></div>
-  <div v-else-if="subscriptions.length === 0" class="is-text-center">
-    Nessuna iscrizione inserita
-  </div>
+  <ElEmpty v-else-if="subscriptions.length === 0" description="Nessuna iscrizione inserita" />
   <div
     v-else
     v-for="subscription in subscriptions"
     :key="`subscription-${subscription.teams[0].id}`"
   >
-    <h2 class="is-text-center" style="margin-bottom: 1.5rem">{{ subscription.event.name }}</h2>
+    <h1 class="is-text-center is-margin-bottom-15">{{ subscription.event.name }}</h1>
     <ElRow justify="center" :gutter="20">
       <ElCol
         v-for="team in subscription.teams"
@@ -94,7 +93,20 @@ onMounted(async () => {
           </template>
           <template #footer>
             <div class="is-margin-top-05">
-              <ElButton type="primary" title="Modifica iscrizione">Modifica</ElButton>
+              <ElButton
+                type="primary"
+                title="Modifica iscrizione"
+                @click="
+                  $router.push({
+                    name: 'update-subscription',
+                    params: { eventId: subscription.event.id, teamId: team.id },
+                    query: {
+                      raceName: team.type.name,
+                    },
+                  })
+                "
+                >Modifica</ElButton
+              >
               <ElButton type="danger" title="Elimina iscrizione" disabled>Elimina</ElButton>
             </div>
           </template>

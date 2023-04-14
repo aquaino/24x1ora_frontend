@@ -69,6 +69,10 @@ async function register(formRef: FormInstance | undefined) {
       try {
         await usersApi.register(form);
         resetForm(formRef);
+        alert.value = {
+          type: 'success',
+          text: "Registrazione effettuata con successo. A breve verrà inviata una email per la conferma dell'indirizzo indicato.",
+        };
       } catch (error) {
         console.log(error);
         alert.value = { type: 'error', text: 'Si è verificato un errore.' };
@@ -132,7 +136,7 @@ async function register(formRef: FormInstance | undefined) {
 </template>
 
 <style scoped>
-::v-deep .el-card__header {
+:deep(.el-card__header) {
   padding: 13px;
 }
 </style>

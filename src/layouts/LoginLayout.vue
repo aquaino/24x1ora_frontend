@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LoginHeader from '@/components/login/LoginHeader.vue';
+import LoginHeader from '@/components/auth/LoginHeader.vue';
 import TheFooterContent from '@/components/shared/TheFooterContent.vue';
 </script>
 

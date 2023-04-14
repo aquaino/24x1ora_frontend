@@ -32,7 +32,8 @@ onMounted(async () => {
 <template>
   <AppPageTitle title="Eventi" subtitle="Elenco di tutti gli eventi disponibili" />
 
-  <ElRow justify="center" :gutter="20" v-loading="loading">
+  <ElEmpty v-if="events.length === 0 && !loading" description="Nessun evento disponibile" />
+  <ElRow v-else justify="center" :gutter="20" v-loading="loading">
     <ElCol
       v-for="event in events"
       :key="`event-${event.id}`"

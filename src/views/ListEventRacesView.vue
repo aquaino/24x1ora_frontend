@@ -14,7 +14,7 @@ const route = useRoute();
 /* Data */
 
 const eventId = route.params.id as string;
-const event: Ref<RaceEvent> | Ref<null> = ref(null);
+const event: Ref<RaceEvent> = ref(Object());
 const loading = ref(true);
 const races: Ref<Race[]> = ref(Array());
 const eventName = route.query.eventName;
@@ -24,7 +24,7 @@ const eventName = route.query.eventName;
 async function getRaces() {
   try {
     event.value = (await eventsApi.get(parseInt(eventId))) as RaceEvent;
-    races.value = event.value ? event.value.races : [];
+    races.value = event.value.races;
     loading.value = false;
   } catch (error) {
     console.log(error);
@@ -45,7 +45,8 @@ onMounted(async () => {
       :back-to="{ name: 'events' }"
     />
 
-    <ElRow justify="center" :gutter="20" v-loading="loading">
+    <ElEmpty v-if="races.length === 0 && !loading" description="Nessuna gara disponibile" />
+    <ElRow v-else justify="center" :gutter="20" v-loading="loading">
       <ElCol
         v-for="race in races"
         :key="`race-${race.id}`"
@@ -58,13 +59,11 @@ onMounted(async () => {
           <template #content>
             <div class="is-flex is-justify-space-between is-align-center">
               <div>
-                <div v-if="event">
-                  <div>
-                    Data:
-                    {{ formatDate(event['date']) }}
-                  </div>
-                  <div>Partenza: {{ event['start_hour'] + race['type']['start_offset'] }}:00</div>
+                <div>
+                  Data:
+                  {{ formatDate(event['date']) }}
                 </div>
+                <div>Partenza: {{ event['start_hour'] + race['type']['start_offset'] }}:00</div>
                 <div>Durata: {{ race.type.duration / 60 }}h</div>
                 <div>Corridori per squadra: {{ race.type.runners_per_team }}</div>
               </div>
@@ -77,19 +76,17 @@ onMounted(async () => {
           <template #footer>
             <ElButton
               @click="
-                if (event) {
-                  $router.push({
-                    name: 'subscribe',
-                    params: {
-                      eventId: event['id'],
-                      raceId: race.id,
-                    },
-                    query: {
-                      raceName: race.type.name,
-                      availableDiscount: race.available_discount,
-                    },
-                  });
-                }
+                $router.push({
+                  name: 'subscribe',
+                  params: {
+                    eventId: event['id'],
+                    raceId: race.id,
+                  },
+                  query: {
+                    raceName: race.type.name,
+                    availableDiscount: race.available_discount,
+                  },
+                })
               "
               title="Iscriviti alla gara"
               type="primary"
