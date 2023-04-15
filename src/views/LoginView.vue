@@ -43,7 +43,7 @@ async function login(formRef: FormInstance | undefined) {
         // Authenticate and save user data
         const authData = await usersApi.login(form.email, form.password);
         userStore.setAccessToken(authData.token);
-        const userData = await usersApi.profile();
+        const userData = await usersApi.getProfileDetails();
         userStore.setUserData(userData);
         router.push({ name: 'home' });
       } catch (error: any) {

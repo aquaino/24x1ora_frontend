@@ -1,5 +1,5 @@
 import apiClient from '../client';
-import type { Runner, Team } from './teams';
+import type { Runner } from './teams';
 
 const resource = 'events';
 
@@ -14,9 +14,12 @@ export interface RaceEvent {
   edit_end: string | null;
   start_hour: number;
   visible: boolean;
-  races: Race[];
   created_at: string;
   updated_at: string;
+}
+
+export interface RaceEventDetails extends RaceEvent {
+  races: Race[];
 }
 
 export interface Race {
@@ -43,35 +46,28 @@ export interface RaceType {
   updated_at: string;
 }
 
-export interface SubscriptionData {
-  status: boolean;
-  event: RaceEvent;
-  team: Team;
-}
-
 export const eventsApi = {
-  async get(id?: number): Promise<RaceEvent | RaceEvent[]> {
-    if (typeof id !== 'undefined') {
-      const response = await apiClient.get(`/${resource}/${id}`).catch((error) => {
-        throw error;
-      });
-      return response.data.event;
-    } else {
-      const response = await apiClient.get(`/${resource}`).catch((error) => {
-        throw error;
-      });
-      return response.data.events;
-    }
+  async getEventDetails(id: number): Promise<RaceEventDetails> {
+    const response = await apiClient.get(`/${resource}/${id}`).catch((error) => {
+      throw error;
+    });
+    return response.data.event;
   },
 
-  async subscribe(eventId: number, raceId: number, runner: Runner): Promise<SubscriptionData> {
-    const response = await apiClient
+  async getEvents(): Promise<RaceEvent[]> {
+    const response = await apiClient.get(`/${resource}`).catch((error) => {
+      throw error;
+    });
+    return response.data.events;
+  },
+
+  async subscribeIndividual(eventId: number, raceId: number, runner: Runner) {
+    await apiClient
       .post(`/${resource}/${eventId}/races/${raceId}/teams`, {
         runner: runner,
       })
       .catch((error) => {
         throw error;
       });
-    return response.data;
   },
 };

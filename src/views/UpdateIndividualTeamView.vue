@@ -31,7 +31,7 @@ async function updateSubscription(formRef: FormInstance | undefined, form: Runne
   await formRef.validate(async (valid) => {
     if (valid) {
       try {
-        await teamsApi.update(eventId, teamId, form);
+        await teamsApi.updateIndividualTeam(eventId, teamId, form);
         resetForm(formRef);
         alert.value = { type: 'success', text: 'Iscrizione modificata con successo.' };
       } catch (error) {

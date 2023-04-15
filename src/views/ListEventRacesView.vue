@@ -2,8 +2,8 @@
 import { ref, onMounted } from 'vue';
 import type { Ref } from 'vue';
 import AppPageTitle from '@/components/shared/AppPageTitle.vue';
-import { eventsApi } from '@/api/resources/events';
-import type { RaceEvent, Race } from '@/api/resources/events';
+import { eventsApi, type RaceEventDetails } from '@/api/resources/events';
+import type { Race } from '@/api/resources/events';
 import { useRoute } from 'vue-router';
 import AppCard from '@/components/shared/AppCard.vue';
 import { formatDate } from '@/utils';
@@ -14,7 +14,7 @@ const route = useRoute();
 /* Data */
 
 const eventId = route.params.id as string;
-const event: Ref<RaceEvent> = ref(Object());
+const event: Ref<RaceEventDetails> = ref(Object());
 const loading = ref(true);
 const races: Ref<Race[]> = ref(Array());
 const eventName = route.query.eventName;
@@ -23,7 +23,7 @@ const eventName = route.query.eventName;
 
 async function getRaces() {
   try {
-    event.value = (await eventsApi.get(parseInt(eventId))) as RaceEvent;
+    event.value = await eventsApi.getEventDetails(parseInt(eventId));
     races.value = event.value.races;
     loading.value = false;
   } catch (error) {

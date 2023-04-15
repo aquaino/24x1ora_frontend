@@ -16,7 +16,7 @@ const events: Ref<RaceEvent[]> = ref(Array());
 
 async function getEvents() {
   try {
-    events.value = (await eventsApi.get()) as RaceEvent[];
+    events.value = await eventsApi.getEvents();
     loading.value = false;
   } catch (error) {
     console.log(error);

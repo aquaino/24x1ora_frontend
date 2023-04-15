@@ -31,7 +31,7 @@ async function subscribe(formRef: FormInstance | undefined, form: Runner) {
   await formRef.validate(async (valid) => {
     if (valid) {
       try {
-        await eventsApi.subscribe(parseInt(eventId), parseInt(raceId), form);
+        await eventsApi.subscribeIndividual(parseInt(eventId), parseInt(raceId), form);
         resetForm(formRef);
         alert.value = { type: 'success', text: 'Iscrizione effettuata con successo.' };
       } catch (error) {

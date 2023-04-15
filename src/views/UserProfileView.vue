@@ -13,7 +13,7 @@ const form: Ref<User> = ref(Object());
 
 async function getUserData() {
   try {
-    form.value = await usersApi.profile();
+    form.value = await usersApi.getProfileDetails();
     loading.value = false;
   } catch (error) {
     console.log(error);

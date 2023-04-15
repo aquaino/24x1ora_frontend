@@ -18,7 +18,7 @@ const loading = ref(true);
 /* Methods */
 async function getEventIds() {
   try {
-    const events = await eventsApi.get();
+    const events = await eventsApi.getEvents();
     eventIds.value = (events as RaceEvent[]).map((event: RaceEvent) => {
       return event.id;
     });
@@ -30,7 +30,7 @@ async function getEventIds() {
 async function getSubscriptions() {
   try {
     for (let index = 0; index < eventIds.value.length; index++) {
-      const eventAndTeams = await teamsApi.get(eventIds.value[index]);
+      const eventAndTeams = await teamsApi.getEventTeams(eventIds.value[index]);
       subscriptions.value.push(eventAndTeams as { event: RaceEvent; teams: Team[] });
     }
     loading.value = false;

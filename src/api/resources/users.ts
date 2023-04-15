@@ -60,7 +60,7 @@ export const usersApi = {
     return response.data;
   },
 
-  async profile(): Promise<User> {
+  async getProfileDetails(): Promise<User> {
     const response = await apiClient.get(`/${resource}/profile`).catch((error) => {
       throw error;
     });

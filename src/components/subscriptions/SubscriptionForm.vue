@@ -46,7 +46,7 @@ const emits = defineEmits(['subscribe', 'update-subscription']);
 async function getSubscriptionData() {
   try {
     if (props.eventId) {
-      const data = await teamsApi.get(props.eventId, props.teamId);
+      const data = await teamsApi.getEventTeamDetails(props.eventId, props.teamId);
       // Preset form inputs
       if (data.team) {
         const runner: Runner = data.team.runners[0];
