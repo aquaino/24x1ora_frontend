@@ -1,24 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import AppPageTitle from '@/components/shared/AppPageTitle.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import type { FormInstance } from 'element-plus';
-import { resetForm } from '@/utils';
-import SubscriptionForm from '@/components/subscriptions/SubscriptionForm.vue';
+import IndividualTeamForm from '@/components/individualTeams/IndividualTeamForm.vue';
 import { teamsApi, type RunnerUpdate } from '@/api/resources/teams';
-
-const route = useRoute();
+import AppCard from '@/components/shared/AppCard.vue';
 
 /* Data */
 
+const router = useRouter();
+const route = useRoute();
+const loading = ref(true);
 const eventId = parseInt(route.params.eventId as string);
 const teamId = parseInt(route.params.teamId as string);
-
 const availableDiscount = route.query.availableDiscount
   ? Math.round(parseInt(route.query.availableDiscount as string))
   : 0;
 const raceName = route.query.raceName;
-
 const alert = ref({
   type: 'error',
   text: '',
@@ -32,8 +31,8 @@ async function updateSubscription(formRef: FormInstance | undefined, form: Runne
     if (valid) {
       try {
         await teamsApi.updateIndividualTeam(eventId, teamId, form);
-        resetForm(formRef);
         alert.value = { type: 'success', text: 'Iscrizione modificata con successo.' };
+        router.push({ name: 'subscriptions' });
       } catch (error) {
         console.log(error);
         alert.value = { type: 'error', text: 'Si è verificato un errore.' };
@@ -50,24 +49,24 @@ async function updateSubscription(formRef: FormInstance | undefined, form: Runne
     :back-to="{ name: 'subscriptions' }"
   />
   <ElRow justify="center">
-    <ElCol :xs="20" :sm="16" :md="12">
-      <ElCard shadow="never">
-        <template #header>
-          <h2>Informazioni partecipante</h2>
+    <ElCol :xs="24" :sm="16" :md="12">
+      <AppCard title="Informazioni partecipante" shadow="never" v-loading="loading">
+        <template #content>
+          <IndividualTeamForm
+            update
+            :event-id="eventId"
+            :team-id="teamId"
+            @data-fetched="loading = false"
+            @update-subscription="
+              (formRef, form) => {
+                updateSubscription(formRef, form);
+              }
+            "
+            :alert="alert"
+            :discount="availableDiscount"
+          />
         </template>
-        <SubscriptionForm
-          update
-          :event-id="eventId"
-          :team-id="teamId"
-          @update-subscription="
-            (formRef, form) => {
-              updateSubscription(formRef, form);
-            }
-          "
-          :alert="alert"
-          :discount="availableDiscount"
-        />
-      </ElCard>
+      </AppCard>
     </ElCol>
   </ElRow>
 </template>

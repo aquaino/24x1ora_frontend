@@ -50,23 +50,28 @@ onMounted(async () => {
       <ElCol
         v-for="race in races"
         :key="`race-${race.id}`"
-        :xs="20"
+        :xs="24"
         :sm="12"
-        :md="6"
+        :md="8"
         style="margin-bottom: 20px"
       >
-        <AppCard shadow="hover" :smaller-title="race.type.name">
+        <AppCard shadow="hover" :title="race.type.name">
           <template #content>
             <div class="is-flex is-justify-space-between is-align-center">
-              <div>
-                <div>
-                  Data:
-                  {{ formatDate(event['date']) }}
-                </div>
-                <div>Partenza: {{ event['start_hour'] + race['type']['start_offset'] }}:00</div>
-                <div>Durata: {{ race.type.duration / 60 }}h</div>
-                <div>Corridori per squadra: {{ race.type.runners_per_team }}</div>
-              </div>
+              <ElDescriptions direction="vertical" :column="2">
+                <ElDescriptionsItem label="Data" width="100px">{{
+                  formatDate(event['date'])
+                }}</ElDescriptionsItem>
+                <ElDescriptionsItem label="Partenza"
+                  >{{ event['start_hour'] + race['type']['start_offset'] }}:00</ElDescriptionsItem
+                >
+                <ElDescriptionsItem label="Durata"
+                  >{{ race.type.duration / 60 }}h</ElDescriptionsItem
+                >
+                <ElDescriptionsItem label="Corridori per squadra">{{
+                  race.type.runners_per_team
+                }}</ElDescriptionsItem>
+              </ElDescriptions>
               <div class="is-text-center" style="font-size: 1.25rem; font-weight: 300">
                 <ElIcon size="32" color="var(--el-color-info-light-5)"><Ticket /></ElIcon>
                 <div>{{ race.price }}€</div>

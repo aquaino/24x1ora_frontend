@@ -1,29 +1,37 @@
 <script setup lang="ts">
-defineProps<{
+import { useSlots } from 'vue';
+
+/* Props */
+
+const props = defineProps<{
   title?: string;
   subtitle?: string;
-  smallerTitle?: string;
   image?: string;
   imageAlt?: string;
   shadow?: string;
 }>();
+
+/* Data */
+
+const slots = useSlots();
+const hasFooter = !!slots['footer'];
 </script>
 
 <template>
-  <ElCard :body-style="{ padding: '0px' }" :shadow="shadow ? shadow : 'never'">
-    <img v-if="image" :src="image" :alt="imageAlt" class="card-image" />
+  <ElCard :body-style="{ padding: '0px' }" :shadow="props.shadow ? props.shadow : 'never'">
+    <img v-if="props.image" :src="props.image" :alt="props.imageAlt" class="card-image" />
+    <template v-if="props.title && !props.image" #header>
+      <h2>{{ props.title }}</h2>
+    </template>
     <div style="padding: 20px">
-      <div v-if="title || subtitle">
-        <h2 style="margin-bottom: 0">{{ title }}</h2>
-        <div>{{ subtitle }}</div>
+      <div v-if="props.title && props.image">
+        <h2 class="is-margin-bottom-05">{{ title }}</h2>
+        <div v-if="props.subtitle">{{ props.subtitle }}</div>
       </div>
-      <div v-else-if="smallerTitle">
-        <h2 style="margin-bottom: 0">{{ smallerTitle }}</h2>
-      </div>
-      <div class="is-margin-top-1 is-margin-bottom-15">
+      <div :class="props.image ? 'is-margin-top-1 is-margin-bottom-1' : ''">
         <slot name="content" />
       </div>
-      <div>
+      <div :class="hasFooter ? 'is-margin-top-1' : ''">
         <slot name="footer" />
       </div>
     </div>

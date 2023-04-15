@@ -7,8 +7,8 @@ export interface Runner {
   id: number | null;
   first_name: string;
   last_name: string;
-  member_iuta: boolean;
-  member_csm: boolean;
+  member_iuta: boolean | number;
+  member_csm: boolean | number;
   fidal_id: string;
   csi_id: string;
   other_id: string;
@@ -73,11 +73,16 @@ export const teamsApi = {
     return { event, team };
   },
 
-  async updateIndividualTeam(eventId: number, teamId: number, runnerData: RunnerUpdate) {
-    await apiClient
+  async updateIndividualTeam(
+    eventId: number,
+    teamId: number,
+    runnerData: RunnerUpdate,
+  ): Promise<Runner> {
+    const response = await apiClient
       .patch(`events/${eventId}/${resource}/${teamId}`, { runners: [runnerData] })
       .catch((error) => {
         throw error;
       });
+    return response.data.team.runners[0];
   },
 };

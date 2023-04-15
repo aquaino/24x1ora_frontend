@@ -66,30 +66,36 @@ onMounted(async () => {
       <ElCol
         v-for="team in subscription.teams"
         :key="`team-${team.id}`"
-        :xs="20"
+        :xs="24"
         :sm="12"
-        :md="6"
+        :md="8"
         style="margin-bottom: 20px"
       >
-        <AppCard shadow="hover" :title="team.name" :subtitle="team.type.name">
+        <AppCard shadow="hover" :title="team.name">
           <template #content>
             <div class="is-flex is-justify-space-between is-align-center">
-              <div>
-                <div>
-                  Data:
-                  {{ formatDate(subscription.event.date) }}
-                </div>
-                <div>
-                  Partenza: {{}} {{ subscription.event.start_hour + team.type.start_offset }}:00
-                </div>
-                <div>Durata: {{ team.type.duration / 60 }}h</div>
-              </div>
+              <ElDescriptions direction="vertical" :column="2">
+                <ElDescriptionsItem label="Gara" span="2">{{ team.type.name }}</ElDescriptionsItem>
+                <ElDescriptionsItem label="Data" width="100px">{{
+                  formatDate(subscription.event.date)
+                }}</ElDescriptionsItem>
+                <ElDescriptionsItem label="Partenza"
+                  >{{
+                    subscription.event.start_hour + team.type.start_offset
+                  }}:00</ElDescriptionsItem
+                >
+                <ElDescriptionsItem label="Durata"
+                  >{{ team.type.duration / 60 }}h</ElDescriptionsItem
+                >
+                <ElDescriptionsItem label="Inserita">{{
+                  formatDateTime(team.created_at, 'ISO')
+                }}</ElDescriptionsItem>
+              </ElDescriptions>
               <div class="is-text-center" style="font-size: 1.25rem; font-weight: 300">
                 <ElIcon size="32" color="var(--el-color-info-light-5)"><Ticket /></ElIcon>
                 <div>{{ team.price }}€</div>
               </div>
             </div>
-            <div class="small-text">Inserita: {{ formatDateTime(team.created_at, 'ISO') }}</div>
           </template>
           <template #footer>
             <div class="is-margin-top-05">

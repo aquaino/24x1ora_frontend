@@ -37,7 +37,7 @@ onMounted(async () => {
     <ElCol
       v-for="event in events"
       :key="`event-${event.id}`"
-      :xs="20"
+      :xs="24"
       :sm="12"
       :md="8"
       style="margin-bottom: 20px"
@@ -50,14 +50,14 @@ onMounted(async () => {
         :subtitle="formatDateTime(event.date)"
       >
         <template #content>
-          <div>
-            Inizio iscrizioni:
-            {{ event.subscription_from ? formatDateTime(event.subscription_from) : 'Non definito' }}
-          </div>
-          <div>
-            Termine iscrizioni:
-            {{ event.subscription_to ? formatDateTime(event.subscription_to) : 'Non definito' }}
-          </div>
+          <ElDescriptions direction="vertical">
+            <ElDescriptionsItem label="Inizio iscrizioni">{{
+              event.subscription_from ? formatDateTime(event.subscription_from) : 'Non definito'
+            }}</ElDescriptionsItem>
+            <ElDescriptionsItem label="Termine iscrizioni">{{
+              event.subscription_to ? formatDateTime(event.subscription_to) : 'Non definito'
+            }}</ElDescriptionsItem>
+          </ElDescriptions>
         </template>
         <template #footer>
           <ElButton

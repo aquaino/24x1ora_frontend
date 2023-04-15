@@ -3,6 +3,7 @@ import { ref, type Ref, onMounted } from 'vue';
 import { usersApi } from '@/api/resources/users';
 import type { User } from '@/api/resources/users';
 import AppCard from '@/components/shared/AppCard.vue';
+import AppPageTitle from '@/components/shared/AppPageTitle.vue';
 
 /* Data */
 
@@ -28,19 +29,22 @@ onMounted(async () => {
 </script>
 
 <template>
+  <AppPageTitle
+    title="Profilo"
+    subtitle="Visualizza e modifica le informazioni del tuo account"
+    :back-to="{ name: 'home' }"
+  />
+
   <ElRow justify="center" :gutter="20" v-loading="loading">
-    <ElCol :xs="20" :sm="12" :md="8" style="margin-bottom: 20px">
-      <AppCard
-        title="Informazioni utente"
-        subtitle="Visualizza e modifica le informazioni del tuo account"
-      >
+    <ElCol :xs="24" :sm="12" :md="8" style="margin-bottom: 20px">
+      <AppCard title="Informazioni utente">
         <template #content>
           <ElForm ref="formRef" :model="form" status-icon label-width="auto">
             <ElFormItem label="Nome e cognome" prop="name">
               <ElInput v-model="form.name" disabled />
             </ElFormItem>
             <ElFormItem label="Indirizzo email" prop="email">
-              <ElInput v-model="form.email" disabled> </ElInput>
+              <ElInput v-model="form.email" disabled />
             </ElFormItem>
           </ElForm>
         </template>

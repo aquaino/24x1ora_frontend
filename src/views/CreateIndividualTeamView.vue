@@ -5,7 +5,7 @@ import { useRoute } from 'vue-router';
 import type { FormInstance } from 'element-plus';
 import { resetForm } from '@/utils';
 import { eventsApi } from '@/api/resources/events';
-import SubscriptionForm from '@/components/subscriptions/SubscriptionForm.vue';
+import IndividualTeamForm from '@/components/individualTeams/IndividualTeamForm.vue';
 import type { Runner } from '@/api/resources/teams';
 
 const route = useRoute();
@@ -50,12 +50,12 @@ async function subscribe(formRef: FormInstance | undefined, form: Runner) {
     :back-to="{ name: 'races', params: { id: route.params.eventId } }"
   />
   <ElRow justify="center">
-    <ElCol :xs="20" :sm="16" :md="12">
+    <ElCol :xs="24" :sm="16" :md="12">
       <ElCard shadow="never">
         <template #header>
           <h2>Informazioni partecipante</h2>
         </template>
-        <SubscriptionForm
+        <IndividualTeamForm
           @subscribe="
             (formRef, form) => {
               subscribe(formRef, form);

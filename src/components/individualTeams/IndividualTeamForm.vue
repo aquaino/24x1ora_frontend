@@ -15,6 +15,10 @@ const props = defineProps<{
   alert: { type: string; text: string };
 }>();
 
+/* Events */
+
+const emits = defineEmits(['subscribe', 'update-subscription', 'data-fetched']);
+
 /* Data */
 
 const form = reactive<Runner>({
@@ -28,18 +32,12 @@ const form = reactive<Runner>({
   other_id: '',
   birth_date: '',
 });
-
 const formRef = ref<FormInstance>();
-
 const requiredMessage = 'Questo campo è obbligatorio';
 const formRules = reactive<FormRules>({
   first_name: [{ required: true, message: requiredMessage, trigger: 'none' }],
   last_name: [{ required: true, message: requiredMessage, trigger: 'none' }],
 });
-
-/* Events */
-
-const emits = defineEmits(['subscribe', 'update-subscription']);
 
 /* Methods */
 
@@ -54,12 +52,13 @@ async function getSubscriptionData() {
         form.first_name = runner.first_name;
         form.last_name = runner.last_name;
         form.birth_date = runner.birth_date;
-        form.member_iuta = runner.member_iuta;
-        form.member_csm = runner.member_csm;
+        form.member_iuta = runner.member_iuta === 1 ? true : false;
+        form.member_csm = runner.member_csm === 1 ? true : false;
         form.fidal_id = runner.fidal_id;
         form.csi_id = runner.csi_id;
         form.other_id = runner.other_id;
       }
+      emits('data-fetched');
     }
   } catch (error) {
     console.log(error);
@@ -89,7 +88,7 @@ onMounted(async () => {
         <ElInput v-model="form.first_name" />
       </ElFormItem>
       <ElFormItem label="Cognome" prop="last_name" required>
-        <ElInput v-model="form.last_name"> </ElInput>
+        <ElInput v-model="form.last_name" />
       </ElFormItem>
       <ElFormItem label="Data di nascita" prop="birth_date">
         <ElDatePicker
@@ -114,13 +113,13 @@ onMounted(async () => {
         </div>
       </ElFormItem>
       <ElFormItem label="Tessera FIDAL" prop="fidal_id">
-        <ElInput v-model="form.fidal_id"> </ElInput>
+        <ElInput v-model="form.fidal_id" />
       </ElFormItem>
       <ElFormItem label="Tessera CSI" prop="csi_id">
-        <ElInput v-model="form.csi_id"> </ElInput>
+        <ElInput v-model="form.csi_id" />
       </ElFormItem>
       <ElFormItem label="Altra tessera" prop="other_id">
-        <ElInput v-model="form.other_id"> </ElInput>
+        <ElInput v-model="form.other_id" />
       </ElFormItem>
       <ElFormItem>
         <ElButton

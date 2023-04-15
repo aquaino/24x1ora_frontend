@@ -18,12 +18,28 @@ body {
 
 /* Margins */
 
+.is-margin-top-0 {
+  margin-top: 0;
+}
+
 .is-margin-top-05 {
   margin-top: 0.5rem;
 }
 
 .is-margin-top-1 {
   margin-top: 1rem;
+}
+
+.is-margin-top-15 {
+  margin-top: 1.5rem;
+}
+
+.is-margin-bottom-05 {
+  margin-bottom: 0.5rem;
+}
+
+.is-margin-bottom-1 {
+  margin-bottom: 1rem;
 }
 
 .is-margin-bottom-15 {
@@ -70,4 +86,10 @@ body {
   color: var(--el-text-color-regular);
   font-size: 12px;
   line-height: 14px;
+}
+
+/* Buttons */
+
+.el-form-item .el-button {
+  margin-top: 0.5rem;
 }
