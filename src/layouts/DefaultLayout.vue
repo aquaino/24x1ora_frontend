@@ -14,15 +14,9 @@ import TheFooterContent from '@/components/shared/TheFooterContent.vue';
       >
         <TheHeaderContent />
       </ElHeader>
-      <ElMain
-        :style="{
-          marginTop: '20px',
-          marginBottom: '20px',
-        }"
-        ><RouterView
-      /></ElMain>
+      <ElMain class="is-margin-bottom-20 is-margin-top-20"><RouterView /></ElMain>
       <ElFooter height="100px">
-        <TheFooterContent style="margin-top: 1rem" />
+        <TheFooterContent class="is-margin-top-10" />
       </ElFooter>
     </ElContainer>
   </div>

@@ -34,14 +34,7 @@ onMounted(async () => {
 
   <ElEmpty v-if="events.length === 0 && !loading" description="Nessun evento disponibile" />
   <ElRow v-else :justify="events.length <= 3 ? 'center' : 'start'" :gutter="20" v-loading="loading">
-    <ElCol
-      v-for="event in events"
-      :key="`event-${event.id}`"
-      :xs="24"
-      :sm="12"
-      :md="8"
-      style="margin-bottom: 20px"
-    >
+    <ElCol v-for="event in events" :key="`event-${event.id}`" :xs="24" :sm="12" :md="8">
       <AppCard
         image="partenza_2019.jpg"
         image-alt="Partenza edizione 2019"

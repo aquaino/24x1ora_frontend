@@ -8,7 +8,7 @@ import TheFooterContent from '@/components/shared/TheFooterContent.vue';
     <ElCol :xs="24" :sm="12" :md="8">
       <LoginHeader />
       <RouterView />
-      <TheFooterContent style="margin-top: 2rem" />
+      <TheFooterContent class="is-margin-top-20" />
     </ElCol>
   </ElRow>
 </template>

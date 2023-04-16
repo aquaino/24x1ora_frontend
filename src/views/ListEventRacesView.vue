@@ -52,15 +52,7 @@ onMounted(async () => {
       :gutter="20"
       v-loading="loading"
     >
-      <ElCol
-        v-for="race in races"
-        :key="`race-${race.id}`"
-        :xs="24"
-        :sm="12"
-        :md="8"
-        :lg="6"
-        style="margin-bottom: 20px"
-      >
+      <ElCol v-for="race in races" :key="`race-${race.id}`" :xs="24" :sm="12" :md="8" :lg="6">
         <AppCard shadow="hover" :title="race.type.name">
           <template #content>
             <div class="is-flex is-justify-space-between is-align-center">
@@ -78,7 +70,7 @@ onMounted(async () => {
                   race.type.runners_per_team
                 }}</ElDescriptionsItem>
               </ElDescriptions>
-              <div class="is-text-center" style="font-size: 1.25rem; font-weight: 300">
+              <div class="is-text-center" style="font-size: 20px; font-weight: 300">
                 <ElIcon size="32" color="var(--el-color-info-light-5)"><Ticket /></ElIcon>
                 <div>{{ race.price }}€</div>
               </div>

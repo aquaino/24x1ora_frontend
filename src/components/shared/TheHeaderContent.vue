@@ -21,8 +21,8 @@ function logout() {
 </script>
 
 <template>
-  <div style="display: flex; align-items: center; justify-content: space-between; height: 100%">
-    <RouterLink :to="{ name: 'home' }" style="display: flex">
+  <div class="is-flex is-align-center is-justify-space-between is-height-100">
+    <RouterLink :to="{ name: 'home' }" class="is-flex">
       <ElImage src="/logo.png" :alt="`Logo ${appName}`" style="width: 130px" fit="contain" />
       <h2 class="hidden-xs-only">{{ appName }}</h2>
     </RouterLink>

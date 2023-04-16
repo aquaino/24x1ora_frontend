@@ -83,19 +83,14 @@ onMounted(async () => {
     v-for="subscription in subscriptions"
     :key="`subscription-${subscription.teams[0].id}`"
   >
-    <div class="is-flex is-justify-center is-align-items-center is-margin-bottom-2">
-      <ElIcon color="var(--el-color-primary)" size="24"><TrophyBase /></ElIcon>
-      <h1 class="is-margin-left-05 is-margin-top-0">{{ subscription.event.name }}</h1>
+    <div class="is-flex is-justify-center is-align-center is-margin-bottom-20">
+      <ElIcon color="var(--el-color-primary)" size="32"><TrophyBase /></ElIcon>
+      <h2 class="is-margin-left-05 is-margin-top-0" style="line-height: 32px">
+        {{ subscription.event.name }}
+      </h2>
     </div>
     <ElRow :justify="subscription.teams.length <= 3 ? 'center' : 'start'" :gutter="20">
-      <ElCol
-        v-for="team in subscription.teams"
-        :key="`team-${team.id}`"
-        :xs="24"
-        :sm="12"
-        :md="8"
-        style="margin-bottom: 20px"
-      >
+      <ElCol v-for="team in subscription.teams" :key="`team-${team.id}`" :xs="24" :sm="12" :md="8">
         <AppCard shadow="hover" :title="`#${team.id} - ${team.name}`">
           <template #content>
             <div class="is-flex is-justify-space-between is-align-center">
@@ -121,7 +116,7 @@ onMounted(async () => {
                   formatDateTime(team.created_at, 'ISO')
                 }}</ElDescriptionsItem>
               </ElDescriptions>
-              <div class="is-text-center" style="font-size: 1.25rem; font-weight: 300">
+              <div class="is-text-center" style="font-size: 20px; font-weight: 300">
                 <ElIcon size="32" color="var(--el-color-info-light-5)"><Ticket /></ElIcon>
                 <div>{{ parseInt(team.price) - parseInt(team.discount) }}€</div>
               </div>

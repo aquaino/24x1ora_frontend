@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div style="text-align: center">
+  <div class="is-text-center">
     <div>
       Copyright &copy; {{ new Date().getFullYear() }} Gruppo Alpini Buttrio & A.S.D. Podismo Buttrio
     </div>

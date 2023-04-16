@@ -82,7 +82,7 @@ onMounted(async () => {
       status-icon
       :rules="formRules"
       label-width="auto"
-      style="width: 100%"
+      class="is-width-100"
     >
       <ElFormItem label="Nome" prop="first_name" required>
         <ElInput v-model="form.first_name" />
@@ -95,7 +95,7 @@ onMounted(async () => {
           v-model="form.birth_date"
           type="date"
           value-format="YYYY-MM-DD"
-          style="width: 100%"
+          class="is-width-100"
         />
       </ElFormItem>
       <ElFormItem label="Membro IUTA" prop="member_iuta">
@@ -142,6 +142,6 @@ onMounted(async () => {
     :type="props.alert.type"
     :title="props.alert.text"
     show-icon
-    style="margin-top: 1.5rem"
+    class="is-margin-top-15"
   />
 </template>

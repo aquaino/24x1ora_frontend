@@ -85,7 +85,7 @@ async function register(formRef: FormInstance | undefined) {
 <template>
   <ElCard shadow="never">
     <template #header>
-      <div style="display: flex; align-items: center">
+      <div class="is-flex is-align-center">
         <ElButton
           @click="$router.push({ name: 'login' })"
           :icon="ArrowLeftBold"
@@ -94,7 +94,7 @@ async function register(formRef: FormInstance | undefined) {
           text
           title="Indietro"
         />
-        <h2 style="margin: 0">Registrati al portale</h2>
+        <h2 class="is-margin-0">Registrati al portale</h2>
       </div>
     </template>
     <ElForm
@@ -130,7 +130,7 @@ async function register(formRef: FormInstance | undefined) {
       :type="alert.type"
       :title="alert.text"
       show-icon
-      style="margin-top: 1.5rem"
+      class="is-margin-top-15"
     />
   </ElCard>
 </template>

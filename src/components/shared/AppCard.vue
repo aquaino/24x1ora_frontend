@@ -28,10 +28,10 @@ const hasFooter = !!slots['footer'];
         <h2 class="is-margin-bottom-05">{{ title }}</h2>
         <div v-if="props.subtitle">{{ props.subtitle }}</div>
       </div>
-      <div :class="props.image ? 'is-margin-top-1 is-margin-bottom-1' : ''">
+      <div :class="props.image ? 'is-margin-top-10 is-margin-bottom-10' : ''">
         <slot name="content" />
       </div>
-      <div :class="hasFooter ? 'is-margin-top-1' : ''">
+      <div :class="hasFooter ? 'is-margin-top-10' : ''">
         <slot name="footer" />
       </div>
     </div>

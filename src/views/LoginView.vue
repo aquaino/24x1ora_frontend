@@ -104,7 +104,7 @@ async function login(formRef: FormInstance | undefined) {
       :type="alert.type"
       :title="alert.text"
       show-icon
-      style="margin-top: 1.5rem"
+      class="is-margin-top-15"
     />
   </ElCard>
 </template>

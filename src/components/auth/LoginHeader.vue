@@ -3,7 +3,7 @@
 <template>
   <div class="logo-wrapper">
     <ElImage src="/logo.png" alt="Logo 24x1Ora Buttrio" />
-    <h1>Portale di registrazione agli eventi di gara</h1>
+    <h1>Portale di registrazione alle gare</h1>
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, type Ref, onMounted } from 'vue';
 import { usersApi } from '@/api/resources';
-import type { User } from '@/api/resources';
+import type { User } from '@/api/interfaces';
 import AppCard from '@/components/shared/AppCard.vue';
 import AppPageTitle from '@/components/shared/AppPageTitle.vue';
 
@@ -36,7 +36,7 @@ onMounted(async () => {
   />
 
   <ElRow justify="center" :gutter="20" v-loading="loading">
-    <ElCol :xs="24" :sm="12" :md="8" style="margin-bottom: 20px">
+    <ElCol :xs="24" :sm="12" :md="8">
       <AppCard title="Informazioni utente">
         <template #content>
           <ElForm ref="formRef" :model="form" status-icon label-width="auto">

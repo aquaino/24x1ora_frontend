@@ -11,8 +11,8 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="is-margin-bottom-2">
-    <div class="is-flex is-justify-center is-align-items-baseline">
+  <div class="is-margin-bottom-20">
+    <div class="is-flex is-justify-center is-align-baseline">
       <el-button
         v-if="typeof props.backTo !== 'undefined'"
         :icon="ArrowLeftBold"
