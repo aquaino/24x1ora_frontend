@@ -1,21 +1,29 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import type { Ref } from 'vue';
-import type { RaceEvent } from '@/api/resources/events';
-import type { Team } from '@/api/resources/teams';
-import { eventsApi } from '@/api/resources/events';
+import type { RaceEvent, Team } from '@/api/interfaces';
+import { eventsApi } from '@/api/resources';
 import AppPageTitle from '@/components/shared/AppPageTitle.vue';
 import AppCard from '@/components/shared/AppCard.vue';
 import { formatDateTime, formatDate } from '@/utils';
-import { Ticket } from '@element-plus/icons-vue';
-import { teamsApi } from '@/api/resources/teams';
+import { Ticket, TrophyBase } from '@element-plus/icons-vue';
+import { teamsApi } from '@/api/resources';
+import { ElMessage } from 'element-plus';
+import { useRoute } from 'vue-router';
 
 /* Data */
+
 const eventIds: Ref<number[]> = ref(Array());
 const subscriptions: Ref<{ event: RaceEvent; teams: Team[] }[]> = ref(Array());
 const loading = ref(true);
+const route = useRoute();
+const message = {
+  type: route.query.messageType as 'success' | 'warning' | 'error' | 'info',
+  text: route.query.messageText as string,
+};
 
 /* Methods */
+
 async function getEventIds() {
   try {
     const events = await eventsApi.getEvents();
@@ -39,18 +47,32 @@ async function getSubscriptions() {
   }
 }
 
+function showMessage() {
+  ElMessage({
+    type: message.type,
+    showClose: true,
+    dangerouslyUseHTMLString: true,
+    message: message.text,
+  });
+}
+
 /* Mounted */
+
 onMounted(async () => {
-  // Get subscriptions (teams) for each event
+  // Get user teams for each event
   await getEventIds();
   await getSubscriptions();
+
+  if (message.type && message.text) {
+    showMessage();
+  }
 });
 </script>
 
 <template>
   <AppPageTitle
     title="Iscrizioni attive"
-    subtitle="Elenco di tutte le iscrizioni attive"
+    subtitle="Elenco di tutte le iscrizioni attive per ogni evento"
     :back-to="{ name: 'events' }"
   />
 
@@ -61,8 +83,11 @@ onMounted(async () => {
     v-for="subscription in subscriptions"
     :key="`subscription-${subscription.teams[0].id}`"
   >
-    <h1 class="is-text-center is-margin-bottom-15">{{ subscription.event.name }}</h1>
-    <ElRow justify="center" :gutter="20">
+    <div class="is-flex is-justify-center is-align-items-center is-margin-bottom-2">
+      <ElIcon color="var(--el-color-primary)" size="24"><TrophyBase /></ElIcon>
+      <h1 class="is-margin-left-05 is-margin-top-0">{{ subscription.event.name }}</h1>
+    </div>
+    <ElRow :justify="subscription.teams.length <= 3 ? 'center' : 'start'" :gutter="20">
       <ElCol
         v-for="team in subscription.teams"
         :key="`team-${team.id}`"
@@ -71,12 +96,17 @@ onMounted(async () => {
         :md="8"
         style="margin-bottom: 20px"
       >
-        <AppCard shadow="hover" :title="team.name">
+        <AppCard shadow="hover" :title="`#${team.id} - ${team.name}`">
           <template #content>
             <div class="is-flex is-justify-space-between is-align-center">
               <ElDescriptions direction="vertical" :column="2">
-                <ElDescriptionsItem label="Gara" span="2">{{ team.type.name }}</ElDescriptionsItem>
-                <ElDescriptionsItem label="Data" width="100px">{{
+                <ElDescriptionsItem label="Gara" width="150px">{{
+                  team.type.name
+                }}</ElDescriptionsItem>
+                <ElDescriptionsItem label="Codice pagamento">{{
+                  team.payment_code
+                }}</ElDescriptionsItem>
+                <ElDescriptionsItem label="Data">{{
                   formatDate(subscription.event.date)
                 }}</ElDescriptionsItem>
                 <ElDescriptionsItem label="Partenza"
@@ -93,7 +123,7 @@ onMounted(async () => {
               </ElDescriptions>
               <div class="is-text-center" style="font-size: 1.25rem; font-weight: 300">
                 <ElIcon size="32" color="var(--el-color-info-light-5)"><Ticket /></ElIcon>
-                <div>{{ team.price }}€</div>
+                <div>{{ parseInt(team.price) - parseInt(team.discount) }}€</div>
               </div>
             </div>
           </template>

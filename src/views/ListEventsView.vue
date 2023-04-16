@@ -2,8 +2,8 @@
 import { ref, onMounted } from 'vue';
 import type { Ref } from 'vue';
 import AppPageTitle from '@/components/shared/AppPageTitle.vue';
-import { eventsApi } from '@/api/resources/events';
-import type { RaceEvent } from '@/api/resources/events';
+import { eventsApi } from '@/api/resources';
+import type { RaceEvent } from '@/api/interfaces';
 import { formatDateTime } from '@/utils';
 import AppCard from '@/components/shared/AppCard.vue';
 
@@ -33,7 +33,7 @@ onMounted(async () => {
   <AppPageTitle title="Eventi" subtitle="Elenco di tutti gli eventi disponibili" />
 
   <ElEmpty v-if="events.length === 0 && !loading" description="Nessun evento disponibile" />
-  <ElRow v-else justify="center" :gutter="20" v-loading="loading">
+  <ElRow v-else :justify="events.length <= 3 ? 'center' : 'start'" :gutter="20" v-loading="loading">
     <ElCol
       v-for="event in events"
       :key="`event-${event.id}`"

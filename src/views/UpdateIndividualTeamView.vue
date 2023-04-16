@@ -4,7 +4,8 @@ import AppPageTitle from '@/components/shared/AppPageTitle.vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { FormInstance } from 'element-plus';
 import IndividualTeamForm from '@/components/individualTeams/IndividualTeamForm.vue';
-import { teamsApi, type RunnerUpdate } from '@/api/resources/teams';
+import { teamsApi } from '@/api/resources';
+import type { RunnerUpdate } from '@/api/interfaces';
 import AppCard from '@/components/shared/AppCard.vue';
 
 /* Data */
@@ -31,8 +32,13 @@ async function updateSubscription(formRef: FormInstance | undefined, form: Runne
     if (valid) {
       try {
         await teamsApi.updateIndividualTeam(eventId, teamId, form);
-        alert.value = { type: 'success', text: 'Iscrizione modificata con successo.' };
-        router.push({ name: 'subscriptions' });
+        router.push({
+          name: 'subscriptions',
+          query: {
+            messageType: 'success',
+            messageText: `Iscrizione <strong>#${teamId}</strong> modificata con successo.`,
+          },
+        });
       } catch (error) {
         console.log(error);
         alert.value = { type: 'error', text: 'Si è verificato un errore.' };

@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import AppPageTitle from '@/components/shared/AppPageTitle.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import type { FormInstance } from 'element-plus';
-import { resetForm } from '@/utils';
-import { eventsApi } from '@/api/resources/events';
+import { eventsApi } from '@/api/resources';
 import IndividualTeamForm from '@/components/individualTeams/IndividualTeamForm.vue';
-import type { Runner } from '@/api/resources/teams';
-
-const route = useRoute();
+import type { Runner } from '@/api/interfaces';
 
 /* Data */
 
+const router = useRouter();
+const route = useRoute();
 const eventId = route.params.eventId as string;
 const raceId = route.params.raceId as string;
 const availableDiscount = route.query.availableDiscount
@@ -31,9 +30,19 @@ async function subscribe(formRef: FormInstance | undefined, form: Runner) {
   await formRef.validate(async (valid) => {
     if (valid) {
       try {
-        await eventsApi.subscribeIndividual(parseInt(eventId), parseInt(raceId), form);
-        resetForm(formRef);
+        const newTeam = await eventsApi.subscribeIndividual(
+          parseInt(eventId),
+          parseInt(raceId),
+          form,
+        );
         alert.value = { type: 'success', text: 'Iscrizione effettuata con successo.' };
+        router.push({
+          name: 'subscriptions',
+          query: {
+            messageType: 'success',
+            messageText: `Iscrizione <strong>#${newTeam.id}</strong> inserita con successo.`,
+          },
+        });
       } catch (error) {
         console.log(error);
         alert.value = { type: 'error', text: 'Si è verificato un errore.' };

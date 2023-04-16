@@ -2,8 +2,8 @@
 import { ref, onMounted } from 'vue';
 import type { Ref } from 'vue';
 import AppPageTitle from '@/components/shared/AppPageTitle.vue';
-import { eventsApi, type RaceEventDetails } from '@/api/resources/events';
-import type { Race } from '@/api/resources/events';
+import { eventsApi } from '@/api/resources';
+import type { Race, RaceEventDetails } from '@/api/interfaces';
 import { useRoute } from 'vue-router';
 import AppCard from '@/components/shared/AppCard.vue';
 import { formatDate } from '@/utils';
@@ -46,13 +46,19 @@ onMounted(async () => {
     />
 
     <ElEmpty v-if="races.length === 0 && !loading" description="Nessuna gara disponibile" />
-    <ElRow v-else justify="center" :gutter="20" v-loading="loading">
+    <ElRow
+      v-else
+      :justify="races.length <= 4 ? 'center' : 'start'"
+      :gutter="20"
+      v-loading="loading"
+    >
       <ElCol
         v-for="race in races"
         :key="`race-${race.id}`"
         :xs="24"
         :sm="12"
         :md="8"
+        :lg="6"
         style="margin-bottom: 20px"
       >
         <AppCard shadow="hover" :title="race.type.name">

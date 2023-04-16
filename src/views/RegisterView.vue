@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { usersApi } from '@/api/resources/users';
+import { usersApi } from '@/api/resources';
 import { useUserStore } from '@/stores/user';
-import type { UserInputWihtConfirmPassword } from '@/api/resources/users';
+import type { UserInputWihtConfirmPassword } from '@/api/interfaces';
 import { resetForm } from '@/utils';
 import type { FormInstance, FormRules } from 'element-plus';
 import { ArrowLeftBold } from '@element-plus/icons-vue';

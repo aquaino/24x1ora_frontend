@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
-import type { Runner } from '@/api/resources/teams';
+import type { Runner } from '@/api/interfaces';
 import type { FormInstance, FormRules } from 'element-plus';
 import { resetForm } from '@/utils';
-import { teamsApi } from '@/api/resources/teams';
+import { teamsApi } from '@/api/resources';
 
 /* Props */
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { Message, Key } from '@element-plus/icons-vue';
-import { usersApi } from '@/api/resources/users';
+import { usersApi } from '@/api/resources';
 import { useUserStore } from '@/stores/user';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useRouter } from 'vue-router';

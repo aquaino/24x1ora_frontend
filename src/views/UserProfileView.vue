@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, type Ref, onMounted } from 'vue';
-import { usersApi } from '@/api/resources/users';
-import type { User } from '@/api/resources/users';
+import { usersApi } from '@/api/resources';
+import type { User } from '@/api/resources';
 import AppCard from '@/components/shared/AppCard.vue';
 import AppPageTitle from '@/components/shared/AppPageTitle.vue';
 
