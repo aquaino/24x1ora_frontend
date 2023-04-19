@@ -1,15 +1,21 @@
 import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  base: '/test/',
-  plugins: [vue()],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+
+export default ({ mode }: { mode: string }) => {
+  // Load app-level env vars to node-level env vars
+  process.env = {...process.env, ...loadEnv(mode, process.cwd())};
+  
+  // https://vitejs.dev/config/
+  return defineConfig({
+    base: process.env.VITE_REL_PATH ? process.env.VITE_REL_PATH : '/',
+    plugins: [vue()],
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url))
+      }
     }
-  }
-})
+  });
+}
