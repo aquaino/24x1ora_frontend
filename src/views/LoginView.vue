@@ -75,21 +75,21 @@ async function login(formRef: FormInstance | undefined) {
       status-icon
     >
       <ElFormItem prop="email" required>
-        <ElInput placeholder="Email" v-model="form.email">
+        <ElInput placeholder="Email" v-model="form.email" type="email">
           <template #prefix>
             <ElIcon class="el-input__icon"><message /></ElIcon>
           </template>
         </ElInput>
       </ElFormItem>
       <ElFormItem prop="password" required>
-        <ElInput placeholder="Password" show-password v-model="form.password">
+        <ElInput placeholder="Password" show-password v-model="form.password" type="password">
           <template #prefix>
             <ElIcon class="el-input__icon"><key /></ElIcon>
           </template>
         </ElInput>
       </ElFormItem>
       <ElFormItem>
-        <el-button type="primary" native-type="submit" title="Accedi al portale">Accedi</el-button>
+        <ElButton type="primary" native-type="submit" title="Accedi al portale">Accedi</ElButton>
       </ElFormItem>
     </ElForm>
     <ElDivider />

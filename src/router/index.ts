@@ -83,6 +83,21 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+// Navigation guard to prevent re-login/registration
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore();
+  if (
+    to.matched.some(
+      (record) => record.path.includes('/login') || record.path.includes('/register'),
+    ) &&
+    userStore.user.access
+  ) {
+    next({ name: 'home' });
+  } else {
+    next();
+  }
+});
+
 // Navigation guard to set page title
 router.beforeEach((to, from, next) => {
   document.title = import.meta.env.VITE_APP_NAME;

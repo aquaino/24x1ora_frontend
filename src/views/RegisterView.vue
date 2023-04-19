@@ -109,14 +109,14 @@ async function register(formRef: FormInstance | undefined) {
         <ElInput v-model="form.name" />
       </ElFormItem>
       <ElFormItem label="Indirizzo email" prop="email" required>
-        <ElInput v-model="form.email"> </ElInput>
+        <ElInput v-model="form.email" type="email" />
       </ElFormItem>
       <ElDivider />
       <ElFormItem label="Password" prop="password" required>
-        <ElInput show-password v-model="form.password"> </ElInput>
+        <ElInput show-password v-model="form.password" type="password" />
       </ElFormItem>
       <ElFormItem label="Conferma password" prop="confirmPassword" required>
-        <ElInput show-password v-model="form.confirmPassword"> </ElInput>
+        <ElInput show-password v-model="form.confirmPassword" type="password" />
       </ElFormItem>
       <ElFormItem>
         <ElButton type="primary" native-type="submit" title="Registrati sul portale"
