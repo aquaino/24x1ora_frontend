@@ -58,9 +58,6 @@ onMounted(async () => {
               $router.push({
                 name: 'races',
                 params: { id: event.id },
-                query: {
-                  eventName: event.name,
-                },
               })
             "
             title="Visualizza le gare dell'evento"

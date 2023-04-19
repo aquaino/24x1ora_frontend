@@ -14,10 +14,9 @@ const route = useRoute();
 /* Data */
 
 const eventId = route.params.id as string;
-const event: Ref<RaceEventDetails> = ref(Object());
+const event: Ref<RaceEventDetails> | Ref<null> = ref(null);
 const loading = ref(true);
 const races: Ref<Race[]> = ref(Array());
-const eventName = route.query.eventName;
 
 /* Methods */
 
@@ -40,7 +39,7 @@ onMounted(async () => {
 <template>
   <div>
     <AppPageTitle
-      :title="'Gare dell\'evento ' + `&quot;${eventName}&quot;`"
+      :title="'Gare dell\'evento ' + (event ? `&quot;${event['name']}&quot;` : '')"
       subtitle="Elenco di tutte le gare relative all'evento corrente"
       :back-to="{ name: 'events' }"
     />
@@ -53,7 +52,7 @@ onMounted(async () => {
       v-loading="loading"
     >
       <ElCol v-for="race in races" :key="`race-${race.id}`" :xs="24" :sm="12" :md="8" :lg="6">
-        <AppCard shadow="hover" :title="race.type.name">
+        <AppCard v-if="event" shadow="hover" :title="race.type.name">
           <template #content>
             <div class="is-flex is-justify-space-between is-align-center">
               <ElDescriptions direction="vertical" :column="2">
@@ -82,6 +81,7 @@ onMounted(async () => {
                 $router.push({
                   name: 'subscribe',
                   params: {
+                    // @ts-ignore
                     eventId: event['id'],
                     raceId: race.id,
                   },
