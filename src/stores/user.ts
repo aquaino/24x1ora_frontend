@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { User } from '@/api/resources';
+import type { User } from '@/api/interfaces';
 
 interface UserData {
   id: number | null;
