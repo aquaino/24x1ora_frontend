@@ -71,7 +71,7 @@ async function register(formRef: FormInstance | undefined) {
         resetForm(formRef);
         alert.value = {
           type: 'success',
-          text: "Registrazione effettuata con successo. A breve verrà inviata una email per la conferma dell'indirizzo indicato.",
+          text: "Registrazione effettuata con successo! A breve riceverai un'email per la conferma dell'indirizzo indicato. Controllare anche nella casella della posta indesiderata.",
         };
       } catch (error) {
         console.log(error);

@@ -1,6 +1,4 @@
-<script setup lang="ts">
-import { Warning } from '@element-plus/icons-vue';
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <ElResult icon="error" title="Pagina non trovata" sub-title="La pagina cercata non esiste">

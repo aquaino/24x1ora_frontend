@@ -107,6 +107,17 @@ export const usersApi = {
     return response.data;
   },
 
+  async verifyEmail(token: string): Promise<void> {
+    const response = await apiClient
+      .post('/auth/email-verify', null, {
+        params: { token: token },
+      })
+      .catch((error) => {
+        throw error;
+      });
+    return response.data;
+  },
+
   async getProfileDetails(): Promise<User> {
     const response = await apiClient.get(`/users/profile`).catch((error) => {
       throw error;

@@ -100,14 +100,14 @@ onMounted(async () => {
       </ElFormItem>
       <ElFormItem label="Membro IUTA" prop="member_iuta">
         <ElSwitch v-model="form.member_iuta" />
-        <div v-if="props.discount" class="small-text">
+        <div v-if="props.discount" class="is-help-text">
           Attivare se si è membri dell'Associazione Italiana Ultramaratona e Trail per avere diritto
           al <strong>{{ props.discount }}% di sconto</strong> sul costo dell'iscrizione.
         </div>
       </ElFormItem>
       <ElFormItem label="Membro CSMI" prop="member_csm">
         <ElSwitch v-model="form.member_csm" />
-        <div v-if="props.discount" class="small-text">
+        <div v-if="props.discount" class="is-help-text">
           Attivare se si è membri del Club Super Marathon Italia per avere diritto al
           <strong>{{ props.discount }}% di sconto</strong> sul costo dell'iscrizione.
         </div>

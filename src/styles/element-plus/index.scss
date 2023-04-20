@@ -104,6 +104,10 @@ body {
   padding: 0;
 }
 
+.is-padding-top-0 {
+  padding-top: 0;
+}
+
 /* Flex */
 
 .is-flex {
@@ -128,7 +132,12 @@ body {
 
 /* Typography */
 
-.small-text {
+.is-small,
+.is-small * {
+  font-size: calc(var(--el-font-size-base) - 2px);
+}
+
+.is-help-text {
   color: var(--el-text-color-regular);
   font-size: 12px;
   line-height: 14px;

@@ -75,74 +75,80 @@ onMounted(async () => {
     subtitle="Elenco di tutte le iscrizioni attive per ogni evento"
     :back-to="{ name: 'events' }"
   />
-
   <div v-if="loading" v-loading="loading"></div>
-  <ElEmpty v-else-if="subscriptions.length === 0" description="Nessuna iscrizione inserita" />
-  <div
-    v-else
-    v-for="subscription in subscriptions"
-    :key="`subscription-${subscription.teams[0].id}`"
-  >
-    <div class="is-flex is-justify-center is-align-center is-margin-bottom-20">
-      <ElIcon color="var(--el-color-primary)" size="32"><TrophyBase /></ElIcon>
-      <h2 class="is-margin-left-05 is-margin-top-0" style="line-height: 32px">
-        {{ subscription.event.name }}
-      </h2>
-    </div>
-    <ElRow :justify="subscription.teams.length <= 3 ? 'center' : 'start'" :gutter="20">
-      <ElCol v-for="team in subscription.teams" :key="`team-${team.id}`" :xs="24" :sm="12" :md="8">
-        <AppCard shadow="hover" :title="`#${team.id} - ${team.name}`">
-          <template #content>
-            <div class="is-flex is-justify-space-between is-align-center">
-              <ElDescriptions direction="vertical" :column="2">
-                <ElDescriptionsItem label="Gara" width="150px">{{
-                  team.type.name
-                }}</ElDescriptionsItem>
-                <ElDescriptionsItem label="Codice pagamento">{{
-                  team.payment_code
-                }}</ElDescriptionsItem>
-                <ElDescriptionsItem label="Data">{{
-                  formatDate(subscription.event.date)
-                }}</ElDescriptionsItem>
-                <ElDescriptionsItem label="Partenza"
-                  >{{
-                    subscription.event.start_hour + team.type.start_offset
-                  }}:00</ElDescriptionsItem
-                >
-                <ElDescriptionsItem label="Durata"
-                  >{{ team.type.duration / 60 }}h</ElDescriptionsItem
-                >
-                <ElDescriptionsItem label="Inserita">{{
-                  formatDateTime(team.created_at, 'ISO')
-                }}</ElDescriptionsItem>
-              </ElDescriptions>
-              <div class="is-text-center" style="font-size: 20px; font-weight: 300">
-                <ElIcon size="32" color="var(--el-color-info-light-5)"><Ticket /></ElIcon>
-                <div>{{ parseInt(team.price) - parseInt(team.discount) }}€</div>
+  <ElEmpty
+    v-else-if="subscriptions.length === 0 || subscriptions[0].teams.length === 0"
+    description="Nessuna iscrizione inserita"
+  />
+  <div v-else>
+    <div v-for="subscription in subscriptions" :key="`subscription-${subscription.teams[0].id}`">
+      <div class="is-flex is-justify-center is-align-center is-margin-bottom-20">
+        <ElIcon color="var(--el-color-primary)" size="32"><TrophyBase /></ElIcon>
+        <h2 class="is-margin-left-05 is-margin-top-0" style="line-height: 32px">
+          {{ subscription.event.name }}
+        </h2>
+      </div>
+      <ElRow :justify="subscription.teams.length <= 3 ? 'center' : 'start'" :gutter="20">
+        <ElCol
+          v-for="team in subscription.teams"
+          :key="`team-${team.id}`"
+          :xs="24"
+          :sm="12"
+          :md="8"
+        >
+          <AppCard shadow="hover" :title="`#${team.id} - ${team.name}`">
+            <template #content>
+              <div class="is-flex is-justify-space-between is-align-center">
+                <ElDescriptions direction="vertical" :column="2">
+                  <ElDescriptionsItem label="Gara" width="150px">{{
+                    team.type.name
+                  }}</ElDescriptionsItem>
+                  <ElDescriptionsItem label="Codice pagamento">{{
+                    team.payment_code
+                  }}</ElDescriptionsItem>
+                  <ElDescriptionsItem label="Data">{{
+                    formatDate(subscription.event.date)
+                  }}</ElDescriptionsItem>
+                  <ElDescriptionsItem label="Partenza"
+                    >{{
+                      subscription.event.start_hour + team.type.start_offset
+                    }}:00</ElDescriptionsItem
+                  >
+                  <ElDescriptionsItem label="Durata"
+                    >{{ team.type.duration / 60 }}h</ElDescriptionsItem
+                  >
+                  <ElDescriptionsItem label="Inserita">{{
+                    formatDateTime(team.created_at, 'ISO')
+                  }}</ElDescriptionsItem>
+                </ElDescriptions>
+                <div class="is-text-center" style="font-size: 20px; font-weight: 300">
+                  <ElIcon size="32" color="var(--el-color-info-light-5)"><Ticket /></ElIcon>
+                  <div>{{ parseInt(team.price) - parseInt(team.discount) }}€</div>
+                </div>
               </div>
-            </div>
-          </template>
-          <template #footer>
-            <div class="is-margin-top-05">
-              <ElButton
-                type="primary"
-                title="Modifica iscrizione"
-                @click="
-                  $router.push({
-                    name: 'update-subscription',
-                    params: { eventId: subscription.event.id, teamId: team.id },
-                    query: {
-                      raceName: team.type.name,
-                    },
-                  })
-                "
-                >Modifica</ElButton
-              >
-              <ElButton type="danger" title="Elimina iscrizione" disabled>Elimina</ElButton>
-            </div>
-          </template>
-        </AppCard>
-      </ElCol>
-    </ElRow>
+            </template>
+            <template #footer>
+              <div class="is-margin-top-05">
+                <ElButton
+                  type="primary"
+                  title="Modifica iscrizione"
+                  @click="
+                    $router.push({
+                      name: 'update-subscription',
+                      params: { eventId: subscription.event.id, teamId: team.id },
+                      query: {
+                        raceName: team.type.name,
+                      },
+                    })
+                  "
+                  >Modifica</ElButton
+                >
+                <ElButton type="danger" title="Elimina iscrizione" disabled>Elimina</ElButton>
+              </div>
+            </template>
+          </AppCard>
+        </ElCol>
+      </ElRow>
+    </div>
   </div>
 </template>
