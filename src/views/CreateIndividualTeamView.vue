@@ -17,7 +17,6 @@ const availableDiscount = route.query.availableDiscount
   ? Math.round(parseInt(route.query.availableDiscount as string))
   : 0;
 const raceName = route.query.raceName;
-
 const alert = ref({
   type: 'error',
   text: '',

@@ -6,6 +6,7 @@ import { eventsApi } from '@/api/resources';
 import type { RaceEvent } from '@/api/interfaces';
 import { formatDateTime } from '@/utils';
 import AppCard from '@/components/shared/AppCard.vue';
+import partenza_2019 from '/partenza_2019.jpg';
 
 /* Data */
 
@@ -36,7 +37,7 @@ onMounted(async () => {
   <ElRow v-else :justify="events.length <= 3 ? 'center' : 'start'" :gutter="20" v-loading="loading">
     <ElCol v-for="event in events" :key="`event-${event.id}`" :xs="24" :sm="12" :md="8">
       <AppCard
-        image="partenza_2019.jpg"
+        :image="partenza_2019"
         image-alt="Partenza edizione 2019"
         shadow="hover"
         :title="event.name"

@@ -21,130 +21,130 @@
 /* General */
 
 body {
-  margin: 0;
+  margin: 0 !important;
 }
 
 .el-row .el-col {
-  margin-bottom: 20px;
+  margin-bottom: 20px !important;
 }
 
 .is-width-100 {
-  width: 100%;
+  width: 100% !important;
 }
 
 .is-height-100 {
-  height: 100%;
+  height: 100% !important;
 }
 
 /* Margins */
 
 .is-margin-0 {
-  margin: 0;
+  margin: 0 !important;
 }
 
 .is-margin-top-0 {
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 
 .is-margin-top-05 {
-  margin-top: 0.5rem;
+  margin-top: 0.5rem !important;
 }
 
 .is-margin-top-10 {
-  margin-top: 1rem;
+  margin-top: 1rem !important;
 }
 
 .is-margin-top-15 {
-  margin-top: 1.5rem;
+  margin-top: 1.5rem !important;
 }
 
 .is-margin-left-05 {
-  margin-left: 0.5rem;
+  margin-left: 0.5rem !important;
 }
 
 .is-margin-left-10 {
-  margin-left: 1rem;
+  margin-left: 1rem !important;
 }
 
 .is-margin-top-15 {
-  margin-top: 1.5rem;
+  margin-top: 1.5rem !important;
 }
 
 .is-margin-top-20 {
-  margin-top: 2rem;
+  margin-top: 2rem !important;
 }
 
 .is-margin-bottom-05 {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem !important;
 }
 
 .is-margin-bottom-10 {
-  margin-bottom: 1rem;
+  margin-bottom: 1rem !important;
 }
 
 .is-margin-bottom-15 {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem !important;
 }
 
 .is-margin-bottom-20 {
-  margin-bottom: 2rem;
+  margin-bottom: 2rem !important;
 }
 
 .is-margin-bottom-0 {
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 
 .is-text-center {
-  text-align: center;
+  text-align: center !important;
 }
 
 /* Paddings */
 
 .is-padding-0 {
-  padding: 0;
+  padding: 0 !important;
 }
 
 .is-padding-top-0 {
-  padding-top: 0;
+  padding-top: 0 !important;
 }
 
 /* Flex */
 
 .is-flex {
-  display: flex;
+  display: flex !important;
 }
 
 .is-justify-space-between {
-  justify-content: space-between;
+  justify-content: space-between !important;
 }
 
 .is-justify-center {
-  justify-content: center;
+  justify-content: center !important;
 }
 
 .is-align-baseline {
-  align-items: baseline;
+  align-items: baseline !important;
 }
 
 .is-align-center {
-  align-items: center;
+  align-items: center !important;
 }
 
 /* Typography */
 
 .is-small,
 .is-small * {
-  font-size: calc(var(--el-font-size-base) - 2px);
+  font-size: calc(var(--el-font-size-base) - 2px) !important;
 }
 
 .is-help-text {
-  color: var(--el-text-color-regular);
-  font-size: 12px;
-  line-height: 14px;
+  color: var(--el-text-color-regular) !important;
+  font-size: 12px !important;
+  line-height: 14px !important;
 }
 
 /* Buttons */
 
 .el-form-item .el-button {
-  margin-top: 0.5rem;
+  margin-top: 0.5rem !important;
 }

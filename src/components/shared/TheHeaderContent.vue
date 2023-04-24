@@ -3,12 +3,12 @@ import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { Calendar, SwitchButton, Tickets, User } from '@element-plus/icons-vue';
+import logo from '/logo.png';
 
 /* Data */
 
 const userStore = useUserStore();
 const router = useRouter();
-
 const appName = import.meta.env.VITE_APP_NAME;
 
 /* Methods */
@@ -23,7 +23,7 @@ function logout() {
 <template>
   <div class="is-flex is-align-center is-justify-space-between is-height-100">
     <RouterLink :to="{ name: 'home' }" class="is-flex">
-      <ElImage src="logo.png" :alt="`Logo ${appName}`" style="width: 130px" fit="contain" />
+      <ElImage :src="logo" :alt="`Logo ${appName}`" style="width: 130px" fit="contain" />
       <h2 class="hidden-xs-only">{{ appName }}</h2>
     </RouterLink>
     <div>

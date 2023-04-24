@@ -65,6 +65,11 @@ async function getSubscriptionData() {
   }
 }
 
+function generateDiscountText(society: string, discount: number) {
+  return `Attivare se si è membri del ${society} per avere diritto al
+          <strong>${discount}€ di sconto</strong> sul costo dell'iscrizione.`;
+}
+
 /* Mounted */
 
 onMounted(async () => {
@@ -100,17 +105,19 @@ onMounted(async () => {
       </ElFormItem>
       <ElFormItem label="Membro IUTA" prop="member_iuta">
         <ElSwitch v-model="form.member_iuta" />
-        <div v-if="props.discount" class="is-help-text">
-          Attivare se si è membri dell'Associazione Italiana Ultramaratona e Trail per avere diritto
-          al <strong>{{ props.discount }}% di sconto</strong> sul costo dell'iscrizione.
-        </div>
+        <div
+          v-if="props.discount"
+          v-html="generateDiscountText('Associazione Italiana Ultramaratona e Trail', 5)"
+          class="is-help-text"
+        />
       </ElFormItem>
       <ElFormItem label="Membro CSMI" prop="member_csm">
         <ElSwitch v-model="form.member_csm" />
-        <div v-if="props.discount" class="is-help-text">
-          Attivare se si è membri del Club Super Marathon Italia per avere diritto al
-          <strong>{{ props.discount }}% di sconto</strong> sul costo dell'iscrizione.
-        </div>
+        <div
+          v-if="props.discount"
+          v-html="generateDiscountText('Club Super Marathon Italia', 5)"
+          class="is-help-text"
+        />
       </ElFormItem>
       <ElFormItem label="Tessera FIDAL" prop="fidal_id">
         <ElInput v-model="form.fidal_id" />
@@ -121,6 +128,7 @@ onMounted(async () => {
       <ElFormItem label="Altra tessera" prop="other_id">
         <ElInput v-model="form.other_id" />
       </ElFormItem>
+      <slot name="additional-form-items" />
       <ElFormItem>
         <ElButton
           type="success"
