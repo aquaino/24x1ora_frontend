@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="is-text-center is-small">
+  <div class="is-text-center is-small is-margin-top-20">
     <div>
       Copyright &copy; {{ new Date().getFullYear() }} Gruppo Alpini Buttrio & A.S.D. Podismo Buttrio
     </div>
@@ -12,6 +12,7 @@
       <ElLink href="https://it.linkedin.com/in/alanquaino" target="_blank">Alan Quaino</ElLink>
     </div>
   </div>
+  <ElBacktop :right="32" :bottom="32" title="Torna su" />
 </template>
 
 <style scoped>

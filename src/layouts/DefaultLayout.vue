@@ -4,8 +4,8 @@ import TheFooterContent from '@/components/shared/TheFooterContent.vue';
 </script>
 
 <template>
-  <div class="common-layout">
-    <ElContainer>
+  <ElContainer>
+    <div class="content-wrapper">
       <ElHeader
         :style="{
           boxShadow: 'var(--el-box-shadow-light)',
@@ -15,9 +15,9 @@ import TheFooterContent from '@/components/shared/TheFooterContent.vue';
         <TheHeaderContent />
       </ElHeader>
       <ElMain class="is-margin-bottom-20 is-margin-top-20"><RouterView /></ElMain>
-      <ElFooter height="100px">
-        <TheFooterContent class="is-margin-top-10" />
-      </ElFooter>
-    </ElContainer>
-  </div>
+    </div>
+    <ElFooter height="100px">
+      <TheFooterContent />
+    </ElFooter>
+  </ElContainer>
 </template>
