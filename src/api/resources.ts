@@ -79,24 +79,6 @@ export const teamsApi = {
       });
     return response.data.team.runners[0];
   },
-
-  async hasMedicalCertificate(eventId: number, teamId: number): Promise<boolean> {
-    const response = await apiClient
-      .get(`events/${eventId}/teams/${teamId}/attachments/medcert`)
-      .catch((error) => {
-        throw error;
-      });
-    return response.statusText === 'OK' ? true : false;
-  },
-
-  async hasPaymentCertificate(eventId: number, teamId: number): Promise<boolean> {
-    const response = await apiClient
-      .get(`events/${eventId}/teams/${teamId}/attachments/payment`)
-      .catch((error) => {
-        throw error;
-      });
-    return response.statusText === 'OK' ? true : false;
-  },
 };
 
 export const usersApi = {

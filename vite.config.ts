@@ -10,6 +10,9 @@ export default ({ mode }: { mode: string }) => {
   // https://vitejs.dev/config/
   return defineConfig({
     base: process.env.VITE_APP_REL_PATH ? process.env.VITE_APP_REL_PATH : '/',
+    server: {
+      host: true,
+    },
     plugins: [vue()],
     resolve: {
       alias: {

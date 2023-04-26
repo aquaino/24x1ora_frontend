@@ -39,7 +39,7 @@ async function subscribe(formRef: FormInstance | undefined, form: Runner) {
           name: 'subscriptions',
           query: {
             messageType: 'success',
-            messageText: `Iscrizione <strong>#${newTeam.id}</strong> inserita con successo.`,
+            messageText: `Iscrizione <strong>#${newTeam.id}</strong> inserita con successo`,
           },
         });
       } catch (error) {

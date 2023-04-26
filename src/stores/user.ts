@@ -6,6 +6,7 @@ interface UserData {
   name: string | null;
   email: string | null;
   isAdmin: boolean | null;
+  email_verified_at: string | null;
   access: string | null;
 }
 
@@ -20,6 +21,7 @@ export const useUserStore = defineStore('user', {
       name: null,
       email: null,
       isAdmin: null,
+      email_verified_at: null,
       access: null,
     },
   }),
@@ -28,10 +30,11 @@ export const useUserStore = defineStore('user', {
       this.user.access = token;
     },
     setUserData(data: User) {
+      this.user.id = data.id;
       this.user.name = data.name;
       this.user.email = data.email;
       this.user.isAdmin = data.isAdmin;
-      this.user.id = data.id;
+      this.user.email_verified_at = data.email_verified_at;
     },
   },
   persist: true,

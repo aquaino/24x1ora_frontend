@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Menu } from '@element-plus/icons-vue';
-import type { MenuItem } from '../../types';
+import type { MenuItem } from '../../interfaces';
 
 /* Props */
 const props = defineProps<{
@@ -28,7 +28,7 @@ const mobileMenu = ref(false);
     </ElButton>
     <ElDrawer v-model="mobileMenu" size="67%">
       <template #header>
-        <h1>{{ appName }}</h1>
+        <h1 class="is-margin-0">{{ appName }}</h1>
       </template>
       <template #default>
         <div id="mobile-menu">
@@ -70,6 +70,6 @@ const mobileMenu = ref(false);
 }
 
 :deep(.el-drawer__header) {
-  margin-bottom: 0;
+  margin-bottom: 1rem;
 }
 </style>

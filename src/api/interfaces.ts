@@ -88,6 +88,7 @@ export interface User {
   id: number;
   updated_at: string;
   created_at: string;
+  email_verified_at: string | null;
   access?: string;
 }
 

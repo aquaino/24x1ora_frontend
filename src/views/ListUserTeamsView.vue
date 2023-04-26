@@ -10,6 +10,8 @@ import { Ticket, TrophyBase, Document, Money } from '@element-plus/icons-vue';
 import { teamsApi } from '@/api/resources';
 import { ElMessage } from 'element-plus';
 import { useRoute } from 'vue-router';
+import { hasAttachment } from '@/utils';
+import { useUserStore } from '@/stores/user';
 
 /* Data */
 
@@ -17,6 +19,7 @@ const eventIds: Ref<number[]> = ref(Array());
 const subscriptions: Ref<{ event: RaceEvent; teams: Team[] }[]> = ref(Array());
 const loading = ref(true);
 const route = useRoute();
+const store = useUserStore();
 const message = {
   type: route.query.messageType as 'success' | 'warning' | 'error' | 'info',
   text: route.query.messageText as string,
@@ -41,7 +44,6 @@ async function getSubscriptions() {
       const eventAndTeams = await teamsApi.getEventTeams(eventIds.value[index]);
       subscriptions.value.push(eventAndTeams as { event: RaceEvent; teams: Team[] });
     }
-    loading.value = false;
   } catch (error) {
     console.log(error);
   }
@@ -56,16 +58,15 @@ function showMessage() {
   });
 }
 
-function hasAttachment(regexForName: RegExp, attachments: string[]): boolean {
-  return attachments.some((fileName) => regexForName.test(fileName)) ? true : false;
-}
-
 /* Mounted */
 
 onMounted(async () => {
   // Get user teams for each event
-  await getEventIds();
-  await getSubscriptions();
+  if (store.user.email_verified_at) {
+    await getEventIds();
+    await getSubscriptions();
+  }
+  loading.value = false;
 
   if (message.type && message.text) {
     showMessage();
@@ -160,7 +161,12 @@ onMounted(async () => {
                 </ElDescriptions>
                 <div class="is-text-center" style="font-size: 20px; font-weight: 300">
                   <ElIcon size="32" color="var(--el-color-info-light-5)"><Ticket /></ElIcon>
-                  <div>{{ parseInt(team.price) - parseInt(team.discount) }}€</div>
+                  <div>
+                    <div v-if="parseInt(team.discount) > 0" style="text-decoration: line-through">
+                      {{ parseInt(team.price) }}€
+                    </div>
+                    <div>{{ parseInt(team.price) - parseInt(team.discount) }}€</div>
+                  </div>
                 </div>
               </div>
             </template>

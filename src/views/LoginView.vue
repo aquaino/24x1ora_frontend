@@ -4,19 +4,28 @@ import { Message, Key } from '@element-plus/icons-vue';
 import { usersApi } from '@/api/resources';
 import { useUserStore } from '@/stores/user';
 import type { FormInstance, FormRules } from 'element-plus';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
+
+/* Data */
 
 const userStore = useUserStore();
 const router = useRouter();
 const formRef = ref<FormInstance>();
-
-/* Data */
+const route = useRoute();
 
 const form = reactive({
   email: '',
   password: '',
 });
 
+const alert = ref({
+  type: route.query.alertType
+    ? (route.query.alertType as 'success' | 'warning' | 'error' | 'info')
+    : 'error',
+  text: route.query.alertText ? (route.query.alertText as string) : '',
+});
+
+// Validation
 const requiredMessage = 'Questo campo è obbligatorio';
 ('Questo campo è obbligatorio');
 const formRules = reactive<FormRules>({
@@ -25,11 +34,6 @@ const formRules = reactive<FormRules>({
     { type: 'email', message: 'Inserisci un indirizzo email valido', trigger: 'none' },
   ],
   password: [{ required: true, message: requiredMessage, trigger: 'none' }],
-});
-
-const alert = ref({
-  type: 'error',
-  text: '',
 });
 
 /* Methods */

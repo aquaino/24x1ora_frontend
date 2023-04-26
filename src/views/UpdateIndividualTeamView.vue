@@ -6,10 +6,11 @@ import { useRoute, useRouter } from 'vue-router';
 import type { FormInstance, UploadInstance } from 'element-plus';
 import IndividualTeamForm from '@/components/individualTeams/IndividualTeamForm.vue';
 import { teamsApi } from '@/api/resources';
-import type { RunnerUpdate } from '@/api/interfaces';
+import type { RunnerUpdate, Team } from '@/api/interfaces';
 import AppCard from '@/components/base/AppCard.vue';
 import { UploadFilled } from '@element-plus/icons-vue';
 import { useUserStore } from '@/stores/user';
+import { hasAttachment } from '@/utils';
 
 /* Data */
 
@@ -25,8 +26,7 @@ const raceName = route.query.raceName;
 const userStore = useUserStore();
 const medcertUploadRef = ref<UploadInstance>();
 const paymentUploadRef = ref<UploadInstance>();
-const medCert: Ref<boolean> = ref(false);
-const paymentCert: Ref<boolean> = ref(false);
+const team: Ref<Team> = ref(Object());
 const alert = ref({
   type: 'error',
   text: '',
@@ -53,7 +53,7 @@ async function updateSubscription(formRef: FormInstance | undefined, form: Runne
         });
       } catch (error) {
         console.log(error);
-        alert.value = { type: 'error', text: 'Si è verificato un errore.' };
+        alert.value = { type: 'error', text: 'Si è verificato un errore' };
       }
     }
   });
@@ -63,8 +63,8 @@ async function updateSubscription(formRef: FormInstance | undefined, form: Runne
 
 onMounted(async () => {
   try {
-    medCert.value = await teamsApi.hasMedicalCertificate(eventId, teamId);
-    paymentCert.value = await teamsApi.hasPaymentCertificate(eventId, teamId);
+    const eventAndTeam = await teamsApi.getEventTeamDetails(eventId, teamId);
+    team.value = eventAndTeam.team;
   } catch (error) {
     console.log(error);
   }
@@ -109,9 +109,9 @@ onMounted(async () => {
                   <template #trigger>
                     <ElButton :icon="UploadFilled">Carica</ElButton>
                   </template>
-                  <div class="is-margin-top-05">
+                  <div class="is-margin-top-05" v-if="team.attachments">
                     <ElAlert
-                      v-if="medCert"
+                      v-if="hasAttachment(/medcert.*/, team.attachments)"
                       title="File già caricato"
                       type="success"
                       show-icon
@@ -141,9 +141,9 @@ onMounted(async () => {
                   <template #trigger>
                     <ElButton :icon="UploadFilled">Carica</ElButton>
                   </template>
-                  <div class="is-margin-top-05">
+                  <div class="is-margin-top-05" v-if="team.attachments">
                     <ElAlert
-                      v-if="paymentCert"
+                      v-if="hasAttachment(/payment.*/, team.attachments)"
                       title="File già caricato"
                       type="success"
                       show-icon

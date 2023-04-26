@@ -8,6 +8,7 @@ import { useRoute } from 'vue-router';
 import AppCard from '@/components/base/AppCard.vue';
 import { formatDate } from '@/utils';
 import { Ticket } from '@element-plus/icons-vue';
+import { useUserStore } from '@/stores/user';
 
 const route = useRoute();
 
@@ -17,6 +18,7 @@ const eventId = route.params.id as string;
 const event: Ref<RaceEventDetails> | Ref<null> = ref(null);
 const loading = ref(true);
 const races: Ref<Race[]> = ref(Array());
+const store = useUserStore();
 
 /* Methods */
 
@@ -92,9 +94,33 @@ onMounted(async () => {
                 })
               "
               title="Iscriviti alla gara"
+              :disabled="!store.user.email_verified_at"
               type="primary"
               >Iscriviti</ElButton
             >
+            <ElAlert
+              v-show="!store.user.email_verified_at"
+              type="error"
+              show-icon
+              class="is-margin-top-15"
+              :closable="false"
+            >
+              <template #title>
+                È necessario
+                <RouterLink
+                  :to="{
+                    name: 'verify',
+                    query: {
+                      token: store.user.access,
+                    },
+                  }"
+                  class="is-bold"
+                  style="color: var(--el-color-error)"
+                  >confermare il proprio indirizzo email</RouterLink
+                >
+                per potersi iscrivere
+              </template>
+            </ElAlert>
           </template>
         </AppCard>
       </ElCol>

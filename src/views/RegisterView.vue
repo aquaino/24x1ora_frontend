@@ -6,6 +6,7 @@ import type { UserInputWihtConfirmPassword } from '@/api/interfaces';
 import { resetForm } from '@/utils';
 import type { FormInstance, FormRules } from 'element-plus';
 import { ArrowLeftBold } from '@element-plus/icons-vue';
+import router from '@/router';
 
 const userStore = useUserStore();
 const formRef = ref<FormInstance>();
@@ -17,6 +18,11 @@ const form = reactive<UserInputWihtConfirmPassword>({
   email: '',
   password: '',
   confirmPassword: '',
+});
+
+const alert = ref({
+  type: 'error',
+  text: '',
 });
 
 // Validation
@@ -54,11 +60,6 @@ const formRules = reactive<FormRules>({
   ],
 });
 
-const alert = ref({
-  type: 'error',
-  text: '',
-});
-
 /* Methods */
 
 async function register(formRef: FormInstance | undefined) {
@@ -68,14 +69,21 @@ async function register(formRef: FormInstance | undefined) {
     if (valid) {
       try {
         await usersApi.register(form);
-        resetForm(formRef);
-        alert.value = {
-          type: 'success',
-          text: "Registrazione effettuata con successo! A breve riceverai un'email per la conferma dell'indirizzo indicato. Controllare anche nella casella della posta indesiderata.",
-        };
-      } catch (error) {
+        router.push({
+          name: 'login',
+          query: {
+            alertType: 'success',
+            alertText:
+              "Registrazione effettuata con successo! A breve riceverai un'email per la conferma dell'indirizzo indicato. Controllare anche nella casella della posta indesiderata.",
+          },
+        });
+      } catch (error: any) {
         console.log(error);
-        alert.value = { type: 'error', text: 'Si è verificato un errore.' };
+        if (error.response.status === 422) {
+          alert.value.text = 'Esiste già un utente registrato con questa email';
+        } else {
+          alert.value.text = 'Si è verificato un errore, riprovare più tardi';
+        }
       }
     }
   });
@@ -87,7 +95,11 @@ async function register(formRef: FormInstance | undefined) {
     <template #header>
       <div class="is-flex is-align-center">
         <ElButton
-          @click="$router.push({ name: 'login' })"
+          @click="
+            $router.push({
+              name: 'login',
+            })
+          "
           :icon="ArrowLeftBold"
           type="primary"
           circle

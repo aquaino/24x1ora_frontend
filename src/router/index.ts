@@ -35,9 +35,6 @@ const router = createRouter({
           path: '/verify',
           name: 'verify',
           component: () => import('@/views/VerifyEmailView.vue'),
-          meta: {
-            requireLogin: true,
-          },
         },
       ],
     },
@@ -105,7 +102,10 @@ router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
   if (
     to.matched.some(
-      (record) => record.path.includes('/login') || record.path.includes('/register'),
+      (record) =>
+        record.path.includes('/login') ||
+        record.path.includes('/register') ||
+        record.path.includes('/verify'),
     ) &&
     userStore.user.access
   ) {

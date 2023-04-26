@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { usersApi } from '@/api/resources';
+import { logout } from '@/utils';
 import { useRoute, useRouter } from 'vue-router';
 
 /**
@@ -24,7 +25,11 @@ const token = route.query.token as string;
 async function verifyEmail() {
   try {
     await usersApi.verifyEmail(token);
-    router.push({ name: 'login' });
+    logout(false);
+    router.push({
+      name: 'login',
+      query: { alertType: 'success', alertText: 'Indirizzo email verificato con successo' },
+    });
   } catch (error) {
     console.log(error);
   }
