@@ -65,8 +65,10 @@ async function getSubscriptionData() {
   }
 }
 
-function generateDiscountText(society: string, discount: number) {
-  return `Attivare se si è membri del ${society} per avere diritto al
+function generateDiscountText(society: string, societyIsMaleInGender: boolean, discount: number) {
+  return `Attivare se si è membri ${
+    societyIsMaleInGender ? 'del ' : "dell'"
+  }${society} per avere diritto al
           <strong>${discount}€ di sconto</strong> sul costo dell'iscrizione.`;
 }
 
@@ -107,7 +109,7 @@ onMounted(async () => {
         <ElSwitch v-model="form.member_iuta" />
         <div
           v-if="props.discount"
-          v-html="generateDiscountText('Associazione Italiana Ultramaratona e Trail', 5)"
+          v-html="generateDiscountText('Associazione Italiana Ultramaratona e Trail', false, 5)"
           class="is-help-text"
         />
       </ElFormItem>
@@ -115,7 +117,7 @@ onMounted(async () => {
         <ElSwitch v-model="form.member_csm" />
         <div
           v-if="props.discount"
-          v-html="generateDiscountText('Club Super Marathon Italia', 5)"
+          v-html="generateDiscountText('Club Super Marathon Italia', true, 5)"
           class="is-help-text"
         />
       </ElFormItem>

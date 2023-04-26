@@ -138,7 +138,7 @@ function logout() {
 }
 
 #mobile-menu .el-button:not(:first-of-type) {
-  margin-top: 1rem;
+  margin-top: 1.25rem;
 }
 
 :deep(.el-drawer__header) {

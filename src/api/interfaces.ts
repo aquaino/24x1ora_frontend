@@ -75,7 +75,7 @@ export interface Team {
   price: string;
   discount: string;
   deposit: string;
-  attachments: [];
+  attachments: string[];
   payment_code: string;
   type: RaceType;
   runners: Runner[];

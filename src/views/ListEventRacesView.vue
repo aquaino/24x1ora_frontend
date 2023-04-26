@@ -40,7 +40,7 @@ onMounted(async () => {
   <div>
     <AppPageTitle
       :title="'Gare dell\'evento ' + (event ? `&quot;${event['name']}&quot;` : '')"
-      subtitle="Elenco di tutte le gare relative all'evento corrente"
+      subtitle="Elenco di tutte le gare relative all'evento"
       :back-to="{ name: 'events' }"
     />
 

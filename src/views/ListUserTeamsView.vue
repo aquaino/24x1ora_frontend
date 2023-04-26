@@ -6,7 +6,7 @@ import { eventsApi } from '@/api/resources';
 import AppPageTitle from '@/components/shared/AppPageTitle.vue';
 import AppCard from '@/components/shared/AppCard.vue';
 import { formatDateTime, formatDate } from '@/utils';
-import { Ticket, TrophyBase } from '@element-plus/icons-vue';
+import { Ticket, TrophyBase, Document, Money } from '@element-plus/icons-vue';
 import { teamsApi } from '@/api/resources';
 import { ElMessage } from 'element-plus';
 import { useRoute } from 'vue-router';
@@ -56,6 +56,10 @@ function showMessage() {
   });
 }
 
+function hasAttachment(regexForName: RegExp, attachments: string[]): boolean {
+  return attachments.some((fileName) => regexForName.test(fileName)) ? true : false;
+}
+
 /* Mounted */
 
 onMounted(async () => {
@@ -97,6 +101,39 @@ onMounted(async () => {
           :md="8"
         >
           <AppCard shadow="hover" :title="`#${team.id} - ${team.name}`">
+            <template #right-header>
+              <div>
+                <ElIcon
+                  size="24"
+                  :color="
+                    hasAttachment(/medcert.*/, team.attachments)
+                      ? 'var(--el-color-success)'
+                      : 'var(--el-color-error)'
+                  "
+                  :title="
+                    hasAttachment(/medcert.*/, team.attachments)
+                      ? 'Certificato medico caricato'
+                      : 'Certificato medico non caricato'
+                  "
+                  ><Document
+                /></ElIcon>
+                <ElIcon
+                  size="24"
+                  :color="
+                    hasAttachment(/payment.*/, team.attachments)
+                      ? 'var(--el-color-success)'
+                      : 'var(--el-color-error)'
+                  "
+                  :title="
+                    hasAttachment(/payment.*/, team.attachments)
+                      ? 'Ricevuta di bonifico caricata'
+                      : 'Ricevuta di bonifico non caricata'
+                  "
+                  class="is-margin-left-05"
+                  ><Money
+                /></ElIcon>
+              </div>
+            </template>
             <template #content>
               <div class="is-flex is-justify-space-between is-align-center">
                 <ElDescriptions direction="vertical" :column="2">

@@ -21,7 +21,10 @@ const hasFooter = !!slots['footer'];
   <ElCard :body-style="{ padding: '0px' }" :shadow="props.shadow ? props.shadow : 'never'">
     <img v-if="props.image" :src="props.image" :alt="props.imageAlt" class="card-image" />
     <template v-if="props.title && !props.image" #header>
-      <h2>{{ props.title }}</h2>
+      <div class="is-flex is-justify-space-between">
+        <h2 class="is-margin-0">{{ props.title }}</h2>
+        <slot name="right-header" />
+      </div>
     </template>
     <div style="padding: 20px">
       <div v-if="props.title && props.image">
