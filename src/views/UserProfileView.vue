@@ -2,8 +2,8 @@
 import { ref, type Ref, onMounted } from 'vue';
 import { usersApi } from '@/api/resources';
 import type { User } from '@/api/interfaces';
-import AppCard from '@/components/shared/AppCard.vue';
-import AppPageTitle from '@/components/shared/AppPageTitle.vue';
+import AppCard from '@/components/base/AppCard.vue';
+import AppPageTitle from '@/components/base/AppPageTitle.vue';
 
 /* Data */
 

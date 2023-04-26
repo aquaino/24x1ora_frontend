@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import AppPageTitle from '@/components/shared/AppPageTitle.vue';
+import AppPageTitle from '@/components/base/AppPageTitle.vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { FormInstance } from 'element-plus';
 import { eventsApi } from '@/api/resources';

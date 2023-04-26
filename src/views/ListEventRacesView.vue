@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import type { Ref } from 'vue';
-import AppPageTitle from '@/components/shared/AppPageTitle.vue';
+import AppPageTitle from '@/components/base/AppPageTitle.vue';
 import { eventsApi } from '@/api/resources';
 import type { Race, RaceEventDetails } from '@/api/interfaces';
 import { useRoute } from 'vue-router';
-import AppCard from '@/components/shared/AppCard.vue';
+import AppCard from '@/components/base/AppCard.vue';
 import { formatDate } from '@/utils';
 import { Ticket } from '@element-plus/icons-vue';
 

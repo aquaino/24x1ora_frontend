@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import TheHeaderContent from '@/components/shared/TheHeaderContent.vue';
-import TheFooterContent from '@/components/shared/TheFooterContent.vue';
+import TheHeaderContent from '@/components/unique/TheHeaderContent.vue';
+import TheFooterContent from '@/components/unique/TheFooterContent.vue';
 </script>
 
 <template>

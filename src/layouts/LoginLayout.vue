@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import LoginHeader from '@/components/auth/LoginHeader.vue';
-import TheFooterContent from '@/components/shared/TheFooterContent.vue';
+import TheFooterContent from '@/components/unique/TheFooterContent.vue';
 </script>
 
 <template>
