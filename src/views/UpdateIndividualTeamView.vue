@@ -12,21 +12,42 @@ import { UploadFilled } from '@element-plus/icons-vue';
 import { useUserStore } from '@/stores/user';
 import { hasAttachment } from '@/utils';
 
+/**
+ * MAIN FUNCTION
+ * Update individual team.
+ *
+ * BEHAVIOR
+ * Display team data and allow to modify them.
+ *
+ * EXCEPTIONS
+ * Nothing to report.
+ */
+
 /* Data */
 
 const router = useRouter();
 const route = useRoute();
-const loading = ref(true);
+
 const eventId = parseInt(route.params.eventId as string);
 const teamId = parseInt(route.params.teamId as string);
+const raceName = route.query.raceName;
 const availableDiscount = route.query.availableDiscount
   ? Math.round(parseInt(route.query.availableDiscount as string))
   : 0;
-const raceName = route.query.raceName;
+
+const loading = ref(true);
+
 const userStore = useUserStore();
+
 const medcertUploadRef = ref<UploadInstance>();
 const paymentUploadRef = ref<UploadInstance>();
+
 const team: Ref<Team> = ref(Object());
+
+const backendTeamAttachmentUrl = `${
+  import.meta.env.VITE_APP_BACKEND_URL
+}/events/${eventId}/teams/${teamId}/attachments`;
+
 const alert = ref({
   type: 'error',
   text: '',
@@ -98,7 +119,7 @@ onMounted(async () => {
               <ElFormItem label="Certificato medico" class="is-align-center">
                 <ElUpload
                   ref="medcertUploadRef"
-                  :action="`https://iscrizioni.24oredibuttrio.it/apitest/v1/events/${eventId}/teams/${teamId}/attachments/medcert`"
+                  :action="`${backendTeamAttachmentUrl}/medcert`"
                   :headers="{
                     Authorization: `Bearer ${userStore.user.access}`,
                   }"
@@ -130,7 +151,7 @@ onMounted(async () => {
               <ElFormItem label="Ricevuta bonifico" class="is-align-center">
                 <ElUpload
                   ref="paymentUploadRef"
-                  :action="`https://iscrizioni.24oredibuttrio.it/apitest/v1/events/${eventId}/teams/${teamId}/attachments/payment`"
+                  :action="`${backendTeamAttachmentUrl}/payment`"
                   :headers="{
                     Authorization: `Bearer ${userStore.user.access}`,
                   }"
