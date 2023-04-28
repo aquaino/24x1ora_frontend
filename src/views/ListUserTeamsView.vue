@@ -13,13 +13,27 @@ import { useRoute } from 'vue-router';
 import { hasAttachment } from '@/utils';
 import { useUserStore } from '@/stores/user';
 
+/**
+ * FUNCTION
+ * List user teams.
+ *
+ * LOGIC
+ * Display user teams for all events and allow him to update them.
+ *
+ * EXCEPTIONS
+ * Nothing to report.
+ */
+
 /* Data */
 
 const eventIds: Ref<number[]> = ref(Array());
 const subscriptions: Ref<{ event: RaceEvent; teams: Team[] }[]> = ref(Array());
+
 const loading = ref(true);
+
 const route = useRoute();
 const store = useUserStore();
+
 const message = {
   type: route.query.messageType as 'success' | 'warning' | 'error' | 'info',
   text: route.query.messageText as string,
@@ -130,7 +144,7 @@ onMounted(async () => {
                       ? 'Ricevuta di bonifico caricata'
                       : 'Ricevuta di bonifico non caricata'
                   "
-                  class="is-margin-left-05"
+                  style="margin-left: 0.25rem"
                   ><Money
                 /></ElIcon>
               </div>
@@ -153,7 +167,7 @@ onMounted(async () => {
                     }}:00</ElDescriptionsItem
                   >
                   <ElDescriptionsItem label="Durata"
-                    >{{ team.type.duration / 60 }}h</ElDescriptionsItem
+                    >{{ team.type.duration / 60 }} ore</ElDescriptionsItem
                   >
                   <ElDescriptionsItem label="Inserita">{{
                     formatDateTime(team.created_at, 'ISO')

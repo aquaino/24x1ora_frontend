@@ -7,16 +7,29 @@ import { eventsApi } from '@/api/resources';
 import IndividualTeamForm from '@/components/individualTeams/IndividualTeamForm.vue';
 import type { Runner } from '@/api/interfaces';
 
+/**
+ * FUNCTION
+ * Create individual team.
+ *
+ * LOGIC
+ * Get team data from form and create team with a WS call.
+ *
+ * EXCEPTIONS
+ * - WS call fails -> Error alert
+ */
+
 /* Data */
 
 const router = useRouter();
 const route = useRoute();
+
 const eventId = route.params.eventId as string;
 const raceId = route.params.raceId as string;
 const availableDiscount = route.query.availableDiscount
   ? Math.round(parseInt(route.query.availableDiscount as string))
   : 0;
 const raceName = route.query.raceName;
+
 const alert = ref({
   type: 'error',
   text: '',

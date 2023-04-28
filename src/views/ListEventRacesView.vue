@@ -10,14 +10,28 @@ import { formatDate } from '@/utils';
 import { Ticket } from '@element-plus/icons-vue';
 import { useUserStore } from '@/stores/user';
 
-const route = useRoute();
+/**
+ * FUNCTION
+ * List event races.
+ *
+ * LOGIC
+ * Display races and allow user to subscribe.
+ *
+ * EXCEPTIONS
+ * Nothing to report.
+ */
 
 /* Data */
 
+const route = useRoute();
 const eventId = route.params.id as string;
+
 const event: Ref<RaceEventDetails> | Ref<null> = ref(null);
+
 const loading = ref(true);
+
 const races: Ref<Race[]> = ref(Array());
+
 const store = useUserStore();
 
 /* Methods */
@@ -45,85 +59,79 @@ onMounted(async () => {
       subtitle="Elenco di tutte le gare relative all'evento"
       :back-to="{ name: 'events' }"
     />
-
     <ElEmpty v-if="races.length === 0 && !loading" description="Nessuna gara disponibile" />
-    <ElRow
-      v-else
-      :justify="races.length <= 4 ? 'center' : 'start'"
-      :gutter="20"
-      v-loading="loading"
-    >
-      <ElCol v-for="race in races" :key="`race-${race.id}`" :xs="24" :sm="12" :md="8" :lg="6">
-        <AppCard v-if="event" shadow="hover" :title="race.type.name">
-          <template #content>
-            <div class="is-flex is-justify-space-between is-align-center">
-              <ElDescriptions direction="vertical" :column="2">
-                <ElDescriptionsItem label="Data" width="100px">{{
-                  formatDate(event['date'])
-                }}</ElDescriptionsItem>
-                <ElDescriptionsItem label="Partenza"
-                  >{{ event['start_hour'] + race['type']['start_offset'] }}:00</ElDescriptionsItem
-                >
-                <ElDescriptionsItem label="Durata"
-                  >{{ race.type.duration / 60 }}h</ElDescriptionsItem
-                >
-                <ElDescriptionsItem label="Corridori per squadra">{{
-                  race.type.runners_per_team
-                }}</ElDescriptionsItem>
-              </ElDescriptions>
-              <div class="is-text-center" style="font-size: 20px; font-weight: 300">
-                <ElIcon size="32" color="var(--el-color-info-light-5)"><Ticket /></ElIcon>
-                <div>{{ race.price }}€</div>
-              </div>
-            </div>
-          </template>
-          <template #footer>
-            <ElButton
-              @click="
-                $router.push({
-                  name: 'subscribe',
-                  params: {
-                    // @ts-ignore
-                    eventId: event['id'],
-                    raceId: race.id,
-                  },
+    <div v-else>
+      <ElRow v-if="!store.user.email_verified_at" justify="center">
+        <ElCol :xs="24" :sm="16" :md="14" :lg="10" class="is-margin-bottom-15">
+          <ElAlert  type="error" show-icon :closable="false">
+            <template #title>
+              È necessario
+              <RouterLink
+                :to="{
+                  name: 'verify',
                   query: {
-                    raceName: race.type.name,
-                    availableDiscount: race.available_discount,
+                    token: store.user.access,
                   },
-                })
-              "
-              title="Iscriviti alla gara"
-              :disabled="!store.user.email_verified_at"
-              type="primary"
-              >Iscriviti</ElButton
-            >
-            <ElAlert
-              v-show="!store.user.email_verified_at"
-              type="error"
-              show-icon
-              class="is-margin-top-15"
-              :closable="false"
-            >
-              <template #title>
-                È necessario
-                <RouterLink
-                  :to="{
-                    name: 'verify',
-                    query: {
-                      token: store.user.access,
+                }"
+                class="is-bold"
+                style="color: var(--el-color-error)"
+                >confermare il proprio indirizzo email</RouterLink
+              >
+              per potersi iscrivere alle gare
+            </template>
+          </ElAlert>
+        </ElCol>
+      </ElRow>
+      <ElRow :justify="races.length <= 4 ? 'center' : 'start'" :gutter="20" v-loading="loading">
+        <ElCol v-for="race in races" :key="`race-${race.id}`" :xs="24" :sm="12" :md="8" :lg="6">
+          <AppCard v-if="event" shadow="hover" :title="race.type.name">
+            <template #content>
+              <div class="is-flex is-justify-space-between is-align-center">
+                <ElDescriptions direction="vertical" :column="2">
+                  <ElDescriptionsItem label="Data" width="100px">{{
+                    formatDate(event['date'])
+                  }}</ElDescriptionsItem>
+                  <ElDescriptionsItem label="Partenza"
+                    >{{ event['start_hour'] + race['type']['start_offset'] }}:00</ElDescriptionsItem
+                  >
+                  <ElDescriptionsItem label="Durata"
+                    >{{ race.type.duration / 60 }} ore</ElDescriptionsItem
+                  >
+                  <ElDescriptionsItem label="Corridori per squadra">{{
+                    race.type.runners_per_team
+                  }}</ElDescriptionsItem>
+                </ElDescriptions>
+                <div class="is-text-center" style="font-size: 20px; font-weight: 300">
+                  <ElIcon size="32" color="var(--el-color-info-light-5)"><Ticket /></ElIcon>
+                  <div>{{ race.price }}€</div>
+                </div>
+              </div>
+            </template>
+            <template #footer>
+              <ElButton
+                @click="
+                  $router.push({
+                    name: 'subscribe',
+                    params: {
+                      // @ts-ignore
+                      eventId: event['id'],
+                      raceId: race.id,
                     },
-                  }"
-                  class="is-bold"
-                  style="color: var(--el-color-error)"
-                  >confermare il proprio indirizzo email</RouterLink
-                >
-                per potersi iscrivere
-              </template>
-            </ElAlert>
-          </template>
-        </AppCard>
-      </ElCol>
-    </ElRow>
+                    query: {
+                      raceName: race.type.name,
+                      availableDiscount: race.available_discount,
+                    },
+                  })
+                "
+                title="Iscriviti alla gara"
+                :disabled="!store.user.email_verified_at"
+                type="primary"
+                >Iscriviti</ElButton
+              >
+            </template>
+          </AppCard>
+        </ElCol>
+      </ElRow>
+    </div>
   </div>
 </template>

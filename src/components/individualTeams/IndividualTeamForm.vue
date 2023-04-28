@@ -5,6 +5,17 @@ import type { FormInstance, FormRules } from 'element-plus';
 import { resetForm } from '@/utils';
 import { teamsApi } from '@/api/resources';
 
+/**
+ * FUNCTION
+ * Define individual team creation/update form.
+ *
+ * LOGIC
+ * Get user input and pass it to parent page using specific events.
+ *
+ * EXCEPTIONS
+ * Nothing to report.
+ */
+
 /* Props */
 
 const props = defineProps<{
@@ -33,11 +44,15 @@ const form = reactive<Runner>({
   birth_date: '',
 });
 const formRef = ref<FormInstance>();
+
 const requiredMessage = 'Questo campo è obbligatorio';
 const formRules = reactive<FormRules>({
   first_name: [{ required: true, message: requiredMessage, trigger: 'none' }],
   last_name: [{ required: true, message: requiredMessage, trigger: 'none' }],
 });
+
+const disableDiscountWarning =
+  'Disattivando questa opzione si possono perdere eventuali sconti disponibili o già applicati.';
 
 /* Methods */
 
@@ -108,16 +123,22 @@ onMounted(async () => {
       <ElFormItem label="Membro IUTA" prop="member_iuta">
         <ElSwitch v-model="form.member_iuta" />
         <div
-          v-if="props.discount"
-          v-html="generateDiscountText('Associazione Italiana Ultramaratona e Trail', false, 5)"
+          v-html="
+            props.discount
+              ? generateDiscountText('Associazione Italiana Ultramaratona e Trail', false, 5)
+              : disableDiscountWarning
+          "
           class="is-help-text"
         />
       </ElFormItem>
       <ElFormItem label="Membro CSMI" prop="member_csm">
         <ElSwitch v-model="form.member_csm" />
         <div
-          v-if="props.discount"
-          v-html="generateDiscountText('Club Super Marathon Italia', true, 5)"
+          v-html="
+            props.discount
+              ? generateDiscountText('Club Super Marathon Italia', true, 5)
+              : disableDiscountWarning
+          "
           class="is-help-text"
         />
       </ElFormItem>

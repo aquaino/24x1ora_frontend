@@ -13,14 +13,14 @@ import { useUserStore } from '@/stores/user';
 import { hasAttachment } from '@/utils';
 
 /**
- * MAIN FUNCTION
+ * FUNCTION
  * Update individual team.
  *
- * BEHAVIOR
+ * LOGIC
  * Display team data and allow to modify them.
  *
  * EXCEPTIONS
- * Nothing to report.
+ * - WS call fails -> Error alert
  */
 
 /* Data */

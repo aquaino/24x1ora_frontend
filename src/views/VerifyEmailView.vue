@@ -4,14 +4,14 @@ import { logout } from '@/utils';
 import { useRoute, useRouter } from 'vue-router';
 
 /**
- * MAIN FUNCTION
+ * FUNCTION
  * Confirm new user email address.
  *
- * BEHAVIOR
+ * LOGIC
  * Take user token from GET pars and use it for verifying email with a WS call.
  *
  * EXCEPTIONS
- * - User token not provided.
+ * - User token not provided -> Feedback to retry
  */
 
 /* Data */
