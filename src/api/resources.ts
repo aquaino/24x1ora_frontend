@@ -1,4 +1,5 @@
 import apiClient from './client';
+import axios from 'axios';
 import type {
   RaceEventDetails,
   RaceEvent,
@@ -108,8 +109,8 @@ export const usersApi = {
   },
 
   async verifyEmail(token: string): Promise<void> {
-    const response = await apiClient
-      .post('/auth/email-verify', null, {
+    const response = await axios
+      .post(`${import.meta.env.VITE_APP_BACKEND_URL}/auth/email-verify`, null, {
         params: { token: token },
       })
       .catch((error) => {

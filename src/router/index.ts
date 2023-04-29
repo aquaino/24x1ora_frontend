@@ -104,8 +104,7 @@ router.beforeEach((to, from, next) => {
     to.matched.some(
       (record) =>
         record.path.includes('/login') ||
-        record.path.includes('/register') ||
-        record.path.includes('/verify'),
+        record.path.includes('/register') 
     ) &&
     userStore.user.access
   ) {

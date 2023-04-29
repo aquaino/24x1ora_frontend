@@ -21,7 +21,7 @@ apiClient.interceptors.request.use(
   },
 );
 
-// Interceptor to check token expiration
+// Response interceptor to check token expiration
 apiClient.interceptors.response.use(
   (response) => {
     return response;
