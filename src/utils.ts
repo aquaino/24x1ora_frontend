@@ -4,13 +4,17 @@ import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 
-export const formatDateTime = function (datetime: string, fromFormat?: string): string {
-  if (fromFormat === 'ISO') {
-    return datetime ? DateTime.fromISO(datetime).toLocaleString(DateTime.DATETIME_SHORT) : '-';
+export const formatDateTime = function (
+  datetime: string,
+  fromFormat: string,
+  toFormat: string,
+): string {
+  if (datetime) {
+    return fromFormat === 'ISO'
+      ? DateTime.fromISO(datetime).toLocaleString(DateTime[toFormat])
+      : DateTime.fromFormat(datetime, fromFormat).toLocaleString(DateTime[toFormat]);
   } else {
-    return datetime
-      ? DateTime.fromFormat(datetime, 'yyyy-mm-dd hh:mm:ss').toLocaleString(DateTime.DATETIME_SHORT)
-      : '-';
+    return '-';
   }
 };
 

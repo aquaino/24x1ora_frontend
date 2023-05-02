@@ -170,7 +170,7 @@ onMounted(async () => {
                     >{{ team.type.duration / 60 }} ore</ElDescriptionsItem
                   >
                   <ElDescriptionsItem label="Inserita">{{
-                    formatDateTime(team.created_at, 'ISO')
+                    formatDateTime(team.created_at, 'ISO', 'DATETIME_SHORT')
                   }}</ElDescriptionsItem>
                 </ElDescriptions>
                 <div class="is-text-center" style="font-size: 20px; font-weight: 300">

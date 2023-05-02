@@ -41,15 +41,21 @@ onMounted(async () => {
         image-alt="Partenza edizione 2019"
         shadow="hover"
         :title="event.name"
-        :subtitle="formatDateTime(event.date)"
+        :subtitle="formatDateTime(event.date, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')"
       >
         <template #content>
           <ElDescriptions direction="vertical">
-            <ElDescriptionsItem label="Inizio iscrizioni">{{
-              event.subscription_from ? formatDateTime(event.subscription_from) : 'Non definito'
-            }}</ElDescriptionsItem>
+            <ElDescriptionsItem label="Inizio iscrizioni"
+              >{{
+                event.subscription_from
+                  ? formatDateTime(event.subscription_from, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
+                  : 'Non definito'
+              }}
+            </ElDescriptionsItem>
             <ElDescriptionsItem label="Termine iscrizioni">{{
-              event.subscription_to ? formatDateTime(event.subscription_to) : 'Non definito'
+              event.subscription_to
+                ? formatDateTime(event.subscription_to, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
+                : 'Non definito'
             }}</ElDescriptionsItem>
           </ElDescriptions>
         </template>
