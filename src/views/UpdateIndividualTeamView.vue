@@ -116,6 +116,7 @@ onMounted(async () => {
             :discount="availableDiscount"
           >
             <template #additional-form-items>
+              <ElDivider />
               <ElFormItem label="Certificato medico" class="is-align-center">
                 <ElUpload
                   ref="medcertUploadRef"

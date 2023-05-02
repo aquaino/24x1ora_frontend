@@ -36,7 +36,7 @@ const menu: MenuItem[] = [
 
 <template>
   <div class="is-flex is-align-center is-justify-space-between is-height-100">
-    <RouterLink :to="{ name: 'home' }" class="is-flex">
+    <RouterLink :to="{ name: 'home' }" class="is-flex" title="Home">
       <ElImage :src="logo" :alt="`Logo ${appName}`" style="width: 130px" fit="contain" />
       <h2 class="hidden-sm-and-down">{{ appName }}</h2>
     </RouterLink>

@@ -112,6 +112,7 @@ onMounted(async () => {
       <ElFormItem label="Cognome" prop="last_name" required>
         <ElInput v-model="form.last_name" />
       </ElFormItem>
+      <ElDivider />
       <ElFormItem label="Data di nascita" prop="birth_date">
         <ElDatePicker
           v-model="form.birth_date"
@@ -120,7 +121,7 @@ onMounted(async () => {
           class="is-width-100"
         />
       </ElFormItem>
-      <ElFormItem label="Membro IUTA" prop="member_iuta">
+      <ElFormItem label="Membro IUTA" prop="member_iuta" class="has-help-text">
         <ElSwitch v-model="form.member_iuta" />
         <div
           v-html="
@@ -131,7 +132,7 @@ onMounted(async () => {
           class="is-help-text"
         />
       </ElFormItem>
-      <ElFormItem label="Membro CSMI" prop="member_csm">
+      <ElFormItem label="Membro CSMI" prop="member_csm" class="has-help-text">
         <ElSwitch v-model="form.member_csm" />
         <div
           v-html="
@@ -141,6 +142,10 @@ onMounted(async () => {
           "
           class="is-help-text"
         />
+      </ElFormItem>
+      <ElDivider />
+      <ElFormItem>
+        <div class="is-help-text">È obbligatorio specificare l'identificativo di almeno una delle seguenti tessere.</div>
       </ElFormItem>
       <ElFormItem label="Tessera FIDAL" prop="fidal_id">
         <ElInput v-model="form.fidal_id" />
@@ -176,3 +181,9 @@ onMounted(async () => {
     class="is-margin-top-15"
   />
 </template>
+
+<style scoped>
+:deep(.has-help-text .el-form-item__content) {
+  display: block;
+}
+</style>
