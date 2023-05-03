@@ -18,10 +18,6 @@ export const formatDateTime = function (
   }
 };
 
-export const formatDate = function (datetime: string): string {
-  return DateTime.fromFormat(datetime, 'yyyy-mm-dd hh:mm:ss').toLocaleString(DateTime.DATE_SHORT);
-};
-
 export async function resetForm(formRef: FormInstance | undefined) {
   if (!formRef) return;
   formRef.resetFields();

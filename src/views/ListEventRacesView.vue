@@ -6,7 +6,7 @@ import { eventsApi } from '@/api/resources';
 import type { Race, RaceEventDetails } from '@/api/interfaces';
 import { useRoute } from 'vue-router';
 import AppCard from '@/components/base/AppCard.vue';
-import { formatDate } from '@/utils';
+import { formatDateTime } from '@/utils';
 import { Ticket } from '@element-plus/icons-vue';
 import { useUserStore } from '@/stores/user';
 
@@ -63,7 +63,7 @@ onMounted(async () => {
     <div v-else>
       <ElRow v-if="!store.user.email_verified_at" justify="center">
         <ElCol :xs="24" :sm="16" :md="14" :lg="10" class="is-margin-bottom-15">
-          <ElAlert  type="error" show-icon :closable="false">
+          <ElAlert type="error" show-icon :closable="false">
             <template #title>
               È necessario
               <RouterLink
@@ -89,7 +89,7 @@ onMounted(async () => {
               <div class="is-flex is-justify-space-between is-align-center">
                 <ElDescriptions direction="vertical" :column="2">
                   <ElDescriptionsItem label="Data" width="100px">{{
-                    formatDate(event['date'])
+                    formatDateTime(event['date'], 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
                   }}</ElDescriptionsItem>
                   <ElDescriptionsItem label="Partenza"
                     >{{ event['start_hour'] + race['type']['start_offset'] }}:00</ElDescriptionsItem

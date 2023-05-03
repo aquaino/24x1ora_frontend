@@ -5,7 +5,7 @@ import type { RaceEvent, Team } from '@/api/interfaces';
 import { eventsApi } from '@/api/resources';
 import AppPageTitle from '@/components/base/AppPageTitle.vue';
 import AppCard from '@/components/base/AppCard.vue';
-import { formatDateTime, formatDate } from '@/utils';
+import { formatDateTime } from '@/utils';
 import { Ticket, TrophyBase, Document, Money } from '@element-plus/icons-vue';
 import { teamsApi } from '@/api/resources';
 import { ElMessage } from 'element-plus';
@@ -159,7 +159,7 @@ onMounted(async () => {
                     team.payment_code
                   }}</ElDescriptionsItem>
                   <ElDescriptionsItem label="Data">{{
-                    formatDate(subscription.event.date)
+                    formatDateTime(subscription.event.date, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
                   }}</ElDescriptionsItem>
                   <ElDescriptionsItem label="Partenza"
                     >{{
