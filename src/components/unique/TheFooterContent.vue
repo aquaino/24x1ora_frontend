@@ -30,7 +30,7 @@
       >
     </div>
   </div>
-  <ElBacktop :right="32" :bottom="32" title="Torna su" />
+  <ElBacktop :right="13" :bottom="64" title="Torna su" />
 </template>
 
 <style scoped>

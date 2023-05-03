@@ -14,9 +14,9 @@ import TheFooterContent from '@/components/unique/TheFooterContent.vue';
       >
         <TheHeaderContent />
       </ElHeader>
-      <ElMain class="is-margin-bottom-20 is-margin-top-20"><RouterView /></ElMain>
+      <ElMain class="is-margin-bottom-10 is-margin-top-20"><RouterView /></ElMain>
     </div>
-    <ElFooter height="140px">
+    <ElFooter height="200px">
       <TheFooterContent />
     </ElFooter>
   </ElContainer>
