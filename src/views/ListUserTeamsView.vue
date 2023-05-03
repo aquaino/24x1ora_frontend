@@ -183,6 +183,23 @@ onMounted(async () => {
                   </div>
                 </div>
               </div>
+              <ElCollapse>
+                <ElCollapseItem title="Dettagli pagamento">
+                  <div class="is-margin-bottom-10">Pagamento tramite bonifico bancario</div>
+                  <ElDescriptions direction="horizontal" :column="1">
+                    <ElDescriptionsItem label="IBAN"
+                      >IT 59 O 05484 63690 CC0270704537</ElDescriptionsItem
+                    >
+                    <ElDescriptionsItem label="Intestato a"
+                      >Circolo Culturale del Gruppo Alpini di Buttrio APS</ElDescriptionsItem
+                    >
+                    <ElDescriptionsItem label="Causale"
+                      >{{ team.payment_code }} {{ team.name }}
+                      {{ team.type.name }}</ElDescriptionsItem
+                    >
+                  </ElDescriptions>
+                </ElCollapseItem>
+              </ElCollapse>
             </template>
             <template #footer>
               <div class="is-margin-top-05">
