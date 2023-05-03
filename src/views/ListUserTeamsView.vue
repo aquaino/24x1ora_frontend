@@ -24,10 +24,17 @@ import { useUserStore } from '@/stores/user';
  * Nothing to report.
  */
 
+/* Interfaces */
+
+interface TeamExtended extends Team {
+  medcertUploaded: boolean;
+  paymentUploaded: boolean;
+}
+
 /* Data */
 
 const eventIds: Ref<number[]> = ref(Array());
-const subscriptions: Ref<{ event: RaceEvent; teams: Team[] }[]> = ref(Array());
+const subscriptions: Ref<{ event: RaceEvent; teams: TeamExtended[] }[]> = ref(Array());
 
 const loading = ref(true);
 
@@ -56,8 +63,14 @@ async function getSubscriptions() {
   try {
     for (let index = 0; index < eventIds.value.length; index++) {
       const eventAndTeams = await teamsApi.getEventTeams(eventIds.value[index]);
-      subscriptions.value.push(eventAndTeams as { event: RaceEvent; teams: Team[] });
+      subscriptions.value.push(eventAndTeams as { event: RaceEvent; teams: TeamExtended[] });
     }
+    subscriptions.value.forEach((subscription) => {
+      subscription.teams.forEach((team: any) => {
+        team['paymentUploaded'] = hasAttachment(/medcert.*/, team.attachments);
+        team['medcertUploaded'] = hasAttachment(/payment.*/, team.attachments);
+      });
+    });
   } catch (error) {
     console.log(error);
   }
@@ -117,16 +130,14 @@ onMounted(async () => {
         >
           <AppCard shadow="hover" :title="`#${team.id} - ${team.name}`">
             <template #right-header>
-              <div>
+              <div class="is-flex">
                 <ElIcon
                   size="24"
                   :color="
-                    hasAttachment(/medcert.*/, team.attachments)
-                      ? 'var(--el-color-success)'
-                      : 'var(--el-color-error)'
+                    team.medcertUploaded ? 'var(--el-color-success)' : 'var(--el-color-error)'
                   "
                   :title="
-                    hasAttachment(/medcert.*/, team.attachments)
+                    team.medcertUploaded
                       ? 'Certificato medico caricato'
                       : 'Certificato medico non caricato'
                   "
@@ -135,12 +146,10 @@ onMounted(async () => {
                 <ElIcon
                   size="24"
                   :color="
-                    hasAttachment(/payment.*/, team.attachments)
-                      ? 'var(--el-color-success)'
-                      : 'var(--el-color-error)'
+                    team.paymentUploaded ? 'var(--el-color-success)' : 'var(--el-color-error)'
                   "
                   :title="
-                    hasAttachment(/payment.*/, team.attachments)
+                    team.paymentUploaded
                       ? 'Ricevuta di bonifico caricata'
                       : 'Ricevuta di bonifico non caricata'
                   "
@@ -150,6 +159,33 @@ onMounted(async () => {
               </div>
             </template>
             <template #content>
+              <ElProgress
+                :percentage="
+                  !team.medcertUploaded && !team.paymentUploaded
+                    ? 33
+                    : !(team.medcertUploaded && team.paymentUploaded)
+                    ? 67
+                    : 100
+                "
+                :status="
+                  !team.medcertUploaded && !team.paymentUploaded
+                    ? 'exception'
+                    : !(team.medcertUploaded && team.paymentUploaded)
+                    ? 'warning'
+                    : 'success'
+                "
+                :stroke-width="10"
+                :title="
+                  !team.medcertUploaded && !team.paymentUploaded
+                    ? 'Caricare certificato medico e ricevuta di bonifico'
+                    : !team.medcertUploaded && team.paymentUploaded
+                    ? 'Caricare certificato medico'
+                    : team.medcertUploaded && !team.paymentUploaded
+                    ? 'Caricare ricevuta di pagamento'
+                    : 'Tutti i dati sono stati inseriti'
+                "
+                class="is-width-100 is-margin-bottom-10"
+              />
               <div class="is-flex is-justify-space-between is-align-center">
                 <ElDescriptions direction="vertical" :column="2">
                   <ElDescriptionsItem label="Gara" width="150px">{{
@@ -226,3 +262,13 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+:deep(.el-progress__text) {
+  min-width: unset;
+}
+
+:deep(.el-progress__text) {
+  font-size: 18px !important;
+}
+</style>
