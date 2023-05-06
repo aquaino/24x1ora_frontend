@@ -6,7 +6,7 @@
       Per qualsiasi problema o segnalazione scrivere a
       <ElLink href="mailto:iscrizioni@24oredibuttrio.it">iscrizioni@24oredibuttrio.it</ElLink>
     </div>
-    <div class="is-margin-top-05">
+    <div class="is-margin-top-10">
       Copyright &copy; {{ new Date().getFullYear() }} Gruppo Alpini Buttrio & A.S.D. Podismo Buttrio
     </div>
     <div>
@@ -15,7 +15,7 @@
       e
       <ElLink href="https://it.linkedin.com/in/alanquaino" target="_blank">Alan Quaino</ElLink>
     </div>
-    <div class="is-text-center is-margin-top-05 iubenda-buttons">
+    <div class="is-text-center is-margin-top-10 iubenda-buttons">
       <a
         href="https://www.iubenda.com/privacy-policy/88111594"
         class="iubenda-white iubenda-noiframe iubenda-embed iubenda-noiframe"

@@ -5,16 +5,22 @@ import { usersApi } from '@/api/resources';
 import { useUserStore } from '@/stores/user';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useRouter, useRoute } from 'vue-router';
+import { usePreferencesStore } from '@/stores/preferences';
 
 /* Data */
 
 const userStore = useUserStore();
+const preferencesStore = usePreferencesStore();
 const router = useRouter();
-const formRef = ref<FormInstance>();
 const route = useRoute();
 
+const formRef = ref<FormInstance>();
+const rememberEmail = ref(preferencesStore.preferences.rememberEmail !== null);
+
 const form = reactive({
-  email: '',
+  email: preferencesStore.preferences.rememberEmail
+    ? preferencesStore.preferences.rememberEmail
+    : '',
   password: '',
 });
 
@@ -31,7 +37,7 @@ const requiredMessage = 'Questo campo è obbligatorio';
 const formRules = reactive<FormRules>({
   email: [
     { required: true, message: requiredMessage, trigger: 'none' },
-    { type: 'email', message: 'Inserisci un indirizzo email valido', trigger: 'none' },
+    { type: 'email', message: 'Inserisci un indirizzo e-mail valido', trigger: 'none' },
   ],
   password: [{ required: true, message: requiredMessage, trigger: 'none' }],
 });
@@ -41,6 +47,8 @@ const formRules = reactive<FormRules>({
 async function login(formRef: FormInstance | undefined) {
   userStore.$reset();
   if (!formRef) return;
+  // Set wether to remember email or not
+  preferencesStore.setRememberEmail(rememberEmail.value ? form.email : null);
   await formRef.validate(async (valid) => {
     if (valid) {
       try {
@@ -51,7 +59,6 @@ async function login(formRef: FormInstance | undefined) {
         userStore.setUserData(userData);
         router.push({ name: 'home' });
       } catch (error: any) {
-        console.log(error);
         if (error.response.status === 401) {
           alert.value = { type: 'error', text: 'Credenziali non valide.' };
         } else {
@@ -79,7 +86,7 @@ async function login(formRef: FormInstance | undefined) {
       status-icon
     >
       <ElFormItem prop="email" required>
-        <ElInput placeholder="Email" v-model="form.email" type="email">
+        <ElInput placeholder="E-mail" v-model="form.email" type="email">
           <template #prefix>
             <ElIcon class="el-input__icon"><message /></ElIcon>
           </template>
@@ -91,6 +98,9 @@ async function login(formRef: FormInstance | undefined) {
             <ElIcon class="el-input__icon"><key /></ElIcon>
           </template>
         </ElInput>
+      </ElFormItem>
+      <ElFormItem>
+        <ElCheckbox label="Ricorda indirizzo e-mail" v-model="rememberEmail" />
       </ElFormItem>
       <ElFormItem>
         <ElButton type="primary" native-type="submit" title="Accedi al portale">Accedi</ElButton>

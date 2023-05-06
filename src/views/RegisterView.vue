@@ -46,7 +46,7 @@ const formRules = reactive<FormRules>({
     { required: true, message: requiredMessage, trigger: 'none' },
     {
       type: 'email',
-      message: 'Inserisci un indirizzo email valido',
+      message: 'Inserisci un indirizzo e-mail valido',
       trigger: 'none',
     },
   ],
@@ -74,13 +74,13 @@ async function register(formRef: FormInstance | undefined) {
           query: {
             alertType: 'success',
             alertText:
-              "Registrazione effettuata con successo! A breve riceverai un'email per la conferma dell'indirizzo indicato. Controllare anche nella casella della posta indesiderata.",
+              "Registrazione effettuata con successo! A breve riceverai un'e-mail per la conferma dell'indirizzo indicato. Controllare anche nella casella della posta indesiderata.",
           },
         });
       } catch (error: any) {
         console.log(error);
         if (error.response.status === 422) {
-          alert.value.text = 'Esiste già un utente registrato con questa email';
+          alert.value.text = 'Esiste già un utente registrato con questa e-mail';
         } else {
           alert.value.text = 'Si è verificato un errore, riprovare più tardi';
         }
@@ -120,7 +120,7 @@ async function register(formRef: FormInstance | undefined) {
       <ElFormItem label="Nome e cognome" prop="name">
         <ElInput v-model="form.name" />
       </ElFormItem>
-      <ElFormItem label="Indirizzo email" prop="email" required>
+      <ElFormItem label="Indirizzo e-mail" prop="email" required>
         <ElInput v-model="form.email" type="email" />
       </ElFormItem>
       <ElDivider />

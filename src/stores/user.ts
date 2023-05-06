@@ -10,12 +10,12 @@ interface UserData {
   access: string | null;
 }
 
-interface UserState {
+interface StoreState {
   user: UserData;
 }
 
 export const useUserStore = defineStore('user', {
-  state: (): UserState => ({
+  state: (): StoreState => ({
     user: {
       id: null,
       name: null,

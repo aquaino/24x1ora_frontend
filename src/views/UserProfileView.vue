@@ -43,7 +43,7 @@ onMounted(async () => {
             <ElFormItem label="Nome e cognome" prop="name">
               <ElInput v-model="form.name" disabled />
             </ElFormItem>
-            <ElFormItem label="Indirizzo email" prop="email">
+            <ElFormItem label="Indirizzo e-mail" prop="email">
               <ElInput v-model="form.email" disabled />
             </ElFormItem>
           </ElForm>

@@ -27,10 +27,10 @@ apiClient.interceptors.response.use(
     return response;
   },
   async (error) => {
-    const store = useUserStore();
+    const userStore = useUserStore();
     // If  token expired, logout
     if (error.response.status === 401) {
-      store.$reset();
+      userStore.$reset();
       router.push({ name: 'login' });
       return Promise.reject(error);
     }

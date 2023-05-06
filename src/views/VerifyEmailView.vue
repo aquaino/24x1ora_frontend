@@ -6,14 +6,14 @@ import { useRoute, useRouter } from 'vue-router';
 
 /**
  * FUNCTION
- * Confirm new user email address.
+ * Confirm new user e-mail address.
  *
  * LOGIC
- * Take user token from GET pars and use it for verifying email with a WS call.
+ * Take user token from GET pars and use it for verifying e-mail with a WS call.
  *
  * EXCEPTIONS
  * - User token not provided -> Feedback to retry
- * - User email already verified -> Feedback
+ * - User e-mail already verified -> Feedback
  */
 
 /* Data */
@@ -22,8 +22,8 @@ const router = useRouter();
 const route = useRoute();
 const token = route.query.token as string;
 
-const store = useUserStore();
-const alreadyVerified = store.user.email_verified_at !== null;
+const userStore = useUserStore();
+const alreadyVerified = userStore.user.email_verified_at !== null;
 
 /* Methods */
 
@@ -33,7 +33,7 @@ async function verifyEmail() {
     logout(false);
     router.push({
       name: 'login',
-      query: { alertType: 'success', alertText: 'Indirizzo email verificato con successo' },
+      query: { alertType: 'success', alertText: 'Indirizzo e-mail verificato con successo' },
     });
   } catch (error) {
     console.log(error);
@@ -43,16 +43,16 @@ async function verifyEmail() {
 
 <template>
   <div v-if="token && !alreadyVerified" class="is-text-center">
-    <ElButton type="primary" title="Verifica il tuo indirizzo email" @click="verifyEmail()"
-      >Verifica email</ElButton
+    <ElButton type="primary" title="Verifica il tuo indirizzo e-mail" @click="verifyEmail()"
+      >Verifica e-mail</ElButton
     >
   </div>
   <div v-else-if="alreadyVerified">
     <ElResult
       icon="success"
       class="is-padding-top-0"
-      title="Indirizzo email già verificato"
-      sub-title="Il tuo indirizzo email risulta già verificato"
+      title="Indirizzo e-mail già verificato"
+      sub-title="Il tuo indirizzo e-mail risulta già verificato"
     >
       <template #extra>
         <ElButton @click="$router.push({ name: 'home' })" title="Torna alla home" type="primary"
@@ -67,7 +67,7 @@ async function verifyEmail() {
       class="is-padding-top-0"
       title="Si è verificato un problema"
       sub-title="Verifica nuovamente l'indirizzo con le istruzioni ricevute
-    via email"
+    via e-mail"
     >
       <template #extra>
         <ElButton @click="$router.push({ name: 'home' })" title="Torna alla home" type="primary"

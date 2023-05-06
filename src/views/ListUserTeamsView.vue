@@ -39,7 +39,7 @@ const subscriptions: Ref<{ event: RaceEvent; teams: TeamExtended[] }[]> = ref(Ar
 const loading = ref(true);
 
 const route = useRoute();
-const store = useUserStore();
+const userStore = useUserStore();
 
 const message = {
   type: route.query.messageType as 'success' | 'warning' | 'error' | 'info',
@@ -89,7 +89,7 @@ function showMessage() {
 
 onMounted(async () => {
   // Get user teams for each event
-  if (store.user.email_verified_at) {
+  if (userStore.user.email_verified_at) {
     await getEventIds();
     await getSubscriptions();
   }
