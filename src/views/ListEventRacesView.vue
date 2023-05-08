@@ -8,7 +8,7 @@ import { useRoute } from 'vue-router';
 import AppCard from '@/components/base/AppCard.vue';
 import { formatDateTime } from '@/utils';
 import { Ticket } from '@element-plus/icons-vue';
-import { useUserStore } from '@/stores/user';
+import { useAppStore } from '@/store';
 
 /**
  * FUNCTION
@@ -32,7 +32,7 @@ const loading = ref(true);
 
 const races: Ref<Race[]> = ref(Array());
 
-const userStore = useUserStore();
+const appStore = useAppStore();
 
 /* Methods */
 
@@ -61,7 +61,7 @@ onMounted(async () => {
     />
     <ElEmpty v-if="races.length === 0 && !loading" description="Nessuna gara disponibile" />
     <div v-else>
-      <ElRow v-if="!userStore.email_verified_at" justify="center">
+      <ElRow v-if="!appStore.user.email_verified_at" justify="center">
         <ElCol :xs="24" :sm="16" :md="14" :lg="10" class="is-margin-bottom-15">
           <ElAlert type="error" show-icon :closable="false">
             <template #title>
@@ -70,7 +70,7 @@ onMounted(async () => {
                 :to="{
                   name: 'verify',
                   query: {
-                    token: userStore.access,
+                    token: appStore.user.access,
                   },
                 }"
                 class="is-bold"
@@ -124,7 +124,7 @@ onMounted(async () => {
                   })
                 "
                 title="Iscriviti alla gara"
-                :disabled="!userStore.email_verified_at"
+                :disabled="!appStore.user.email_verified_at"
                 type="primary"
                 >Iscriviti</ElButton
               >

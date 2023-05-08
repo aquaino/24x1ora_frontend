@@ -9,7 +9,7 @@ import { teamsApi } from '@/api/resources';
 import type { RunnerUpdate, Team } from '@/api/interfaces';
 import AppCard from '@/components/base/AppCard.vue';
 import { UploadFilled } from '@element-plus/icons-vue';
-import { useUserStore } from '@/stores/user';
+import { useAppStore } from '@/store';
 import { hasAttachment } from '@/utils';
 
 /**
@@ -37,7 +37,7 @@ const availableDiscount = route.query.availableDiscount
 
 const loading = ref(true);
 
-const userStore = useUserStore();
+const appStore = useAppStore();
 
 const medcertUploadRef = ref<UploadInstance>();
 const paymentUploadRef = ref<UploadInstance>();
@@ -122,7 +122,7 @@ onMounted(async () => {
                   ref="medcertUploadRef"
                   :action="`${backendTeamAttachmentUrl}/medcert`"
                   :headers="{
-                    Authorization: `Bearer ${userStore.access}`,
+                    Authorization: `Bearer ${appStore.user.access}`,
                   }"
                   method="POST"
                   :auto-upload="false"
@@ -154,7 +154,7 @@ onMounted(async () => {
                   ref="paymentUploadRef"
                   :action="`${backendTeamAttachmentUrl}/payment`"
                   :headers="{
-                    Authorization: `Bearer ${userStore.access}`,
+                    Authorization: `Bearer ${appStore.user.access}`,
                   }"
                   method="POST"
                   :auto-upload="false"

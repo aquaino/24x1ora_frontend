@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { Menu } from '@element-plus/icons-vue';
 import type { MenuItem } from '../../interfaces';
-import { useNavigationStore } from '@/stores/navigation';
+import { useAppStore } from '@/store';
 import { storeToRefs } from 'pinia';
 
 /* Props */
@@ -16,8 +16,8 @@ const props = defineProps<{
 const appName = import.meta.env.VITE_APP_NAME;
 const mobileMenu = ref(false);
 
-const navigationStore = useNavigationStore();
-const { activeMenuItem } = storeToRefs(navigationStore);
+const appStore = useAppStore();
+const { navigation } = storeToRefs(appStore);
 </script>
 
 <template>
@@ -37,7 +37,12 @@ const { activeMenuItem } = storeToRefs(navigationStore);
         <h1 class="is-margin-0">{{ appName }}</h1>
       </template>
       <template #default>
-        <ElMenu :default-active="activeMenuItem" mode="vertical" :router="true" :ellipsis="false">
+        <ElMenu
+          :default-active="navigation.activeMenuItem"
+          mode="vertical"
+          :router="true"
+          :ellipsis="false"
+        >
           <ElMenuItem
             v-for="(menuItem, index) in props.menuItems"
             :key="`menu-item-${index}`"
@@ -45,7 +50,7 @@ const { activeMenuItem } = storeToRefs(navigationStore);
             :route="{ name: menuItem.routeName }"
             :title="menuItem.title"
             @click="
-              navigationStore.setActiveMenuItem((index + 1).toString());
+              appStore.setActiveMenuItem((index + 1).toString());
               mobileMenu = false;
             "
             :style="{

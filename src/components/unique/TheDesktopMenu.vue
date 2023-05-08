@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { MenuItem } from '../../interfaces';
-import { useNavigationStore } from '@/stores/navigation';
+import { useAppStore } from '@/store';
 import { storeToRefs } from 'pinia';
 
 /* Props */
@@ -11,14 +11,14 @@ const props = defineProps<{
 
 /* Data */
 
-const navigationStore = useNavigationStore();
-const { activeMenuItem } = storeToRefs(navigationStore);
+const appStore = useAppStore();
+const { navigation } = storeToRefs(appStore);
 </script>
 
 <template>
   <div class="hidden-sm-and-down is-height-100">
     <ElMenu
-      :default-active="activeMenuItem"
+      :default-active="navigation.activeMenuItem"
       mode="horizontal"
       :router="true"
       :ellipsis="false"
@@ -33,7 +33,7 @@ const { activeMenuItem } = storeToRefs(navigationStore);
         :style="{
           color: menuItem.type === 'danger' ? 'var(--el-color-danger)' : '',
         }"
-        @click="navigationStore.setActiveMenuItem((index + 1).toString())"
+        @click="appStore.setActiveMenuItem((index + 1).toString())"
       >
         <ElIcon><component :is="menuItem.icon" /></ElIcon>
         {{ menuItem.text }}

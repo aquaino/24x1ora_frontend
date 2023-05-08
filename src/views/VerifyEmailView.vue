@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { usersApi } from '@/api/resources';
-import { useUserStore } from '@/stores/user';
+import { useAppStore } from '@/store';
 import { logout } from '@/utils';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -22,8 +22,8 @@ const router = useRouter();
 const route = useRoute();
 const token = route.query.token as string;
 
-const userStore = useUserStore();
-const alreadyVerified = userStore.email_verified_at !== null;
+const appStore = useAppStore();
+const alreadyVerified = appStore.user.email_verified_at !== null;
 
 /* Methods */
 

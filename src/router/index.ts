@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useUserStore } from '@/stores/user';
+import { useAppStore } from '@/store';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -89,8 +89,8 @@ const router = createRouter({
 
 // Navigation guard to check against authentication
 router.beforeEach((to, from, next) => {
-  const userStore = useUserStore();
-  if (to.matched.some((record) => record.meta.requireLogin) && !userStore.access) {
+  const appStore = useAppStore();
+  if (to.matched.some((record) => record.meta.requireLogin) && !appStore.user.access) {
     next({ name: 'login', query: { to: to.path } });
   } else {
     next();
@@ -99,12 +99,12 @@ router.beforeEach((to, from, next) => {
 
 // Navigation guard to prevent re-login and re-registration
 router.beforeEach((to, from, next) => {
-  const userStore = useUserStore();
+  const appStore = useAppStore();
   if (
     to.matched.some(
       (record) => record.path.includes('/login') || record.path.includes('/register'),
     ) &&
-    userStore.access
+    appStore.user.access
   ) {
     next({ name: 'home' });
   } else {

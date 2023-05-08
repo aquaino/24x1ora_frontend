@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { usersApi } from '@/api/resources';
-import { useUserStore } from '@/stores/user';
+import { useAppStore } from '@/store';
 import type { UserInputWihtConfirmPassword } from '@/api/interfaces';
 import { resetForm } from '@/utils';
 import type { FormInstance, FormRules } from 'element-plus';
 import { ArrowLeftBold } from '@element-plus/icons-vue';
 import router from '@/router';
 
-const userStore = useUserStore();
+const appStore = useAppStore();
 const formRef = ref<FormInstance>();
 
 /* Data */
@@ -63,7 +63,7 @@ const formRules = reactive<FormRules>({
 /* Methods */
 
 async function register(formRef: FormInstance | undefined) {
-  userStore.$reset();
+  appStore.clearUserData();
   if (!formRef) return;
   await formRef.validate(async (valid) => {
     if (valid) {

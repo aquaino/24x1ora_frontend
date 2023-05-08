@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import type { FormInstance } from 'element-plus';
-import { useUserStore } from '@/stores/user';
+import { useAppStore } from '@/store';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 
@@ -28,9 +28,10 @@ export function hasAttachment(regexForName: RegExp, attachments: string[]): bool
 }
 
 export function logout(redirectToLogin: boolean) {
-  const userStore = useUserStore();
+  const appStore = useAppStore();
   const router = useRouter();
-  userStore.$reset();
+  appStore.clearUserData();
+  appStore.setActiveMenuItem('1');
   axios.defaults.headers.common['Authorization'] = '';
   if (redirectToLogin) router.push({ name: 'login' });
 }

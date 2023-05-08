@@ -2,23 +2,21 @@
 import { ref, reactive } from 'vue';
 import { Message, Key } from '@element-plus/icons-vue';
 import { usersApi } from '@/api/resources';
-import { useUserStore } from '@/stores/user';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useRouter, useRoute } from 'vue-router';
-import { useNavigationStore } from '@/stores/navigation';
+import { useAppStore } from '@/store';
 
 /* Data */
 
-const userStore = useUserStore();
-const navigationStore = useNavigationStore();
+const appStore = useAppStore();
 const router = useRouter();
 const route = useRoute();
 
 const formRef = ref<FormInstance>();
-const rememberEmail = ref(navigationStore.rememberEmail !== null);
+const rememberEmail = ref(appStore.preferences.rememberEmail !== null);
 
 const form = reactive({
-  email: navigationStore.rememberEmail ? navigationStore.rememberEmail : '',
+  email: appStore.preferences.rememberEmail ? appStore.preferences.rememberEmail : '',
   password: '',
 });
 
@@ -43,18 +41,17 @@ const formRules = reactive<FormRules>({
 /* Methods */
 
 async function login(formRef: FormInstance | undefined) {
-  userStore.$reset();
   if (!formRef) return;
   // Set wether to remember email or not
-  navigationStore.setRememberEmail(rememberEmail.value ? form.email : null);
+  appStore.setRememberEmail(rememberEmail.value ? form.email : null);
   await formRef.validate(async (valid) => {
     if (valid) {
       try {
         // Authenticate and save user data
         const authData = await usersApi.login(form.email, form.password);
-        userStore.setAccessToken(authData.token);
+        appStore.setAccessToken(authData.token);
         const userData = await usersApi.getProfileDetails();
-        userStore.setUserData(userData);
+        appStore.setUserData(userData);
         router.push({ name: 'home' });
       } catch (error: any) {
         if (error.response.status === 401) {

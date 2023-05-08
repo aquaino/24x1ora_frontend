@@ -11,7 +11,7 @@ import { teamsApi } from '@/api/resources';
 import { ElMessage } from 'element-plus';
 import { useRoute } from 'vue-router';
 import { hasAttachment } from '@/utils';
-import { useUserStore } from '@/stores/user';
+import { useAppStore } from '@/store';
 
 /**
  * FUNCTION
@@ -39,7 +39,7 @@ const subscriptions: Ref<{ event: RaceEvent; teams: TeamExtended[] }[]> = ref(Ar
 const loading = ref(true);
 
 const route = useRoute();
-const userStore = useUserStore();
+const appStore = useAppStore();
 
 const message = {
   type: route.query.messageType as 'success' | 'warning' | 'error' | 'info',
@@ -89,7 +89,7 @@ function showMessage() {
 
 onMounted(async () => {
   // Get user teams for each event
-  if (userStore.email_verified_at) {
+  if (appStore.user.email_verified_at) {
     await getEventIds();
     await getSubscriptions();
   }

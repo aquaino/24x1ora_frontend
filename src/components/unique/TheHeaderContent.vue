@@ -4,12 +4,12 @@ import TheDesktopMenu from '@/components/unique/TheDesktopMenu.vue';
 import TheMobileMenu from '@/components/unique/TheMobileMenu.vue';
 import { Calendar, SwitchButton, Tickets, User } from '@element-plus/icons-vue';
 import type { MenuItem } from '../../interfaces';
-import { useNavigationStore } from '@/stores/navigation';
+import { useAppStore } from '@/store';
 
 /* Data */
 
 const appName = import.meta.env.VITE_APP_NAME;
-const navigationStore = useNavigationStore();
+const appStore = useAppStore();
 
 const menu: MenuItem[] = [
   {
@@ -41,7 +41,7 @@ const menu: MenuItem[] = [
       :to="{ name: 'home' }"
       class="is-flex"
       title="Home"
-      @click="navigationStore.setActiveMenuItem('1')"
+      @click="appStore.setActiveMenuItem('1')"
     >
       <ElImage :src="logo" :alt="`Logo ${appName}`" style="width: 130px" fit="contain" />
       <h2 class="hidden-sm-and-down">{{ appName }}</h2>
