@@ -145,7 +145,9 @@ onMounted(async () => {
       </ElFormItem>
       <ElDivider />
       <ElFormItem>
-        <div class="is-help-text">È obbligatorio specificare l'identificativo di almeno una delle seguenti tessere.</div>
+        <div class="is-help-text">
+          È obbligatorio specificare l'identificativo di almeno una delle seguenti tessere.
+        </div>
       </ElFormItem>
       <ElFormItem label="Tessera FIDAL" prop="fidal_id">
         <ElInput v-model="form.fidal_id" />

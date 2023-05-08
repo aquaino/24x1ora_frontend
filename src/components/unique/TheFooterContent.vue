@@ -39,6 +39,6 @@
 }
 
 .iubenda-buttons > a:first-child {
-  margin-right: .5rem !important;
+  margin-right: 0.5rem !important;
 }
 </style>
