@@ -10,10 +10,8 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     const userStore = useUserStore();
-    if (userStore.user) {
-      const token = userStore.user.access;
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    const token = userStore.access;
+    config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   (error) => {

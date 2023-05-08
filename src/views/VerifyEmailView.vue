@@ -23,7 +23,7 @@ const route = useRoute();
 const token = route.query.token as string;
 
 const userStore = useUserStore();
-const alreadyVerified = userStore.user.email_verified_at !== null;
+const alreadyVerified = userStore.email_verified_at !== null;
 
 /* Methods */
 

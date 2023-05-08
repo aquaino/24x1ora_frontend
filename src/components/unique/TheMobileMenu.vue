@@ -2,8 +2,11 @@
 import { ref } from 'vue';
 import { Menu } from '@element-plus/icons-vue';
 import type { MenuItem } from '../../interfaces';
+import { useNavigationStore } from '@/stores/navigation';
+import { storeToRefs } from 'pinia';
 
 /* Props */
+
 const props = defineProps<{
   menuItems: MenuItem[];
 }>();
@@ -12,6 +15,9 @@ const props = defineProps<{
 
 const appName = import.meta.env.VITE_APP_NAME;
 const mobileMenu = ref(false);
+
+const navigationStore = useNavigationStore();
+const { activeMenuItem } = storeToRefs(navigationStore);
 </script>
 
 <template>
@@ -31,45 +37,36 @@ const mobileMenu = ref(false);
         <h1 class="is-margin-0">{{ appName }}</h1>
       </template>
       <template #default>
-        <div id="mobile-menu">
-          <template v-for="item in props.menuItems" :key="`menu-item-${item.routeName}`">
-            <ElButton
-              @click="
-                $router.push({ name: item.routeName });
-                mobileMenu = false;
-              "
-              :icon="item.icon"
-              :title="item.title"
-              link
-              :type="item.type"
-              >{{ item.text }}</ElButton
-            >
-            <ElDivider v-if="item.divider" direction="horizontal" />
-          </template>
-        </div>
+        <ElMenu :default-active="activeMenuItem" mode="vertical" :router="true" :ellipsis="false">
+          <ElMenuItem
+            v-for="(menuItem, index) in props.menuItems"
+            :key="`menu-item-${index}`"
+            :index="(index + 1).toString()"
+            :route="{ name: menuItem.routeName }"
+            :title="menuItem.title"
+            @click="
+              navigationStore.setActiveMenuItem((index + 1).toString());
+              mobileMenu = false;
+            "
+            :style="{
+              color: menuItem.type === 'danger' ? 'var(--el-color-danger)' : '',
+            }"
+          >
+            <ElIcon><component :is="menuItem.icon" /></ElIcon>
+            {{ menuItem.text }}
+          </ElMenuItem>
+        </ElMenu>
       </template>
     </ElDrawer>
   </div>
 </template>
 
 <style scoped>
-#mobile-menu {
-  position: relative;
-  height: 100%;
-}
-
-#mobile-menu .el-button {
-  display: flex;
-  font-size: 22px;
-  font-weight: 400;
-  margin-left: 0;
-}
-
-#mobile-menu .el-button:not(:first-of-type) {
-  margin-top: 1.25rem;
-}
-
 :deep(.el-drawer__header) {
   margin-bottom: 1rem;
+}
+
+:deep(.el-drawer__body) {
+  padding: 0;
 }
 </style>

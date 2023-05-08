@@ -90,7 +90,7 @@ const router = createRouter({
 // Navigation guard to check against authentication
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
-  if (to.matched.some((record) => record.meta.requireLogin) && !userStore.user.access) {
+  if (to.matched.some((record) => record.meta.requireLogin) && !userStore.access) {
     next({ name: 'login', query: { to: to.path } });
   } else {
     next();
@@ -102,11 +102,9 @@ router.beforeEach((to, from, next) => {
   const userStore = useUserStore();
   if (
     to.matched.some(
-      (record) =>
-        record.path.includes('/login') ||
-        record.path.includes('/register') 
+      (record) => record.path.includes('/login') || record.path.includes('/register'),
     ) &&
-    userStore.user.access
+    userStore.access
   ) {
     next({ name: 'home' });
   } else {

@@ -45,6 +45,20 @@ body {
 
 /* Margins */
 
+.is-margin-y-auto {
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+}
+
+.is-margin-x-auto {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.is-margin-left-auto {
+  margin-left: auto !important;
+}
+
 .is-margin-0 {
   margin: 0 !important;
 }

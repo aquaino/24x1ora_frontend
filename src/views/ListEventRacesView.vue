@@ -61,7 +61,7 @@ onMounted(async () => {
     />
     <ElEmpty v-if="races.length === 0 && !loading" description="Nessuna gara disponibile" />
     <div v-else>
-      <ElRow v-if="!userStore.user.email_verified_at" justify="center">
+      <ElRow v-if="!userStore.email_verified_at" justify="center">
         <ElCol :xs="24" :sm="16" :md="14" :lg="10" class="is-margin-bottom-15">
           <ElAlert type="error" show-icon :closable="false">
             <template #title>
@@ -70,7 +70,7 @@ onMounted(async () => {
                 :to="{
                   name: 'verify',
                   query: {
-                    token: userStore.user.access,
+                    token: userStore.access,
                   },
                 }"
                 class="is-bold"
@@ -124,7 +124,7 @@ onMounted(async () => {
                   })
                 "
                 title="Iscriviti alla gara"
-                :disabled="!userStore.user.email_verified_at"
+                :disabled="!userStore.email_verified_at"
                 type="primary"
                 >Iscriviti</ElButton
               >

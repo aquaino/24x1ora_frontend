@@ -67,8 +67,8 @@ async function getSubscriptions() {
     }
     subscriptions.value.forEach((subscription) => {
       subscription.teams.forEach((team: any) => {
-        team['paymentUploaded'] = hasAttachment(/medcert.*/, team.attachments);
-        team['medcertUploaded'] = hasAttachment(/payment.*/, team.attachments);
+        team['medcertUploaded'] = hasAttachment(/medcert.*/, team.attachments);
+        team['paymentUploaded'] = hasAttachment(/payment.*/, team.attachments);
       });
     });
   } catch (error) {
@@ -89,7 +89,7 @@ function showMessage() {
 
 onMounted(async () => {
   // Get user teams for each event
-  if (userStore.user.email_verified_at) {
+  if (userStore.email_verified_at) {
     await getEventIds();
     await getSubscriptions();
   }

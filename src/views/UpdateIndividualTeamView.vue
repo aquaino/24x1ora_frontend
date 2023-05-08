@@ -122,7 +122,7 @@ onMounted(async () => {
                   ref="medcertUploadRef"
                   :action="`${backendTeamAttachmentUrl}/medcert`"
                   :headers="{
-                    Authorization: `Bearer ${userStore.user.access}`,
+                    Authorization: `Bearer ${userStore.access}`,
                   }"
                   method="POST"
                   :auto-upload="false"
@@ -154,7 +154,7 @@ onMounted(async () => {
                   ref="paymentUploadRef"
                   :action="`${backendTeamAttachmentUrl}/payment`"
                   :headers="{
-                    Authorization: `Bearer ${userStore.user.access}`,
+                    Authorization: `Bearer ${userStore.access}`,
                   }"
                   method="POST"
                   :auto-upload="false"

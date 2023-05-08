@@ -4,10 +4,12 @@ import TheDesktopMenu from '@/components/unique/TheDesktopMenu.vue';
 import TheMobileMenu from '@/components/unique/TheMobileMenu.vue';
 import { Calendar, SwitchButton, Tickets, User } from '@element-plus/icons-vue';
 import type { MenuItem } from '../../interfaces';
+import { useNavigationStore } from '@/stores/navigation';
 
 /* Data */
 
 const appName = import.meta.env.VITE_APP_NAME;
+const navigationStore = useNavigationStore();
 
 const menu: MenuItem[] = [
   {
@@ -21,9 +23,8 @@ const menu: MenuItem[] = [
     icon: Tickets,
     text: 'Iscrizioni',
     title: 'Visualizza iscrizioni',
-    divider: true,
   },
-  { routeName: 'user', icon: User, text: 'Profilo', title: 'Gestisci' },
+  { routeName: 'user', icon: User, text: 'Profilo', title: 'Gestisci profilo' },
   {
     routeName: 'logout',
     icon: SwitchButton,
@@ -36,7 +37,12 @@ const menu: MenuItem[] = [
 
 <template>
   <div class="is-flex is-align-center is-justify-space-between is-height-100">
-    <RouterLink :to="{ name: 'home' }" class="is-flex" title="Home">
+    <RouterLink
+      :to="{ name: 'home' }"
+      class="is-flex"
+      title="Home"
+      @click="navigationStore.setActiveMenuItem('1')"
+    >
       <ElImage :src="logo" :alt="`Logo ${appName}`" style="width: 130px" fit="contain" />
       <h2 class="hidden-sm-and-down">{{ appName }}</h2>
     </RouterLink>

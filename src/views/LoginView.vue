@@ -5,22 +5,20 @@ import { usersApi } from '@/api/resources';
 import { useUserStore } from '@/stores/user';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useRouter, useRoute } from 'vue-router';
-import { usePreferencesStore } from '@/stores/preferences';
+import { useNavigationStore } from '@/stores/navigation';
 
 /* Data */
 
 const userStore = useUserStore();
-const preferencesStore = usePreferencesStore();
+const navigationStore = useNavigationStore();
 const router = useRouter();
 const route = useRoute();
 
 const formRef = ref<FormInstance>();
-const rememberEmail = ref(preferencesStore.preferences.rememberEmail !== null);
+const rememberEmail = ref(navigationStore.rememberEmail !== null);
 
 const form = reactive({
-  email: preferencesStore.preferences.rememberEmail
-    ? preferencesStore.preferences.rememberEmail
-    : '',
+  email: navigationStore.rememberEmail ? navigationStore.rememberEmail : '',
   password: '',
 });
 
@@ -48,7 +46,7 @@ async function login(formRef: FormInstance | undefined) {
   userStore.$reset();
   if (!formRef) return;
   // Set wether to remember email or not
-  preferencesStore.setRememberEmail(rememberEmail.value ? form.email : null);
+  navigationStore.setRememberEmail(rememberEmail.value ? form.email : null);
   await formRef.validate(async (valid) => {
     if (valid) {
       try {

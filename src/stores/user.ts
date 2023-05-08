@@ -10,31 +10,25 @@ interface UserData {
   access: string | null;
 }
 
-interface StoreState {
-  user: UserData;
-}
-
 export const useUserStore = defineStore('user', {
-  state: (): StoreState => ({
-    user: {
-      id: null,
-      name: null,
-      email: null,
-      isAdmin: null,
-      email_verified_at: null,
-      access: null,
-    },
+  state: (): UserData => ({
+    id: null,
+    name: null,
+    email: null,
+    isAdmin: null,
+    email_verified_at: null,
+    access: null,
   }),
   actions: {
     setAccessToken(token: string) {
-      this.user.access = token;
+      this.access = token;
     },
     setUserData(data: User) {
-      this.user.id = data.id;
-      this.user.name = data.name;
-      this.user.email = data.email;
-      this.user.isAdmin = data.isAdmin;
-      this.user.email_verified_at = data.email_verified_at;
+      this.id = data.id;
+      this.name = data.name;
+      this.email = data.email;
+      this.isAdmin = data.isAdmin;
+      this.email_verified_at = data.email_verified_at;
     },
   },
   persist: true,

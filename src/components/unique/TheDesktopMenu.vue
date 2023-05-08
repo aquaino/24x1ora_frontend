@@ -1,24 +1,43 @@
 <script setup lang="ts">
 import type { MenuItem } from '../../interfaces';
+import { useNavigationStore } from '@/stores/navigation';
+import { storeToRefs } from 'pinia';
 
 /* Props */
+
 const props = defineProps<{
   menuItems: MenuItem[];
 }>();
+
+/* Data */
+
+const navigationStore = useNavigationStore();
+const { activeMenuItem } = storeToRefs(navigationStore);
 </script>
 
 <template>
-  <div class="hidden-sm-and-down">
-    <template v-for="item in props.menuItems" :key="`menu-item-${item.routeName}`">
-      <ElButton
-        @click="$router.push({ name: item.routeName })"
-        :icon="item.icon"
-        :title="item.title"
-        link
-        :type="item.type"
-        >{{ item.text }}</ElButton
+  <div class="hidden-sm-and-down is-height-100">
+    <ElMenu
+      :default-active="activeMenuItem"
+      mode="horizontal"
+      :router="true"
+      :ellipsis="false"
+      class="is-height-100"
+    >
+      <ElMenuItem
+        v-for="(menuItem, index) in props.menuItems"
+        :key="`menu-item-${index}`"
+        :index="(index + 1).toString()"
+        :route="{ name: menuItem.routeName }"
+        :title="menuItem.title"
+        :style="{
+          color: menuItem.type === 'danger' ? 'var(--el-color-danger)' : '',
+        }"
+        @click="navigationStore.setActiveMenuItem((index + 1).toString())"
       >
-      <ElDivider v-if="item.divider" direction="vertical" />
-    </template>
+        <ElIcon><component :is="menuItem.icon" /></ElIcon>
+        {{ menuItem.text }}
+      </ElMenuItem>
+    </ElMenu>
   </div>
 </template>
