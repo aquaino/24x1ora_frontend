@@ -5,8 +5,11 @@ import { usersApi } from '@/api/resources';
 import type { FormInstance, FormRules } from 'element-plus';
 import { useRouter, useRoute } from 'vue-router';
 import { useAppStore } from '@/store';
+import { useI18n } from 'vue-i18n';
 
 /* Data */
+
+const { t } = useI18n();
 
 const appStore = useAppStore();
 const router = useRouter();
@@ -28,14 +31,12 @@ const alert = ref({
 });
 
 // Validation
-const requiredMessage = 'Questo campo è obbligatorio';
-('Questo campo è obbligatorio');
 const formRules = reactive<FormRules>({
   email: [
-    { required: true, message: requiredMessage, trigger: 'none' },
-    { type: 'email', message: 'Inserisci un indirizzo e-mail valido', trigger: 'none' },
+    { required: true, message: t('forms.requiredField'), trigger: 'none' },
+    { type: 'email', message: t('forms.insertValidEmail'), trigger: 'none' },
   ],
-  password: [{ required: true, message: requiredMessage, trigger: 'none' }],
+  password: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
 });
 
 /* Methods */
@@ -55,11 +56,11 @@ async function login(formRef: FormInstance | undefined) {
         router.push({ name: 'home' });
       } catch (error: any) {
         if (error.response.status === 401) {
-          alert.value = { type: 'error', text: 'Credenziali non valide.' };
+          alert.value = { type: 'error', text: t('auth.invalidCredentials') };
         } else {
           alert.value = {
             type: 'error',
-            text: 'Si è verificato un problema, riprovare più tardi.',
+            text: t('api.generalError'),
           };
         }
       }
@@ -71,7 +72,7 @@ async function login(formRef: FormInstance | undefined) {
 <template>
   <ElCard shadow="never">
     <template #header>
-      <h2>Accedi al portale</h2>
+      <h2>{{ $t('auth.loginToPortal') }}</h2>
     </template>
     <ElForm
       ref="formRef"
@@ -95,17 +96,19 @@ async function login(formRef: FormInstance | undefined) {
         </ElInput>
       </ElFormItem>
       <ElFormItem>
-        <ElCheckbox label="Ricorda indirizzo e-mail" v-model="rememberEmail" />
+        <ElCheckbox :label="$t('auth.rememberEmail')" v-model="rememberEmail" />
       </ElFormItem>
       <ElFormItem>
-        <ElButton type="primary" native-type="submit" title="Accedi al portale">Accedi</ElButton>
+        <ElButton type="primary" native-type="submit" :title="$t('loginToPortal')">{{
+          $t('auth.login')
+        }}</ElButton>
       </ElFormItem>
     </ElForm>
     <ElDivider />
     <div>
-      Non sei registrato?
+      {{ $t('auth.askNotRegistered') }}
       <ElLink>
-        <RouterLink :to="{ name: 'register' }">Registrati ora.</RouterLink>
+        <RouterLink :to="{ name: 'register' }">{{ $t('auth.registerNow') }}</RouterLink>
       </ElLink>
     </div>
     <ElAlert
@@ -117,3 +120,9 @@ async function login(formRef: FormInstance | undefined) {
     />
   </ElCard>
 </template>
+
+<style scoped>
+.el-link {
+  vertical-align: inherit;
+}
+</style>

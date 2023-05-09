@@ -4,8 +4,8 @@ import logo from '/logo.png';
 
 <template>
   <div class="logo-wrapper">
-    <ElImage :src="logo" alt="Logo 24x1Ora Buttrio" />
-    <h1>Portale di registrazione alle gare</h1>
+    <ElImage :src="logo" :alt="$t('general.logoAlt')" />
+    <h1>{{ $t('general.portal') }}</h1>
   </div>
 </template>
 
