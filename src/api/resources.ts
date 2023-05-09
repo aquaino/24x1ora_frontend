@@ -80,6 +80,12 @@ export const teamsApi = {
       });
     return response.data.team.runners[0];
   },
+
+  async confirmTeam(eventId: number, teamId: number) {
+    await apiClient.post(`events/${eventId}/teams/${teamId}/confirmPayment`).catch((error) => {
+      throw error;
+    });
+  },
 };
 
 export const usersApi = {

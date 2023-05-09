@@ -95,7 +95,8 @@ onMounted(async () => {
                     >{{ event['start_hour'] + race['type']['start_offset'] }}:00</ElDescriptionsItem
                   >
                   <ElDescriptionsItem label="Durata"
-                    >{{ race.type.duration / 60 }} ore</ElDescriptionsItem
+                    >{{ race.type.duration / 60 }}
+                    {{ race.type.duration / 60 === 1 ? 'ora' : 'ore' }}</ElDescriptionsItem
                   >
                   <ElDescriptionsItem label="Corridori per squadra">{{
                     race.type.runners_per_team

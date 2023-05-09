@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import type { Ref } from 'vue';
 import type { RaceEvent, Team } from '@/api/interfaces';
 import { eventsApi } from '@/api/resources';
@@ -8,7 +8,7 @@ import AppCard from '@/components/base/AppCard.vue';
 import { formatDateTime } from '@/utils';
 import { Ticket, TrophyBase, Document, Money } from '@element-plus/icons-vue';
 import { teamsApi } from '@/api/resources';
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElPopconfirm } from 'element-plus';
 import { useRoute } from 'vue-router';
 import { hasAttachment } from '@/utils';
 import { useAppStore } from '@/store';
@@ -26,25 +26,27 @@ import { useAppStore } from '@/store';
 
 /* Interfaces */
 
-interface TeamExtended extends Team {
+interface TeamWithAttachmentStatus extends Team {
   medcertUploaded: boolean;
   paymentUploaded: boolean;
 }
 
 /* Data */
 
+const store = useAppStore();
+
 const eventIds: Ref<number[]> = ref(Array());
-const subscriptions: Ref<{ event: RaceEvent; teams: TeamExtended[] }[]> = ref(Array());
+const subscriptions: Ref<{ event: RaceEvent; teams: TeamWithAttachmentStatus[] }[]> = ref(Array());
 
 const loading = ref(true);
 
 const route = useRoute();
 const appStore = useAppStore();
 
-const message = {
+const message = ref({
   type: route.query.messageType as 'success' | 'warning' | 'error' | 'info',
   text: route.query.messageText as string,
-};
+});
 
 /* Methods */
 
@@ -63,7 +65,9 @@ async function getSubscriptions() {
   try {
     for (let index = 0; index < eventIds.value.length; index++) {
       const eventAndTeams = await teamsApi.getEventTeams(eventIds.value[index]);
-      subscriptions.value.push(eventAndTeams as { event: RaceEvent; teams: TeamExtended[] });
+      subscriptions.value.push(
+        eventAndTeams as { event: RaceEvent; teams: TeamWithAttachmentStatus[] },
+      );
     }
     subscriptions.value.forEach((subscription) => {
       subscription.teams.forEach((team: any) => {
@@ -77,12 +81,66 @@ async function getSubscriptions() {
 }
 
 function showMessage() {
-  ElMessage({
-    type: message.type,
-    showClose: true,
-    dangerouslyUseHTMLString: true,
-    message: message.text,
-  });
+  if (message.value.type && message.value.text) {
+    ElMessage({
+      type: message.value.type,
+      showClose: true,
+      dangerouslyUseHTMLString: true,
+      message: message.value.text,
+    });
+  }
+}
+
+function getTeamProgress(team: TeamWithAttachmentStatus): {
+  percentage: Object;
+  status: Object;
+  title: string;
+} {
+  return !team.medcertUploaded && !team.paymentUploaded && !team.confirmed
+    ? {
+        percentage: 20,
+        status: 'exception',
+        title: 'Caricare certificato medico e ricevuta di pagamento',
+      }
+    : team.medcertUploaded && !team.paymentUploaded && !team.confirmed
+    ? {
+        percentage: 40,
+        status: 'exception',
+        title: 'Caricare ricevuta di pagamento',
+      }
+    : !team.medcertUploaded && team.paymentUploaded && !team.confirmed
+    ? {
+        percentage: 60,
+        status: 'exception',
+        title: 'Caricare certificato medico',
+      }
+    : team.medcertUploaded && team.paymentUploaded && !team.confirmed
+    ? {
+        percentage: 80,
+        status: 'warning',
+        title: 'Iscrizione in attesa di conferma',
+      }
+    : {
+        percentage: 100,
+        status: 'success',
+        title: 'Iscrizione confermata',
+      };
+}
+
+async function confirmTeam(eventId: number, teamId: number) {
+  try {
+    await teamsApi.confirmTeam(eventId, teamId);
+    loading.value = true;
+    await getEventIds();
+    await getSubscriptions();
+    loading.value = false;
+    message.value = {
+      type: 'success',
+      text: `Iscrizione <strong>#${teamId}</strong> confermata con successo.`,
+    };
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 /* Mounted */
@@ -94,11 +152,17 @@ onMounted(async () => {
     await getSubscriptions();
   }
   loading.value = false;
-
-  if (message.type && message.text) {
-    showMessage();
-  }
 });
+
+/* Watch */
+
+watch(
+  message,
+  () => {
+    showMessage();
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
@@ -160,30 +224,10 @@ onMounted(async () => {
             </template>
             <template #content>
               <ElProgress
-                :percentage="
-                  !team.medcertUploaded && !team.paymentUploaded
-                    ? 33
-                    : !(team.medcertUploaded && team.paymentUploaded)
-                    ? 67
-                    : 100
-                "
-                :status="
-                  !team.medcertUploaded && !team.paymentUploaded
-                    ? 'exception'
-                    : !(team.medcertUploaded && team.paymentUploaded)
-                    ? 'warning'
-                    : 'success'
-                "
+                :percentage="getTeamProgress(team).percentage"
+                :status="getTeamProgress(team).status"
                 :stroke-width="10"
-                :title="
-                  !team.medcertUploaded && !team.paymentUploaded
-                    ? 'Caricare certificato medico e ricevuta di bonifico'
-                    : !team.medcertUploaded && team.paymentUploaded
-                    ? 'Caricare certificato medico'
-                    : team.medcertUploaded && !team.paymentUploaded
-                    ? 'Caricare ricevuta di pagamento'
-                    : 'Tutti i dati sono stati inseriti'
-                "
+                :title="getTeamProgress(team).title"
                 class="is-width-100 is-margin-bottom-10"
               />
               <div class="is-flex is-justify-space-between is-align-center">
@@ -203,7 +247,8 @@ onMounted(async () => {
                     }}:00</ElDescriptionsItem
                   >
                   <ElDescriptionsItem label="Durata"
-                    >{{ team.type.duration / 60 }} ore</ElDescriptionsItem
+                    >{{ team.type.duration / 60 }}
+                    {{ team.type.duration / 60 === 1 ? 'ora' : 'ore' }}</ElDescriptionsItem
                   >
                   <ElDescriptionsItem label="Inserita">{{
                     formatDateTime(team.created_at, 'ISO', 'DATETIME_SHORT')
@@ -253,7 +298,19 @@ onMounted(async () => {
                   "
                   >Modifica</ElButton
                 >
-                <ElButton type="danger" title="Elimina iscrizione" disabled>Elimina</ElButton>
+                <ElPopconfirm
+                  v-if="store.user.isAdmin && !team.confirmed"
+                  title="Confermare l'iscrizione?"
+                  width="200"
+                  confirm-button-text="Sì"
+                  hide-icon
+                  cancel-button-text="No"
+                  @confirm="confirmTeam(subscription.event.id, team.id)"
+                >
+                  <template #reference>
+                    <ElButton type="success" title="Conferma iscrizione">Conferma</ElButton>
+                  </template>
+                </ElPopconfirm>
               </div>
             </template>
           </AppCard>

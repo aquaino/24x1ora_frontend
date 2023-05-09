@@ -67,6 +67,14 @@ const { navigation } = storeToRefs(appStore);
 </template>
 
 <style scoped>
+:deep(.el-menu-item) {
+  font-size: 20px;
+}
+
+:deep(.el-menu-item .el-icon) {
+  font-size: 22px;
+}
+
 :deep(.el-drawer__header) {
   margin-bottom: 1rem;
 }
