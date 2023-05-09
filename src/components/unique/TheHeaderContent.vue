@@ -6,6 +6,11 @@ import { Calendar, SwitchButton, Tickets, User } from '@element-plus/icons-vue';
 import type { MenuItem } from '../../interfaces';
 import { useAppStore } from '@/store';
 
+/**
+ * MAIN FUNCTION
+ * Display header informations: logo and desktop/mobile navigation.
+ */
+
 /* Data */
 
 const appName = import.meta.env.VITE_APP_NAME;

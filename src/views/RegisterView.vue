@@ -10,7 +10,7 @@ import router from '@/router';
 import { useI18n } from 'vue-i18n';
 
 /**
- * FEATURES
+ * MAIN FUNCTION
  * Register new user.
  *
  * LOGIC

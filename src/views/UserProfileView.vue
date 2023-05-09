@@ -7,8 +7,8 @@ import AppPageTitle from '@/components/base/AppPageTitle.vue';
 import { useI18n } from 'vue-i18n';
 
 /**
- * FEATURES
- * Show and let modify user info.
+ * MAIN FUNCTION
+ * Show and update user info.
  *
  * LOGIC
  * Show user info and update them from input.

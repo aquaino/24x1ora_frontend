@@ -10,11 +10,11 @@ import partenza_2019 from '/partenza_2019.jpg';
 import { useI18n } from 'vue-i18n';
 
 /**
- * FEATURES
+ * MAIN FUNCTION
  * Show available events.
  *
  * LOGIC
- * Get and show all current events.
+ * Get and show events list.
  *
  * EXCEPTIONS
  * - WS call failure -> Error alert

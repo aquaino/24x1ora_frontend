@@ -8,7 +8,7 @@ import { useAppStore } from '@/store';
 import { useI18n } from 'vue-i18n';
 
 /**
- * FEATURES
+ * MAIN FUNCTION
  * Login to the portal.
  *
  * LOGIC
@@ -109,7 +109,7 @@ async function login(formRef: FormInstance | undefined) {
         <ElCheckbox :label="$t('auth.rememberEmail')" v-model="rememberEmail" />
       </ElFormItem>
       <ElFormItem>
-        <ElButton type="primary" native-type="submit" :title="$t('loginToPortal')">{{
+        <ElButton type="primary" native-type="submit" :title="$t('auth.loginToPortal')">{{
           $t('auth.login')
         }}</ElButton>
       </ElFormItem>

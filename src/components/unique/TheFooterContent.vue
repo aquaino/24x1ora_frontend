@@ -1,13 +1,8 @@
 <script setup lang="ts">
 /**
- * FEATURES
- * Display footer informations.
- *
- * LOGIC
- * Display support address, copyright, authors, GDPR and back to top button.
- *
- * EXCEPTIONS
- * Nothing to report.
+ * MAIN FUNCTION
+ * Display footer informations: support address, copyright, authors, 
+ * GDPR and back to top button.
  */
 </script>
 

@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import TheHeaderContent from '@/components/unique/TheHeaderContent.vue';
 import TheFooterContent from '@/components/unique/TheFooterContent.vue';
+
+/**
+ * MAIN FUNCTION
+ * Define page structure for authenticated users.
+ */
 </script>
 
 <template>

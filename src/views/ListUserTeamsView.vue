@@ -14,11 +14,11 @@ import { hasAttachment } from '@/utils';
 import { useAppStore } from '@/store';
 
 /**
- * FEATURES
- * List user teams.
+ * MAIN FUNCTION
+ * Show all user teams.
  *
  * LOGIC
- * Display user teams for all events and allow him to update them.
+ * Display user teams for all events and allow to update them.
  *
  * EXCEPTIONS
  * Nothing to report.

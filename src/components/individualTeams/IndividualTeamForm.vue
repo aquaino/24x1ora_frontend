@@ -4,16 +4,18 @@ import type { Runner } from '@/api/interfaces';
 import type { FormInstance, FormRules } from 'element-plus';
 import { resetForm } from '@/utils';
 import { teamsApi } from '@/api/resources';
+import { useI18n } from 'vue-i18n';
 
 /**
- * FEATURES
+ * MAIN FUNCTION
  * Define individual team creation/update form.
  *
  * LOGIC
  * Get user input and pass it to parent page using specific events.
+ * If in update mode, fetch current team data and populate fields.
  *
  * EXCEPTIONS
- * Nothing to report.
+ * - WS call fails -> Error alert
  */
 
 /* Props */
@@ -23,8 +25,16 @@ const props = defineProps<{
   eventId?: number;
   teamId?: number;
   discount: number;
-  alert: { type: string; text: string };
 }>();
+
+/* Data */
+
+const { t } = useI18n();
+
+const alert = ref({
+  type: 'error',
+  text: '',
+});
 
 /* Events */
 
@@ -76,7 +86,7 @@ async function getSubscriptionData() {
       emits('data-fetched');
     }
   } catch (error) {
-    console.log(error);
+    alert.value.text = t('api.generalError');
   }
 }
 
@@ -159,7 +169,7 @@ onMounted(async () => {
         <ElInput v-model="form.other_id" />
       </ElFormItem>
       <slot name="additional-form-items" />
-      <ElFormItem>
+      <ElFormItem class="is-margin-bottom-0">
         <ElButton
           type="success"
           native-type="submit"
@@ -176,9 +186,9 @@ onMounted(async () => {
     </ElForm>
   </div>
   <ElAlert
-    v-show="props.alert.text"
-    :type="props.alert.type"
-    :title="props.alert.text"
+    v-show="alert.text"
+    :type="alert.type"
+    :title="alert.text"
     show-icon
     class="is-margin-top-15"
   />

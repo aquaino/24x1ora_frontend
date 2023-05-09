@@ -1,4 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+/**
+ * MAIN FUNCTION
+ * Give feedback about not found pages and let user to return to homepage.
+ */
+</script>
 
 <template>
   <ElResult icon="error" title="Pagina non trovata" sub-title="La pagina cercata non esiste">

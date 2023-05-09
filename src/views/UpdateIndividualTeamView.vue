@@ -13,11 +13,11 @@ import { useAppStore } from '@/store';
 import { hasAttachment } from '@/utils';
 
 /**
- * FEATURES
+ * MAIN FUNCTION
  * Update individual team.
  *
  * LOGIC
- * Display team data and allow to modify them.
+ * Display team data and allow user to update them.
  *
  * EXCEPTIONS
  * - WS call fails -> Error alert
@@ -112,7 +112,6 @@ onMounted(async () => {
                 updateSubscription(formRef, form);
               }
             "
-            :alert="alert"
             :discount="availableDiscount"
           >
             <template #additional-form-items>

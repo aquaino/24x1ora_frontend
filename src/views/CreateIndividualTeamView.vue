@@ -8,8 +8,8 @@ import IndividualTeamForm from '@/components/individualTeams/IndividualTeamForm.
 import type { Runner } from '@/api/interfaces';
 
 /**
- * FEATURES
- * Create individual team.
+ * MAIN FUNCTION
+ * Create an individual team.
  *
  * LOGIC
  * Get team data from form and create team with a WS call.
@@ -82,7 +82,6 @@ async function subscribe(formRef: FormInstance | undefined, form: Runner) {
               subscribe(formRef, form);
             }
           "
-          :alert="alert"
           :discount="availableDiscount"
         />
       </ElCard>

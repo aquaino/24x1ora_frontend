@@ -12,11 +12,11 @@ import { useAppStore } from '@/store';
 import { useI18n } from 'vue-i18n';
 
 /**
- * FEATURES
- * List event races.
+ * MAIN FUNCTION
+ * Show races belonging to an event.
  *
  * LOGIC
- * Display races and allow user to subscribe.
+ * Display races list and allow user to enroll.
  *
  * EXCEPTIONS
  * - WS call failure -> Error alert
