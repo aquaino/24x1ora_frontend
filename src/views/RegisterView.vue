@@ -7,11 +7,25 @@ import { resetForm } from '@/utils';
 import type { FormInstance, FormRules } from 'element-plus';
 import { ArrowLeftBold } from '@element-plus/icons-vue';
 import router from '@/router';
+import { useI18n } from 'vue-i18n';
 
-const appStore = useAppStore();
-const formRef = ref<FormInstance>();
+/**
+ * FEATURES
+ * Register new user.
+ *
+ * LOGIC
+ * Get user data from input and register him.
+ *
+ * EXCEPTIONS
+ * - User already exists -> Error alert
+ * - WS call failure -> Error alert
+ */
 
 /* Data */
+
+const appStore = useAppStore();
+const { t } = useI18n();
+const formRef = ref<FormInstance>();
 
 const form = reactive<UserInputWihtConfirmPassword>({
   name: '',
@@ -19,45 +33,38 @@ const form = reactive<UserInputWihtConfirmPassword>({
   password: '',
   confirmPassword: '',
 });
-
-const alert = ref({
-  type: 'error',
-  text: '',
-});
-
-// Validation
-
 const checkPasswords = function (rule: any, value: any, callback: any) {
-  const notMatchingMessage = 'Le due password non coincidono';
-  ('Le due password non coincidono');
   if (value !== form.confirmPassword) {
-    callback(new Error(notMatchingMessage));
+    callback(new Error(t('forms.passwordsNotMatching')));
   } else if (value !== form.password) {
-    callback(new Error(notMatchingMessage));
+    callback(new Error(t('forms.passwordsNotMatching')));
   } else {
     callback();
   }
 };
 
-const requiredMessage = 'Questo campo è obbligatorio';
-
 const formRules = reactive<FormRules>({
   email: [
-    { required: true, message: requiredMessage, trigger: 'none' },
+    { required: true, message: t('forms.requiredField'), trigger: 'none' },
     {
       type: 'email',
-      message: 'Inserisci un indirizzo e-mail valido',
+      message: t('forms.insertValidEmail'),
       trigger: 'none',
     },
   ],
   password: [
-    { required: true, message: requiredMessage, trigger: 'none' },
+    { required: true, message: t('forms.requiredField'), trigger: 'none' },
     { validator: checkPasswords, trigger: 'none' },
   ],
   confirmPassword: [
-    { required: true, message: requiredMessage, trigger: 'none' },
+    { required: true, message: t('forms.requiredField'), trigger: 'none' },
     { validator: checkPasswords, trigger: 'none' },
   ],
+});
+
+const alert = ref({
+  type: 'error',
+  text: '',
 });
 
 /* Methods */
@@ -73,16 +80,14 @@ async function register(formRef: FormInstance | undefined) {
           name: 'login',
           query: {
             alertType: 'success',
-            alertText:
-              "Registrazione effettuata con successo! A breve riceverai un'e-mail per la conferma dell'indirizzo indicato. Controllare anche nella casella della posta indesiderata.",
+            alertText: t('auth.registrationSuccess'),
           },
         });
       } catch (error: any) {
-        console.log(error);
         if (error.response.status === 422) {
-          alert.value.text = 'Esiste già un utente registrato con questa e-mail';
+          alert.value.text = t('auth.alreadyRegistered');
         } else {
-          alert.value.text = 'Si è verificato un errore, riprovare più tardi';
+          alert.value.text = t('api.generalError');
         }
       }
     }
@@ -106,7 +111,7 @@ async function register(formRef: FormInstance | undefined) {
           text
           title="Indietro"
         />
-        <h2 class="is-margin-0">Registrati al portale</h2>
+        <h2 class="is-margin-0">{{ $t('auth.registerToPortal') }}</h2>
       </div>
     </template>
     <ElForm
@@ -117,24 +122,26 @@ async function register(formRef: FormInstance | undefined) {
       status-icon
       label-width="auto"
     >
-      <ElFormItem label="Nome e cognome" prop="name">
+      <ElFormItem :label="$t('forms.fullname')" prop="name">
         <ElInput v-model="form.name" />
       </ElFormItem>
-      <ElFormItem label="Indirizzo e-mail" prop="email" required>
+      <ElFormItem :label="$t('forms.email')" prop="email" required>
         <ElInput v-model="form.email" type="email" />
       </ElFormItem>
       <ElDivider />
       <ElFormItem label="Password" prop="password" required>
         <ElInput show-password v-model="form.password" type="password" />
       </ElFormItem>
-      <ElFormItem label="Conferma password" prop="confirmPassword" required>
+      <ElFormItem :label="$t('forms.confirmPassword')" prop="confirmPassword" required>
         <ElInput show-password v-model="form.confirmPassword" type="password" />
       </ElFormItem>
       <ElFormItem>
-        <ElButton type="primary" native-type="submit" title="Registrati sul portale"
-          >Registrati</ElButton
-        >
-        <ElButton @click="resetForm(formRef)" title="Ripristina il form">Reset</ElButton>
+        <ElButton type="primary" native-type="submit" :title="$t('auth.registerToPortal')">{{
+          $t('auth.register')
+        }}</ElButton>
+        <ElButton @click="resetForm(formRef)" :title="$t('forms.resetForm')">{{
+          $t('forms.reset')
+        }}</ElButton>
       </ElFormItem>
     </ElForm>
     <ElAlert

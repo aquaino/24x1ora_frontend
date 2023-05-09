@@ -7,6 +7,18 @@ import { useRouter, useRoute } from 'vue-router';
 import { useAppStore } from '@/store';
 import { useI18n } from 'vue-i18n';
 
+/**
+ * FEATURES
+ * Login to the portal.
+ *
+ * LOGIC
+ * Get user credentials from input and check them to login.
+ *
+ * EXCEPTIONS
+ * - Wrong credentials -> Error alert
+ * - WS call failure -> Error alert
+ */
+
 /* Data */
 
 const { t } = useI18n();
@@ -22,21 +34,19 @@ const form = reactive({
   email: appStore.preferences.rememberEmail ? appStore.preferences.rememberEmail : '',
   password: '',
 });
-
-const alert = ref({
-  type: route.query.alertType
-    ? (route.query.alertType as 'success' | 'warning' | 'error' | 'info')
-    : 'error',
-  text: route.query.alertText ? (route.query.alertText as string) : '',
-});
-
-// Validation
 const formRules = reactive<FormRules>({
   email: [
     { required: true, message: t('forms.requiredField'), trigger: 'none' },
     { type: 'email', message: t('forms.insertValidEmail'), trigger: 'none' },
   ],
   password: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
+});
+
+const alert = ref({
+  type: route.query.alertType
+    ? (route.query.alertType as 'success' | 'warning' | 'error' | 'info')
+    : 'error',
+  text: route.query.alertText ? (route.query.alertText as string) : '',
 });
 
 /* Methods */

@@ -8,7 +8,7 @@ import IndividualTeamForm from '@/components/individualTeams/IndividualTeamForm.
 import type { Runner } from '@/api/interfaces';
 
 /**
- * FUNCTION
+ * FEATURES
  * Create individual team.
  *
  * LOGIC

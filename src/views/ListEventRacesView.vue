@@ -9,16 +9,17 @@ import AppCard from '@/components/base/AppCard.vue';
 import { formatDateTime } from '@/utils';
 import { Ticket } from '@element-plus/icons-vue';
 import { useAppStore } from '@/store';
+import { useI18n } from 'vue-i18n';
 
 /**
- * FUNCTION
+ * FEATURES
  * List event races.
  *
  * LOGIC
  * Display races and allow user to subscribe.
  *
  * EXCEPTIONS
- * Nothing to report.
+ * - WS call failure -> Error alert
  */
 
 /* Data */
@@ -27,12 +28,16 @@ const route = useRoute();
 const eventId = route.params.id as string;
 
 const event: Ref<RaceEventDetails> | Ref<null> = ref(null);
-
 const loading = ref(true);
-
 const races: Ref<Race[]> = ref(Array());
 
 const appStore = useAppStore();
+const { t } = useI18n();
+
+const alert = ref({
+  type: 'error',
+  text: '',
+});
 
 /* Methods */
 
@@ -42,7 +47,7 @@ async function getRaces() {
     races.value = event.value.races;
     loading.value = false;
   } catch (error) {
-    console.log(error);
+    alert.value.text = t('api.generalError');
   }
 }
 
@@ -55,17 +60,17 @@ onMounted(async () => {
 <template>
   <div>
     <AppPageTitle
-      :title="'Gare dell\'evento ' + (event ? `&quot;${event['name']}&quot;` : '')"
-      subtitle="Elenco di tutte le gare relative all'evento"
+      :title="$t('races.racesOfEvent', { msg: event ? `&quot;${event['name']}&quot;` : '' })"
+      :subtitle="t('races.availableEventRaces')"
       :back-to="{ name: 'events' }"
     />
-    <ElEmpty v-if="races.length === 0 && !loading" description="Nessuna gara disponibile" />
+    <ElEmpty v-if="races.length === 0 && !loading" :description="$t('races.noRaces')" />
     <div v-else>
       <ElRow v-if="!appStore.user.email_verified_at" justify="center">
         <ElCol :xs="24" :sm="16" :md="14" :lg="10" class="is-margin-bottom-15">
           <ElAlert type="error" show-icon :closable="false">
             <template #title>
-              È necessario
+              {{ $t('general.isNecessary') }}
               <RouterLink
                 :to="{
                   name: 'verify',
@@ -75,9 +80,9 @@ onMounted(async () => {
                 }"
                 class="is-bold"
                 style="color: var(--el-color-error)"
-                >confermare il proprio indirizzo e-mail</RouterLink
+                >{{ $t('general.confirmEmailAddress') }}</RouterLink
               >
-              per potersi iscrivere alle gare
+              {{ $t('general.toSubscribeToRaces') }}
             </template>
           </ElAlert>
         </ElCol>
@@ -88,17 +93,17 @@ onMounted(async () => {
             <template #content>
               <div class="is-flex is-justify-space-between is-align-center">
                 <ElDescriptions direction="vertical" :column="2">
-                  <ElDescriptionsItem label="Data" width="100px">{{
+                  <ElDescriptionsItem :label="$t('general.date')" width="100px">{{
                     formatDateTime(event['date'], 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
                   }}</ElDescriptionsItem>
-                  <ElDescriptionsItem label="Partenza"
+                  <ElDescriptionsItem :label="$t('general.start')"
                     >{{ event['start_hour'] + race['type']['start_offset'] }}:00</ElDescriptionsItem
                   >
-                  <ElDescriptionsItem label="Durata"
+                  <ElDescriptionsItem :label="$t('general.duration')"
                     >{{ race.type.duration / 60 }}
                     {{ race.type.duration / 60 === 1 ? 'ora' : 'ore' }}</ElDescriptionsItem
                   >
-                  <ElDescriptionsItem label="Corridori per squadra">{{
+                  <ElDescriptionsItem :label="$t('general.runnersForTeam')">{{
                     race.type.runners_per_team
                   }}</ElDescriptionsItem>
                 </ElDescriptions>
@@ -114,7 +119,6 @@ onMounted(async () => {
                   $router.push({
                     name: 'subscribe',
                     params: {
-                      // @ts-ignore
                       eventId: event['id'],
                       raceId: race.id,
                     },
@@ -124,13 +128,20 @@ onMounted(async () => {
                     },
                   })
                 "
-                title="Iscriviti alla gara"
+                :title="$t('races.subscribeToRace')"
                 :disabled="!appStore.user.email_verified_at"
                 type="primary"
-                >Iscriviti</ElButton
+                >{{ $t('races.subscribe') }}</ElButton
               >
             </template>
           </AppCard>
+          <ElAlert
+            v-show="alert.text"
+            :type="alert.type"
+            :title="alert.text"
+            show-icon
+            class="is-margin-top-15"
+          />
         </ElCol>
       </ElRow>
     </div>

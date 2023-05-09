@@ -1,18 +1,29 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+/**
+ * FEATURES
+ * Display footer informations.
+ *
+ * LOGIC
+ * Display support address, copyright, authors, GDPR and back to top button.
+ *
+ * EXCEPTIONS
+ * Nothing to report.
+ */
+</script>
 
 <template>
   <div class="is-text-center is-small is-margin-top-20">
     <div>
-      Per qualsiasi problema o segnalazione scrivere a
+      {{ $t('footer.forSupport') }}
       <ElLink href="mailto:iscrizioni@24oredibuttrio.it">iscrizioni@24oredibuttrio.it</ElLink>
     </div>
     <div class="is-margin-top-10">
       Copyright &copy; {{ new Date().getFullYear() }} Gruppo Alpini Buttrio & A.S.D. Podismo Buttrio
     </div>
     <div>
-      Realizzato da
+      {{ $t('footer.madeBy') }}
       <ElLink href="https://www.marcomiani.it/" target="_blank">Marco Miani</ElLink>
-      e
+      {{ $t('general.and') }}
       <ElLink href="https://it.linkedin.com/in/alanquaino" target="_blank">Alan Quaino</ElLink>
     </div>
     <div class="is-text-center is-margin-top-10 iubenda-buttons">

@@ -13,7 +13,7 @@ import { useAppStore } from '@/store';
 import { hasAttachment } from '@/utils';
 
 /**
- * FUNCTION
+ * FEATURES
  * Update individual team.
  *
  * LOGIC

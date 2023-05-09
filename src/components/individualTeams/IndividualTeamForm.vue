@@ -6,7 +6,7 @@ import { resetForm } from '@/utils';
 import { teamsApi } from '@/api/resources';
 
 /**
- * FUNCTION
+ * FEATURES
  * Define individual team creation/update form.
  *
  * LOGIC

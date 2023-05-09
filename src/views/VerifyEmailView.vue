@@ -5,7 +5,7 @@ import { logout } from '@/utils';
 import { useRoute, useRouter } from 'vue-router';
 
 /**
- * FUNCTION
+ * FEATURES
  * Confirm new user e-mail address.
  *
  * LOGIC

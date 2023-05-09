@@ -14,7 +14,7 @@ import { hasAttachment } from '@/utils';
 import { useAppStore } from '@/store';
 
 /**
- * FUNCTION
+ * FEATURES
  * List user teams.
  *
  * LOGIC
