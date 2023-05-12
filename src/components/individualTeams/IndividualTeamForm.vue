@@ -55,14 +55,10 @@ const form = reactive<Runner>({
 });
 const formRef = ref<FormInstance>();
 
-const requiredMessage = 'Questo campo è obbligatorio';
 const formRules = reactive<FormRules>({
-  first_name: [{ required: true, message: requiredMessage, trigger: 'none' }],
-  last_name: [{ required: true, message: requiredMessage, trigger: 'none' }],
+  first_name: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
+  last_name: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
 });
-
-const disableDiscountWarning =
-  'Disattivando questa opzione si possono perdere eventuali sconti disponibili o già applicati.';
 
 /* Methods */
 
@@ -90,11 +86,11 @@ async function getSubscriptionData() {
   }
 }
 
-function generateDiscountText(society: string, societyIsMaleInGender: boolean, discount: number) {
-  return `Attivare se si è membri ${
-    societyIsMaleInGender ? 'del ' : "dell'"
-  }${society} per avere diritto al
-          <strong>${discount}€ di sconto</strong> sul costo dell'iscrizione.`;
+function generateDiscountText(society: string, discount: number) {
+  return `${t('teams.discountText.enableIfMember')} "${society}" ${t('teams.discountText.toHave')}
+          <strong>${discount}€ ${t('teams.discountText.toHave')}</strong> ${t(
+    'teams.discountText.onCost',
+  )}.`;
 }
 
 /* Mounted */
@@ -116,14 +112,14 @@ onMounted(async () => {
       label-width="auto"
       class="is-width-100"
     >
-      <ElFormItem label="Nome" prop="first_name" required>
+      <ElFormItem :label="$t('forms.firstname')" prop="first_name" required>
         <ElInput v-model="form.first_name" />
       </ElFormItem>
-      <ElFormItem label="Cognome" prop="last_name" required>
+      <ElFormItem :label="$t('forms.lastname')" prop="last_name" required>
         <ElInput v-model="form.last_name" />
       </ElFormItem>
       <ElDivider />
-      <ElFormItem label="Data di nascita" prop="birth_date">
+      <ElFormItem :label="$t('forms.birthDate')" prop="birth_date">
         <ElDatePicker
           v-model="form.birth_date"
           type="date"
@@ -131,24 +127,24 @@ onMounted(async () => {
           class="is-width-100"
         />
       </ElFormItem>
-      <ElFormItem label="Membro IUTA" prop="member_iuta" class="has-help-text">
+      <ElFormItem :label="$t('teams.iutaMember')" prop="member_iuta" class="has-help-text">
         <ElSwitch v-model="form.member_iuta" />
         <div
           v-html="
             props.discount
-              ? generateDiscountText('Associazione Italiana Ultramaratona e Trail', false, 5)
-              : disableDiscountWarning
+              ? generateDiscountText('Associazione Italiana Ultramaratona e Trail', props.discount)
+              : $t('teams.disableDiscountWarning')
           "
           class="is-help-text"
         />
       </ElFormItem>
-      <ElFormItem label="Membro CSMI" prop="member_csm" class="has-help-text">
+      <ElFormItem :label="$t('teams.csmiMember')" prop="member_csm" class="has-help-text">
         <ElSwitch v-model="form.member_csm" />
         <div
           v-html="
             props.discount
-              ? generateDiscountText('Club Super Marathon Italia', true, 5)
-              : disableDiscountWarning
+              ? generateDiscountText('Club Super Marathon Italia', props.discount)
+              : $t('teams.disableDiscountWarning')
           "
           class="is-help-text"
         />
@@ -156,16 +152,16 @@ onMounted(async () => {
       <ElDivider />
       <ElFormItem>
         <div class="is-help-text">
-          È obbligatorio specificare l'identificativo di almeno una delle seguenti tessere.
+          {{ $t('teams.requiredAtLeastACard') }}
         </div>
       </ElFormItem>
-      <ElFormItem label="Tessera FIDAL" prop="fidal_id">
+      <ElFormItem :label="$t('teams.fidalCard')" prop="fidal_id">
         <ElInput v-model="form.fidal_id" />
       </ElFormItem>
-      <ElFormItem label="Tessera CSI" prop="csi_id">
+      <ElFormItem :label="$t('teams.csiCard')" prop="csi_id">
         <ElInput v-model="form.csi_id" />
       </ElFormItem>
-      <ElFormItem label="Altra tessera" prop="other_id">
+      <ElFormItem :label="$t('teams.otherCard')" prop="other_id">
         <ElInput v-model="form.other_id" />
       </ElFormItem>
       <slot name="additional-form-items" />
@@ -173,13 +169,13 @@ onMounted(async () => {
         <ElButton
           type="success"
           native-type="submit"
-          title="Conferma iscrizione"
+          :title="$t('teams.confirmEnrollment')"
           @click.prevent="
             update ? emits('update-subscription', formRef, form) : emits('subscribe', formRef, form)
           "
           >Conferma</ElButton
         >
-        <ElButton v-if="!update" @click="resetForm(formRef)" title="Ripristina il form"
+        <ElButton v-if="!update" @click="resetForm(formRef)" :title="$t('forms.resetForm')"
           >Reset</ElButton
         >
       </ElFormItem>

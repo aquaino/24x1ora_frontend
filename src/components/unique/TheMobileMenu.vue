@@ -33,7 +33,7 @@ const { navigation } = storeToRefs(appStore);
       type="primary"
       size="large"
       circle
-      title="Menu di navigazione"
+      :title="$t('menu.menuTitle')"
     >
       <ElIcon size="32"><Menu /></ElIcon>
     </ElButton>

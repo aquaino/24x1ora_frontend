@@ -7,6 +7,7 @@ export default {
     showAndEditProfile: 'Visualizza e modifica le informazioni del tuo account',
     userInfo: 'Informazioni utente',
     event: 'Evento | Eventi',
+    team: 'Iscrizione | Iscrizioni',
     availableEvents: 'Elenco di tutti gli eventi disponibili',
     eventImageAlt: 'Partenza edizione 2019',
     undefined: 'Non definito',
@@ -32,6 +33,31 @@ export default {
     subscribe: 'Iscriviti',
     subscribeToRace: 'Iscriviti alla gara',
   },
+  teams: {
+    disableDiscountWarning:
+      'Disattivando questa opzione si possono perdere eventuali sconti disponibili o già applicati.',
+    iutaMember: 'Membro IUTA',
+    csmiMember: 'Membro CSMI',
+    requiredAtLeastACard:
+      "È obbligatorio specificare l'identificativo di almeno una delle seguenti tessere.",
+    fidalCard: 'Tessera FIDAL',
+    csiCard: 'Tessera CSI',
+    otherCard: 'Altra tessera',
+    confirmEnrollment: 'Conferma iscrizione',
+    discountText: {
+      enableIfMember: "Attivare se si è membris dell'associazione",
+      toHave: 'per avere diritto a',
+      ofSale: 'di sconto',
+      onCost: "sul costo dell'iscrizione",
+    },
+  },
+  menu: {
+    eventsTitle: 'Visualizza eventi',
+    teamsTitle: 'Visualizza iscrizioni',
+    profileTitle: 'Gestisci profilo',
+    logout: 'Esci',
+    logoutTitle: 'Disconnettiti dal portale',
+  },
   auth: {
     login: 'Accedi',
     loginToPortal: 'Accedi al portale',
@@ -54,6 +80,9 @@ export default {
     confirmPassword: 'Conferma password',
     reset: 'Ripristina',
     resetForm: 'Ripristina il form',
+    name: 'Nome',
+    lastname: 'Cognome',
+    birthDate: 'Data di nascita',
   },
   api: {
     generalError: 'Si è verificato un problema, riprovare più tardi',
