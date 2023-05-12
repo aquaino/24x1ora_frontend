@@ -16,8 +16,8 @@ const props = defineProps<{
 const appName = import.meta.env.VITE_APP_NAME;
 const mobileMenu = ref(false);
 
-const appStore = useAppStore();
-const { navigation } = storeToRefs(appStore);
+const store = useAppStore();
+const { navigation } = storeToRefs(store);
 </script>
 
 <template>
@@ -50,7 +50,7 @@ const { navigation } = storeToRefs(appStore);
             :route="{ name: menuItem.routeName }"
             :title="menuItem.title"
             @click="
-              appStore.setActiveMenuItem((index + 1).toString());
+              store.setActiveMenuItem((index + 1).toString());
               mobileMenu = false;
             "
             :style="{

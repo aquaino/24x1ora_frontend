@@ -28,10 +28,10 @@ export function hasAttachment(regexForName: RegExp, attachments: string[]): bool
 }
 
 export function logout(redirectToLogin: boolean) {
-  const appStore = useAppStore();
+  const store = useAppStore();
   const router = useRouter();
-  appStore.clearUserData();
-  appStore.setActiveMenuItem('1');
+  store.clearUserData();
+  store.setActiveMenuItem('1');
   axios.defaults.headers.common['Authorization'] = '';
   if (redirectToLogin) router.push({ name: 'login' });
 }

@@ -11,8 +11,8 @@ const props = defineProps<{
 
 /* Data */
 
-const appStore = useAppStore();
-const { navigation } = storeToRefs(appStore);
+const store = useAppStore();
+const { navigation } = storeToRefs(store);
 </script>
 
 <template>
@@ -33,7 +33,7 @@ const { navigation } = storeToRefs(appStore);
         :style="{
           color: menuItem.type === 'danger' ? 'var(--el-color-danger)' : '',
         }"
-        @click="appStore.setActiveMenuItem((index + 1).toString())"
+        @click="store.setActiveMenuItem((index + 1).toString())"
       >
         <ElIcon><component :is="menuItem.icon" /></ElIcon>
         {{ menuItem.text }}

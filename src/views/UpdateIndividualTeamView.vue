@@ -8,9 +8,7 @@ import IndividualTeamForm from '@/components/individualTeams/IndividualTeamForm.
 import { teamsApi } from '@/api/resources';
 import type { RunnerUpdate, Team } from '@/api/interfaces';
 import AppCard from '@/components/base/AppCard.vue';
-import { UploadFilled } from '@element-plus/icons-vue';
-import { useAppStore } from '@/store';
-import { hasAttachment } from '@/utils';
+import FileUpload from '@/components/forms/FileUpload.vue';
 
 /**
  * FUNCTION
@@ -36,8 +34,6 @@ const availableDiscount = route.query.availableDiscount
   : 0;
 
 const loading = ref(true);
-
-const appStore = useAppStore();
 
 const medcertUploadRef = ref<UploadInstance>();
 const paymentUploadRef = ref<UploadInstance>();
@@ -88,7 +84,8 @@ async function downloadAttachment(fileName: string) {
     // Create "a" HTML element with href to file & click
     const link = document.createElement('a');
     link.href = href;
-    link.setAttribute('download', fileName);
+    link.target = '_blank';
+    link.setAttribute('download', `${raceName}_${team.value.name}_${fileName}`);
     document.body.appendChild(link);
     link.click();
     // Clean up "a" element and remove ObjectURL
@@ -138,88 +135,22 @@ onMounted(async () => {
             <template #additional-form-items>
               <ElDivider />
               <ElFormItem label="Certificato medico" class="is-align-center">
-                <ElUpload
+                <FileUpload
                   ref="medcertUploadRef"
                   :action="`${backendTeamAttachmentUrl}/medcert`"
-                  :headers="{
-                    Authorization: `Bearer ${appStore.user.access}`,
-                  }"
-                  method="POST"
-                  :auto-upload="false"
-                  :limit="1"
-                >
-                  <template #trigger>
-                    <ElButton :icon="UploadFilled">Carica</ElButton>
-                  </template>
-                  <div class="is-margin-top-05" v-if="team.attachments">
-                    <ElAlert
-                      v-if="hasAttachment(/medcert.*/, team.attachments)"
-                      type="success"
-                      show-icon
-                      :closable="false"
-                    >
-                      <template #title
-                        >File caricato,
-                        <ElLink
-                          @click="downloadAttachment('medcert')"
-                          :underline="false"
-                          class="file-link"
-                          >clicca qui</ElLink
-                        >
-                        per visualizzarlo</template
-                      >
-                    </ElAlert>
-                    <ElAlert
-                      v-else
-                      title="Nessun file caricato"
-                      type="error"
-                      show-icon
-                      :closable="false"
-                    />
-                  </div>
-                </ElUpload>
+                  filename="medcert"
+                  :files="team.attachments"
+                  @show-file="downloadAttachment('medcert')"
+                />
               </ElFormItem>
               <ElFormItem label="Ricevuta bonifico" class="is-align-center">
-                <ElUpload
+                <FileUpload
                   ref="paymentUploadRef"
                   :action="`${backendTeamAttachmentUrl}/payment`"
-                  :headers="{
-                    Authorization: `Bearer ${appStore.user.access}`,
-                  }"
-                  method="POST"
-                  :auto-upload="false"
-                  :limit="1"
-                >
-                  <template #trigger>
-                    <ElButton :icon="UploadFilled">Carica</ElButton>
-                  </template>
-                  <div class="is-margin-top-05" v-if="team.attachments">
-                    <ElAlert
-                      v-if="hasAttachment(/payment.*/, team.attachments)"
-                      type="success"
-                      show-icon
-                      :closable="false"
-                    >
-                      <template #title
-                        >File caricato,
-                        <ElLink
-                          @click="downloadAttachment('payment')"
-                          :underline="false"
-                          class="file-link"
-                          >clicca qui</ElLink
-                        >
-                        per visualizzarlo</template
-                      >
-                    </ElAlert>
-                    <ElAlert
-                      v-else
-                      title="Nessun file caricato"
-                      type="error"
-                      show-icon
-                      :closable="false"
-                    />
-                  </div>
-                </ElUpload>
+                  filename="payment"
+                  :files="team.attachments"
+                  @show-file="downloadAttachment('payment')"
+                />
               </ElFormItem>
             </template>
           </IndividualTeamForm>
@@ -232,12 +163,5 @@ onMounted(async () => {
 <style scoped>
 .el-form-item__content div {
   width: 100%;
-}
-
-.file-link {
-  font-size: inherit;
-  vertical-align: baseline;
-  color: inherit;
-  font-weight: bold;
 }
 </style>

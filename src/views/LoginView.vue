@@ -8,15 +8,15 @@ import { useAppStore } from '@/store';
 
 /* Data */
 
-const appStore = useAppStore();
+const store = useAppStore();
 const router = useRouter();
 const route = useRoute();
 
 const formRef = ref<FormInstance>();
-const rememberEmail = ref(appStore.preferences.rememberEmail !== null);
+const rememberEmail = ref(store.preferences.rememberEmail !== null);
 
 const form = reactive({
-  email: appStore.preferences.rememberEmail ? appStore.preferences.rememberEmail : '',
+  email: store.preferences.rememberEmail ? store.preferences.rememberEmail : '',
   password: '',
 });
 
@@ -43,15 +43,15 @@ const formRules = reactive<FormRules>({
 async function login(formRef: FormInstance | undefined) {
   if (!formRef) return;
   // Set wether to remember email or not
-  appStore.setRememberEmail(rememberEmail.value ? form.email : null);
+  store.setRememberEmail(rememberEmail.value ? form.email : null);
   await formRef.validate(async (valid) => {
     if (valid) {
       try {
         // Authenticate and save user data
         const authData = await usersApi.login(form.email, form.password);
-        appStore.setAccessToken(authData.token);
+        store.setAccessToken(authData.token);
         const userData = await usersApi.getProfileDetails();
-        appStore.setUserData(userData);
+        store.setUserData(userData);
         router.push({ name: 'home' });
       } catch (error: any) {
         if (error.response.status === 401) {

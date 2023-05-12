@@ -9,8 +9,8 @@ const apiClient = axios.create({
 // Request interceptor to set token
 apiClient.interceptors.request.use(
   (config) => {
-    const appStore = useAppStore();
-    const token = appStore.user.access;
+    const store = useAppStore();
+    const token = store.user.access;
     config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
@@ -25,11 +25,11 @@ apiClient.interceptors.response.use(
     return response;
   },
   async (error) => {
-    const appStore = useAppStore();
+    const store = useAppStore();
     // If  token expired, logout
     if (error.response.status === 401) {
-      appStore.clearUserData();
-      appStore.setActiveMenuItem('1');
+      store.clearUserData();
+      store.setActiveMenuItem('1');
       router.push({ name: 'login' });
       return Promise.reject(error);
     }

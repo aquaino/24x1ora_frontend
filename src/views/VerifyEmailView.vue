@@ -22,8 +22,8 @@ const router = useRouter();
 const route = useRoute();
 const token = route.query.token as string;
 
-const appStore = useAppStore();
-const alreadyVerified = appStore.user.email_verified_at !== null;
+const store = useAppStore();
+const alreadyVerified = store.user.email_verified_at !== null;
 
 /* Methods */
 

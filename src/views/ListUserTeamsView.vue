@@ -33,15 +33,13 @@ interface TeamWithAttachmentStatus extends Team {
 
 /* Data */
 
-const store = useAppStore();
-
 const eventIds: Ref<number[]> = ref(Array());
 const subscriptions: Ref<{ event: RaceEvent; teams: TeamWithAttachmentStatus[] }[]> = ref(Array());
 
 const loading = ref(true);
 
 const route = useRoute();
-const appStore = useAppStore();
+const store = useAppStore();
 
 const message = ref({
   type: route.query.messageType as 'success' | 'warning' | 'error' | 'info',
@@ -147,7 +145,7 @@ async function confirmTeam(eventId: number, teamId: number) {
 
 onMounted(async () => {
   // Get user teams for each event
-  if (appStore.user.email_verified_at) {
+  if (store.user.email_verified_at) {
     await getEventIds();
     await getSubscriptions();
   }

@@ -89,8 +89,8 @@ const router = createRouter({
 
 // Navigation guard to check against authentication
 router.beforeEach((to, from, next) => {
-  const appStore = useAppStore();
-  if (to.matched.some((record) => record.meta.requireLogin) && !appStore.user.access) {
+  const store = useAppStore();
+  if (to.matched.some((record) => record.meta.requireLogin) && !store.user.access) {
     next({ name: 'login', query: { to: to.path } });
   } else {
     next();
@@ -99,12 +99,12 @@ router.beforeEach((to, from, next) => {
 
 // Navigation guard to prevent re-login and re-registration
 router.beforeEach((to, from, next) => {
-  const appStore = useAppStore();
+  const store = useAppStore();
   if (
     to.matched.some(
       (record) => record.path.includes('/login') || record.path.includes('/register'),
     ) &&
-    appStore.user.access
+    store.user.access
   ) {
     next({ name: 'home' });
   } else {

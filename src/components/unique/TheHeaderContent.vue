@@ -9,7 +9,7 @@ import { useAppStore } from '@/store';
 /* Data */
 
 const appName = import.meta.env.VITE_APP_NAME;
-const appStore = useAppStore();
+const store = useAppStore();
 
 const menu: MenuItem[] = [
   {
@@ -41,7 +41,7 @@ const menu: MenuItem[] = [
       :to="{ name: 'home' }"
       class="is-flex"
       title="Home"
-      @click="appStore.setActiveMenuItem('1')"
+      @click="store.setActiveMenuItem('1')"
     >
       <ElImage :src="logo" :alt="`Logo ${appName}`" style="width: 130px" fit="contain" />
       <h2 class="hidden-sm-and-down">{{ appName }}</h2>

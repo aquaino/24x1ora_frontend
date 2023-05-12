@@ -8,7 +8,7 @@ import type { FormInstance, FormRules } from 'element-plus';
 import { ArrowLeftBold } from '@element-plus/icons-vue';
 import router from '@/router';
 
-const appStore = useAppStore();
+const store = useAppStore();
 const formRef = ref<FormInstance>();
 
 /* Data */
@@ -63,7 +63,7 @@ const formRules = reactive<FormRules>({
 /* Methods */
 
 async function register(formRef: FormInstance | undefined) {
-  appStore.clearUserData();
+  store.clearUserData();
   if (!formRef) return;
   await formRef.validate(async (valid) => {
     if (valid) {
