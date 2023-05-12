@@ -80,6 +80,26 @@ async function updateSubscription(formRef: FormInstance | undefined, form: Runne
   });
 }
 
+async function downloadAttachment(fileName: string) {
+  try {
+    const file = await teamsApi.getAttachmentFile(eventId, teamId, fileName);
+    // Create file link in browser's memory
+    const href = URL.createObjectURL(file);
+    // Create "a" HTML element with href to file & click
+    const link = document.createElement('a');
+    link.href = href;
+    link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
+    // Clean up "a" element and remove ObjectURL
+    document.body.removeChild(link);
+    URL.revokeObjectURL(href);
+  } catch (error) {
+    console.log(error);
+    alert.value = { type: 'error', text: 'Si è verificato un errore' };
+  }
+}
+
 /* Mounted */
 
 onMounted(async () => {
@@ -134,11 +154,21 @@ onMounted(async () => {
                   <div class="is-margin-top-05" v-if="team.attachments">
                     <ElAlert
                       v-if="hasAttachment(/medcert.*/, team.attachments)"
-                      title="File già caricato"
                       type="success"
                       show-icon
                       :closable="false"
-                    />
+                    >
+                      <template #title
+                        >File caricato,
+                        <ElLink
+                          @click="downloadAttachment('medcert')"
+                          :underline="false"
+                          class="file-link"
+                          >clicca qui</ElLink
+                        >
+                        per visualizzarlo</template
+                      >
+                    </ElAlert>
                     <ElAlert
                       v-else
                       title="Nessun file caricato"
@@ -166,11 +196,21 @@ onMounted(async () => {
                   <div class="is-margin-top-05" v-if="team.attachments">
                     <ElAlert
                       v-if="hasAttachment(/payment.*/, team.attachments)"
-                      title="File già caricato"
                       type="success"
                       show-icon
                       :closable="false"
-                    />
+                    >
+                      <template #title
+                        >File caricato,
+                        <ElLink
+                          @click="downloadAttachment('payment')"
+                          :underline="false"
+                          class="file-link"
+                          >clicca qui</ElLink
+                        >
+                        per visualizzarlo</template
+                      >
+                    </ElAlert>
                     <ElAlert
                       v-else
                       title="Nessun file caricato"
@@ -192,5 +232,12 @@ onMounted(async () => {
 <style scoped>
 .el-form-item__content div {
   width: 100%;
+}
+
+.file-link {
+  font-size: inherit;
+  vertical-align: baseline;
+  color: inherit;
+  font-weight: bold;
 }
 </style>
