@@ -52,6 +52,7 @@ export default {
     },
   },
   menu: {
+    menuTitle: 'Menu di navigazione',
     eventsTitle: 'Visualizza eventi',
     teamsTitle: 'Visualizza iscrizioni',
     profileTitle: 'Gestisci profilo',

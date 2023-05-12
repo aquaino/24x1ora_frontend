@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import TheLoginHeader from '@/components/unique/TheLoginHeader.vue';
 import TheFooterContent from '@/components/unique/TheFooterContent.vue';
+import { useI18n } from 'vue-i18n';
 
 /**
  * MAIN FUNCTION
  * Define page structure for unauthenticated users.
  */
+
+const i18n = useI18n();
+let html = document.querySelector('html');
+if (html) html.setAttribute('lang', i18n.locale.value);
 </script>
 
 <template>
