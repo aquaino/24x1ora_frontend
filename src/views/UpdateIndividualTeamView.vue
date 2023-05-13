@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import type { Ref } from 'vue';
 import AppPageTitle from '@/components/base/AppPageTitle.vue';
 import { useRoute, useRouter } from 'vue-router';
-import type { FormInstance, UploadInstance } from 'element-plus';
+import type { FormInstance } from 'element-plus';
 import IndividualTeamForm from '@/components/individualTeams/IndividualTeamForm.vue';
 import { teamsApi } from '@/api/resources';
 import type { RunnerUpdate, Team } from '@/api/interfaces';
@@ -35,8 +35,8 @@ const availableDiscount = route.query.availableDiscount
 
 const loading = ref(true);
 
-const medcertUploadRef = ref<UploadInstance>();
-const paymentUploadRef = ref<UploadInstance>();
+const medcertUploadRef = ref();
+const paymentUploadRef = ref();
 
 const team: Ref<Team> = ref(Object());
 
@@ -57,8 +57,8 @@ async function updateSubscription(formRef: FormInstance | undefined, form: Runne
     if (valid) {
       try {
         // Upload medical and/or payment certificates
-        medcertUploadRef.value!.submit();
-        paymentUploadRef.value!.submit();
+        medcertUploadRef.value.submit();
+        paymentUploadRef.value.submit();
         // Update data
         await teamsApi.updateIndividualTeam(eventId, teamId, form);
         router.push({

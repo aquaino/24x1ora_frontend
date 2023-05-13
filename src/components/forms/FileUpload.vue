@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { UploadFilled } from '@element-plus/icons-vue';
 import { useAppStore } from '@/store';
 import { hasAttachment } from '@/utils';
+import type { UploadInstance } from 'element-plus';
 
 /* Data */
 const store = useAppStore();
+const uploadRef = ref<UploadInstance>();
 
 /* Props */
 const props = defineProps<{
@@ -15,11 +18,19 @@ const props = defineProps<{
 
 /* Events */
 const emits = defineEmits(['show-file']);
+
+/* Methods */
+const submit = () => {
+  uploadRef.value!.submit();
+};
+
+/* Expose */
+defineExpose({ submit });
 </script>
 
 <template>
   <ElUpload
-    ref="medcertUploadRef"
+    ref="uploadRef"
     :action="props.action"
     :headers="{
       Authorization: `Bearer ${store.user.access}`,
@@ -40,7 +51,7 @@ const emits = defineEmits(['show-file']);
       >
         <template #title
           >File caricato,
-          <ElButton type="text" @click="emits('show-file')" class="file-link">clicca qui</ElButton>
+          <ElButton type="link" @click="emits('show-file')" class="file-link">clicca qui</ElButton>
           per visualizzarlo</template
         >
       </ElAlert>
@@ -51,9 +62,12 @@ const emits = defineEmits(['show-file']);
 
 <style scoped>
 .file-link {
-  font-size: inherit;
-  vertical-align: baseline;
+  background-color: transparent;
+  border: none;
   color: inherit;
+  font-size: inherit;
   font-weight: bold;
+  padding: 0;
+  vertical-align: baseline;
 }
 </style>

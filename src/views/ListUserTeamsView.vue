@@ -297,7 +297,12 @@ watch(
                   >Modifica</ElButton
                 >
                 <ElPopconfirm
-                  v-if="store.user.isAdmin && !team.confirmed"
+                  v-if="
+                    store.user.isAdmin &&
+                    team.medcertUploaded &&
+                    team.paymentUploaded &&
+                    !team.confirmed
+                  "
                   title="Confermare l'iscrizione?"
                   width="200"
                   confirm-button-text="Sì"
