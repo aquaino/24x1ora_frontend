@@ -116,7 +116,7 @@ onMounted(async () => {
     :back-to="{ name: 'subscriptions' }"
   />
   <ElRow justify="center">
-    <ElCol :xs="24" :sm="16" :md="12">
+    <ElCol :xs="24" :sm="16" :md="12" :lg="8">
       <AppCard :title="$t('teams.participantInfo')" shadow="never" v-loading="loading">
         <template #content>
           <IndividualTeamForm

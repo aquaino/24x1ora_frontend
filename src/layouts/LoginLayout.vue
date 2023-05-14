@@ -15,7 +15,7 @@ if (html) html.setAttribute('lang', i18n.locale.value);
 
 <template>
   <ElRow justify="center" style="padding: 80px 0">
-    <ElCol :xs="24" :sm="12" :md="8" style="padding: 0 20px">
+    <ElCol :xs="24" :sm="12" :md="8" :lg="6" style="padding: 0 20px">
       <TheLoginHeader />
       <RouterView />
       <TheFooterContent />

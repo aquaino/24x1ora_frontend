@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * MAIN FUNCTION
- * Display footer informations: support address, copyright, authors, 
+ * Display footer informations: support address, copyright, authors,
  * GDPR and back to top button.
  */
 </script>

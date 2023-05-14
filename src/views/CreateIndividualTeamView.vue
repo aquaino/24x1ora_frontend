@@ -71,7 +71,7 @@ async function subscribe(formRef: FormInstance | undefined, form: Runner) {
     :back-to="{ name: 'races', params: { id: route.params.eventId } }"
   />
   <ElRow justify="center">
-    <ElCol :xs="24" :sm="16" :md="12">
+    <ElCol :xs="24" :sm="16" :md="12" :lg="8">
       <ElCard shadow="never">
         <template #header>
           <h2>{{ $t('teams.participantInfo') }}</h2>

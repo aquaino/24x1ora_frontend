@@ -54,7 +54,7 @@ onMounted(async () => {
   />
 
   <ElRow justify="center" :gutter="20" v-loading="loading">
-    <ElCol :xs="24" :sm="12" :md="8">
+    <ElCol :xs="24" :sm="12" :md="8" :lg="6">
       <AppCard :title="$t('general.userInfo')">
         <template #content>
           <ElForm ref="formRef" :model="form" status-icon label-width="auto">

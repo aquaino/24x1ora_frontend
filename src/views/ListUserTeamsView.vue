@@ -201,6 +201,7 @@ watch(
           :xs="24"
           :sm="12"
           :md="8"
+          :lg="6"
         >
           <AppCard shadow="hover" :title="`#${team.id} - ${team.name}`">
             <template #right-header>
