@@ -68,7 +68,7 @@ onMounted(async () => {
               >{{
                 event.subscription_from
                   ? formatDateTime(event.subscription_from, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
-                  : 'Non definito'
+                  : $t('general.undefined')
               }}
             </ElDescriptionsItem>
             <ElDescriptionsItem :label="$t('events.subscriptionsEnd')">{{

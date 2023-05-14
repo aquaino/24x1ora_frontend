@@ -11,6 +11,7 @@ import AppCard from '@/components/base/AppCard.vue';
 import { UploadFilled } from '@element-plus/icons-vue';
 import { useAppStore } from '@/store';
 import { hasAttachment } from '@/utils';
+import { useI18n } from 'vue-i18n';
 
 /**
  * MAIN FUNCTION
@@ -27,6 +28,7 @@ import { hasAttachment } from '@/utils';
 
 const router = useRouter();
 const route = useRoute();
+const { t } = useI18n();
 
 const eventId = parseInt(route.params.eventId as string);
 const teamId = parseInt(route.params.teamId as string);
@@ -69,12 +71,11 @@ async function updateSubscription(formRef: FormInstance | undefined, form: Runne
           name: 'subscriptions',
           query: {
             messageType: 'success',
-            messageText: `Iscrizione <strong>#${teamId}</strong> modificata con successo.`,
+            messageText: t('teams.teamUpdated', { msg: teamId }),
           },
         });
       } catch (error) {
-        console.log(error);
-        alert.value = { type: 'error', text: 'Si è verificato un errore' };
+        alert.value = { type: 'error', text: t('api.generalError') };
       }
     }
   });
@@ -87,20 +88,20 @@ onMounted(async () => {
     const eventAndTeam = await teamsApi.getEventTeamDetails(eventId, teamId);
     team.value = eventAndTeam.team;
   } catch (error) {
-    console.log(error);
+    alert.value = { type: 'error', text: t('api.generalError') };
   }
 });
 </script>
 
 <template>
   <AppPageTitle
-    :title="`Modifica iscrizione #${teamId} - Gara &quot;${raceName}&quot;`"
-    subtitle="Modifica i dati dell'iscrizione tramite il form sottostante"
+    :title="$t('teams.updateTeamTitle', { msg1: teamId, msg2: raceName })"
+    :subtitle="$t('teams.updateTeamSubtitle')"
     :back-to="{ name: 'subscriptions' }"
   />
   <ElRow justify="center">
     <ElCol :xs="24" :sm="16" :md="12">
-      <AppCard title="Informazioni partecipante" shadow="never" v-loading="loading">
+      <AppCard :title="$t('teams.participantInfo')" shadow="never" v-loading="loading">
         <template #content>
           <IndividualTeamForm
             update
@@ -116,7 +117,7 @@ onMounted(async () => {
           >
             <template #additional-form-items>
               <ElDivider />
-              <ElFormItem label="Certificato medico" class="is-align-center">
+              <ElFormItem :label="$t('teams.medcert')" class="is-align-center">
                 <ElUpload
                   ref="medcertUploadRef"
                   :action="`${backendTeamAttachmentUrl}/medcert`"
@@ -128,19 +129,19 @@ onMounted(async () => {
                   :limit="1"
                 >
                   <template #trigger>
-                    <ElButton :icon="UploadFilled">Carica</ElButton>
+                    <ElButton :icon="UploadFilled">{{ $t('forms.upload') }}</ElButton>
                   </template>
                   <div class="is-margin-top-05" v-if="team.attachments">
                     <ElAlert
                       v-if="hasAttachment(/medcert.*/, team.attachments)"
-                      title="File già caricato"
+                      :title="$t('forms.fileAlreadyUploaded')"
                       type="success"
                       show-icon
                       :closable="false"
                     />
                     <ElAlert
                       v-else
-                      title="Nessun file caricato"
+                      :title="$t('forms.fileNotUploaded')"
                       type="error"
                       show-icon
                       :closable="false"
@@ -148,7 +149,7 @@ onMounted(async () => {
                   </div>
                 </ElUpload>
               </ElFormItem>
-              <ElFormItem label="Ricevuta bonifico" class="is-align-center">
+              <ElFormItem :label="$t('teams.paymentCertificate')" class="is-align-center">
                 <ElUpload
                   ref="paymentUploadRef"
                   :action="`${backendTeamAttachmentUrl}/payment`"
@@ -160,19 +161,19 @@ onMounted(async () => {
                   :limit="1"
                 >
                   <template #trigger>
-                    <ElButton :icon="UploadFilled">Carica</ElButton>
+                    <ElButton :icon="UploadFilled">{{ $t('forms.upload') }}</ElButton>
                   </template>
                   <div class="is-margin-top-05" v-if="team.attachments">
                     <ElAlert
                       v-if="hasAttachment(/payment.*/, team.attachments)"
-                      title="File già caricato"
+                      :title="$t('forms.fileAlreadyUploaded')"
                       type="success"
                       show-icon
                       :closable="false"
                     />
                     <ElAlert
                       v-else
-                      title="Nessun file caricato"
+                      :title="$t('forms.fileNotUploaded')"
                       type="error"
                       show-icon
                       :closable="false"

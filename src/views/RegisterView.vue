@@ -109,7 +109,7 @@ async function register(formRef: FormInstance | undefined) {
           type="primary"
           circle
           text
-          title="Indietro"
+          :title="$t('general.back')"
         />
         <h2 class="is-margin-0">{{ $t('auth.registerToPortal') }}</h2>
       </div>
@@ -129,7 +129,7 @@ async function register(formRef: FormInstance | undefined) {
         <ElInput v-model="form.email" type="email" />
       </ElFormItem>
       <ElDivider />
-      <ElFormItem label="Password" prop="password" required>
+      <ElFormItem :label="$t('forms.password')" prop="password" required>
         <ElInput show-password v-model="form.password" type="password" />
       </ElFormItem>
       <ElFormItem :label="$t('forms.confirmPassword')" prop="confirmPassword" required>

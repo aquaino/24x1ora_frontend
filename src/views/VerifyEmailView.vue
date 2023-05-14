@@ -3,6 +3,7 @@ import { usersApi } from '@/api/resources';
 import { useAppStore } from '@/store';
 import { logout } from '@/utils';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
 /**
  * MAIN FUNCTION
@@ -22,6 +23,8 @@ const router = useRouter();
 const route = useRoute();
 const token = route.query.token as string;
 
+const { t } = useI18n();
+
 const appStore = useAppStore();
 const alreadyVerified = appStore.user.email_verified_at !== null;
 
@@ -33,7 +36,7 @@ async function verifyEmail() {
     logout(false);
     router.push({
       name: 'login',
-      query: { alertType: 'success', alertText: 'Indirizzo e-mail verificato con successo' },
+      query: { alertType: 'success', alertText: t('auth.emailConfirmed') },
     });
   } catch (error) {
     console.log(error);
@@ -43,20 +46,23 @@ async function verifyEmail() {
 
 <template>
   <div v-if="token && !alreadyVerified" class="is-text-center">
-    <ElButton type="primary" title="Verifica il tuo indirizzo e-mail" @click="verifyEmail()"
-      >Verifica e-mail</ElButton
-    >
+    <ElButton type="primary" :title="$t('auth.confirmEmailTitle')" @click="verifyEmail()">{{
+      $t('auth.verifyEmail')
+    }}</ElButton>
   </div>
   <div v-else-if="alreadyVerified">
     <ElResult
       icon="success"
       class="is-padding-top-0"
-      title="Indirizzo e-mail già verificato"
-      sub-title="Il tuo indirizzo e-mail risulta già verificato"
+      :title="$t('auth.emailAlreadyVerifiedTitle')"
+      :sub-title="$t('auth.emailAlreadyVerifiedSubtitle')"
     >
       <template #extra>
-        <ElButton @click="$router.push({ name: 'home' })" title="Torna alla home" type="primary"
-          >Home</ElButton
+        <ElButton
+          @click="$router.push({ name: 'home' })"
+          :title="$t('general.backToHome')"
+          type="primary"
+          >{{ $t('general.home') }}</ElButton
         >
       </template>
     </ElResult>
@@ -65,13 +71,15 @@ async function verifyEmail() {
     <ElResult
       icon="error"
       class="is-padding-top-0"
-      title="Si è verificato un problema"
-      sub-title="Verifica nuovamente l'indirizzo con le istruzioni ricevute
-    via e-mail"
+      :title="$t('general.error')"
+      :sub-title="$t('auth.emailVerifyError')"
     >
       <template #extra>
-        <ElButton @click="$router.push({ name: 'home' })" title="Torna alla home" type="primary"
-          >Home</ElButton
+        <ElButton
+          @click="$router.push({ name: 'home' })"
+          :title="$t('general.backToHome')"
+          type="primary"
+          >{{ $t('general.home') }}</ElButton
         >
       </template>
     </ElResult>

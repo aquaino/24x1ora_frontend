@@ -101,7 +101,9 @@ onMounted(async () => {
                   >
                   <ElDescriptionsItem :label="$t('general.duration')"
                     >{{ race.type.duration / 60 }}
-                    {{ race.type.duration / 60 === 1 ? 'ora' : 'ore' }}</ElDescriptionsItem
+                    {{
+                      race.type.duration / 60 === 1 ? $t('general.hour', 1) : $t('general.hour', 2)
+                    }}</ElDescriptionsItem
                   >
                   <ElDescriptionsItem :label="$t('general.runnersForTeam')">{{
                     race.type.runners_per_team
