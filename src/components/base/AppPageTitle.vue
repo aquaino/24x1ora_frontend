@@ -2,6 +2,11 @@
 import { ArrowLeftBold } from '@element-plus/icons-vue';
 import type { RouteLocationRaw } from 'vue-router';
 
+/**
+ * MAIN FUNCTION
+ * Define page title with back button.
+ */
+
 /* Props */
 const props = defineProps<{
   title: string;

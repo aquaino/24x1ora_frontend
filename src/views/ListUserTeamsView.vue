@@ -12,13 +12,14 @@ import { ElMessage, ElPopconfirm } from 'element-plus';
 import { useRoute } from 'vue-router';
 import { hasAttachment } from '@/utils';
 import { useAppStore } from '@/store';
+import { useI18n } from 'vue-i18n';
 
 /**
- * FUNCTION
- * List user teams.
+ * MAIN FUNCTION
+ * Show all user teams.
  *
  * LOGIC
- * Display user teams for all events and allow him to update them.
+ * Display user teams for all events and allow to update them.
  *
  * EXCEPTIONS
  * Nothing to report.
@@ -40,6 +41,7 @@ const loading = ref(true);
 
 const route = useRoute();
 const store = useAppStore();
+const { t } = useI18n();
 
 const message = ref({
   type: route.query.messageType as 'success' | 'warning' | 'error' | 'info',
@@ -98,30 +100,30 @@ function getTeamProgress(team: TeamWithAttachmentStatus): {
     ? {
         percentage: 20,
         status: 'exception',
-        title: 'Caricare certificato medico e ricevuta di pagamento',
+        title: t('teams.uploadMedcertAndPayment'),
       }
     : team.medcertUploaded && !team.paymentUploaded && !team.confirmed
     ? {
         percentage: 40,
         status: 'exception',
-        title: 'Caricare ricevuta di pagamento',
+        title: t('teams.uploadPayment'),
       }
     : !team.medcertUploaded && team.paymentUploaded && !team.confirmed
     ? {
         percentage: 60,
         status: 'exception',
-        title: 'Caricare certificato medico',
+        title: t('teams.uploadMedcert'),
       }
     : team.medcertUploaded && team.paymentUploaded && !team.confirmed
     ? {
         percentage: 80,
         status: 'warning',
-        title: 'Iscrizione in attesa di conferma',
+        title: t('teams.waitingForConfirmation'),
       }
     : {
         percentage: 100,
         status: 'success',
-        title: 'Iscrizione confermata',
+        title: t('teams.subscriptionConfirmed'),
       };
 }
 
@@ -134,7 +136,7 @@ async function confirmTeam(eventId: number, teamId: number) {
     loading.value = false;
     message.value = {
       type: 'success',
-      text: `Iscrizione <strong>#${teamId}</strong> confermata con successo.`,
+      text: t('teams.teamConfirmed', { msg: teamId }),
     };
   } catch (error) {
     console.log(error);
@@ -165,14 +167,14 @@ watch(
 
 <template>
   <AppPageTitle
-    title="Iscrizioni attive"
-    subtitle="Elenco di tutte le iscrizioni attive per ogni evento"
+    :title="$t('teams.teamsTitle')"
+    :subtitle="$t('teams.teamsSubtitle')"
     :back-to="{ name: 'events' }"
   />
   <div v-if="loading" v-loading="loading"></div>
   <ElEmpty
     v-else-if="subscriptions.length === 0 || subscriptions[0].teams.length === 0"
-    description="Nessuna iscrizione inserita"
+    :description="$t('teams.noTeams')"
   />
   <div v-else>
     <div v-for="subscription in subscriptions" :key="`subscription-${subscription.teams[0].id}`">
@@ -200,8 +202,8 @@ watch(
                   "
                   :title="
                     team.medcertUploaded
-                      ? 'Certificato medico caricato'
-                      : 'Certificato medico non caricato'
+                      ? $t('teams.medcertUploaded')
+                      : $t('teams.medcertNotUploaded')
                   "
                   ><Document
                 /></ElIcon>
@@ -212,8 +214,8 @@ watch(
                   "
                   :title="
                     team.paymentUploaded
-                      ? 'Ricevuta di bonifico caricata'
-                      : 'Ricevuta di bonifico non caricata'
+                      ? $t('teams.paymentUploaded')
+                      : $t('teams.paymentNotUploaded')
                   "
                   style="margin-left: 0.25rem"
                   ><Money
@@ -230,25 +232,27 @@ watch(
               />
               <div class="is-flex is-justify-space-between is-align-center">
                 <ElDescriptions direction="vertical" :column="2">
-                  <ElDescriptionsItem label="Gara" width="150px">{{
+                  <ElDescriptionsItem :label="$t('general.race')" width="150px">{{
                     team.type.name
                   }}</ElDescriptionsItem>
-                  <ElDescriptionsItem label="Codice pagamento">{{
+                  <ElDescriptionsItem :label="$t('teams.paymentCode')">{{
                     team.payment_code
                   }}</ElDescriptionsItem>
-                  <ElDescriptionsItem label="Data">{{
+                  <ElDescriptionsItem :label="$t('general.date')">{{
                     formatDateTime(subscription.event.date, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
                   }}</ElDescriptionsItem>
-                  <ElDescriptionsItem label="Partenza"
+                  <ElDescriptionsItem :label="$t('general.start')"
                     >{{
                       subscription.event.start_hour + team.type.start_offset
                     }}:00</ElDescriptionsItem
                   >
-                  <ElDescriptionsItem label="Durata"
+                  <ElDescriptionsItem :label="$t('general.duration')"
                     >{{ team.type.duration / 60 }}
-                    {{ team.type.duration / 60 === 1 ? 'ora' : 'ore' }}</ElDescriptionsItem
+                    {{
+                      team.type.duration / 60 === 1 ? $t('general.hour', 1) : $t('general.hour', 2)
+                    }}</ElDescriptionsItem
                   >
-                  <ElDescriptionsItem label="Inserita">{{
+                  <ElDescriptionsItem :label="$t('general.created')">{{
                     formatDateTime(team.created_at, 'ISO', 'DATETIME_SHORT')
                   }}</ElDescriptionsItem>
                 </ElDescriptions>
@@ -263,16 +267,16 @@ watch(
                 </div>
               </div>
               <ElCollapse>
-                <ElCollapseItem title="Dettagli pagamento">
-                  <div class="is-margin-bottom-10">Pagamento tramite bonifico bancario</div>
+                <ElCollapseItem :title="$t('teams.paymentDetails')">
+                  <div class="is-margin-bottom-10">{{ $t('teams.viaBankTransfer') }}</div>
                   <ElDescriptions direction="horizontal" :column="1">
                     <ElDescriptionsItem label="IBAN"
                       >IT 59 O 05484 63690 CC0270704537</ElDescriptionsItem
                     >
-                    <ElDescriptionsItem label="Intestato a"
+                    <ElDescriptionsItem :label="$t('teams.registeredTo')"
                       >Circolo Culturale del Gruppo Alpini di Buttrio APS</ElDescriptionsItem
                     >
-                    <ElDescriptionsItem label="Causale"
+                    <ElDescriptionsItem :label="$t('teams.paymentCausal')"
                       >{{ team.payment_code }} {{ team.name }}
                       {{ team.type.name }}</ElDescriptionsItem
                     >
@@ -284,7 +288,7 @@ watch(
               <div class="is-margin-top-05">
                 <ElButton
                   type="primary"
-                  title="Modifica iscrizione"
+                  :title="$t('teams.editTeam')"
                   @click="
                     $router.push({
                       name: 'update-subscription',
@@ -294,7 +298,7 @@ watch(
                       },
                     })
                   "
-                  >Modifica</ElButton
+                  >{{ $t('general.edit') }}</ElButton
                 >
                 <ElPopconfirm
                   v-if="
@@ -311,7 +315,9 @@ watch(
                   @confirm="confirmTeam(subscription.event.id, team.id)"
                 >
                   <template #reference>
-                    <ElButton type="success" title="Conferma iscrizione">Conferma</ElButton>
+                    <ElButton type="success" :title="$t('teams.confirmEnrollment')">{{
+                      $t('general.confirm')
+                    }}</ElButton>
                   </template>
                 </ElPopconfirm>
               </div>

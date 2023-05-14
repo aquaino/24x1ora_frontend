@@ -3,6 +3,11 @@ import type { MenuItem } from '../../interfaces';
 import { useAppStore } from '@/store';
 import { storeToRefs } from 'pinia';
 
+/**
+ * MAIN FUNCTION
+ * Define desktop navigation menu.
+ */
+
 /* Props */
 
 const props = defineProps<{

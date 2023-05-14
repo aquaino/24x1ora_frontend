@@ -4,11 +4,29 @@ import { usersApi } from '@/api/resources';
 import type { User } from '@/api/interfaces';
 import AppCard from '@/components/base/AppCard.vue';
 import AppPageTitle from '@/components/base/AppPageTitle.vue';
+import { useI18n } from 'vue-i18n';
+
+/**
+ * MAIN FUNCTION
+ * Show and update user info.
+ *
+ * LOGIC
+ * Show user info and update them from input.
+ *
+ * EXCEPTIONS
+ * - User already exists -> Error alert
+ * - WS call failure -> Error alert
+ */
 
 /* Data */
 
+const { t } = useI18n();
 const loading = ref(true);
 const form: Ref<User> = ref(Object());
+const alert = ref({
+  type: 'error',
+  text: '',
+});
 
 /* Methods */
 
@@ -17,7 +35,7 @@ async function getUserData() {
     form.value = await usersApi.getProfileDetails();
     loading.value = false;
   } catch (error) {
-    console.log(error);
+    alert.value.text = t('api.generalError');
   }
 }
 
@@ -30,24 +48,31 @@ onMounted(async () => {
 
 <template>
   <AppPageTitle
-    title="Profilo"
-    subtitle="Visualizza e modifica le informazioni del tuo account"
+    :title="$t('general.profile')"
+    :subtitle="$t('general.showAndEditProfile')"
     :back-to="{ name: 'home' }"
   />
 
   <ElRow justify="center" :gutter="20" v-loading="loading">
     <ElCol :xs="24" :sm="12" :md="8">
-      <AppCard title="Informazioni utente">
+      <AppCard :title="$t('general.userInfo')">
         <template #content>
           <ElForm ref="formRef" :model="form" status-icon label-width="auto">
-            <ElFormItem label="Nome e cognome" prop="name">
+            <ElFormItem :label="$t('forms.fullname')" prop="name">
               <ElInput v-model="form.name" disabled />
             </ElFormItem>
-            <ElFormItem label="Indirizzo e-mail" prop="email">
+            <ElFormItem :label="$t('forms.email')" prop="email">
               <ElInput v-model="form.email" disabled />
             </ElFormItem>
           </ElForm>
         </template>
+        <ElAlert
+          v-show="alert.text"
+          :type="alert.type"
+          :title="alert.text"
+          show-icon
+          class="is-margin-top-15"
+        />
       </AppCard>
     </ElCol>
   </ElRow>

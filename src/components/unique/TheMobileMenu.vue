@@ -5,6 +5,11 @@ import type { MenuItem } from '../../interfaces';
 import { useAppStore } from '@/store';
 import { storeToRefs } from 'pinia';
 
+/**
+ * MAIN FUNCTION
+ * Define mobile and tablet navigation menu.
+ */
+
 /* Props */
 
 const props = defineProps<{
@@ -28,7 +33,7 @@ const { navigation } = storeToRefs(store);
       type="primary"
       size="large"
       circle
-      title="Menu di navigazione"
+      :title="$t('menu.menuTitle')"
     >
       <ElIcon size="32"><Menu /></ElIcon>
     </ElButton>

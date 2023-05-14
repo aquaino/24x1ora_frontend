@@ -1,12 +1,22 @@
 <script setup lang="ts">
-import LoginHeader from '@/components/auth/LoginHeader.vue';
+import TheLoginHeader from '@/components/unique/TheLoginHeader.vue';
 import TheFooterContent from '@/components/unique/TheFooterContent.vue';
+import { useI18n } from 'vue-i18n';
+
+/**
+ * MAIN FUNCTION
+ * Define page structure for unauthenticated users.
+ */
+
+const i18n = useI18n();
+let html = document.querySelector('html');
+if (html) html.setAttribute('lang', i18n.locale.value);
 </script>
 
 <template>
   <ElRow justify="center" style="padding: 80px 0">
     <ElCol :xs="24" :sm="12" :md="8" style="padding: 0 20px">
-      <LoginHeader />
+      <TheLoginHeader />
       <RouterView />
       <TheFooterContent />
     </ElCol>

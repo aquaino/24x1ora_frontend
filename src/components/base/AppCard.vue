@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { useSlots } from 'vue';
 
+/**
+ * MAIN FUNCTION
+ * Define card component to reuse in app.
+ */
+
 /* Props */
 
 const props = defineProps<{

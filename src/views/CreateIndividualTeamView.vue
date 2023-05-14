@@ -6,10 +6,11 @@ import type { FormInstance } from 'element-plus';
 import { eventsApi } from '@/api/resources';
 import IndividualTeamForm from '@/components/individualTeams/IndividualTeamForm.vue';
 import type { Runner } from '@/api/interfaces';
+import { useI18n } from 'vue-i18n';
 
 /**
- * FUNCTION
- * Create individual team.
+ * MAIN FUNCTION
+ * Create an individual team.
  *
  * LOGIC
  * Get team data from form and create team with a WS call.
@@ -22,6 +23,7 @@ import type { Runner } from '@/api/interfaces';
 
 const router = useRouter();
 const route = useRoute();
+const { t } = useI18n();
 
 const eventId = route.params.eventId as string;
 const raceId = route.params.raceId as string;
@@ -47,17 +49,15 @@ async function subscribe(formRef: FormInstance | undefined, form: Runner) {
           parseInt(raceId),
           form,
         );
-        alert.value = { type: 'success', text: 'Iscrizione effettuata con successo.' };
         router.push({
           name: 'subscriptions',
           query: {
             messageType: 'success',
-            messageText: `Iscrizione <strong>#${newTeam.id}</strong> inserita con successo`,
+            messageText: t('teams.teamInserted', { msg: newTeam.id }),
           },
         });
       } catch (error) {
-        console.log(error);
-        alert.value = { type: 'error', text: 'Si è verificato un errore.' };
+        alert.value = { type: 'error', text: t('api.generalError') };
       }
     }
   });
@@ -66,15 +66,15 @@ async function subscribe(formRef: FormInstance | undefined, form: Runner) {
 
 <template>
   <AppPageTitle
-    :title="`Iscrizione alla gara &quot;${raceName}&quot;`"
-    subtitle="Compila il form sottostante per iscriverti alla gara"
+    :title="$t('teams.subscriptionTitle', { msg: raceName })"
+    :subtitle="$t('teams.subscriptionSubtitle')"
     :back-to="{ name: 'races', params: { id: route.params.eventId } }"
   />
   <ElRow justify="center">
     <ElCol :xs="24" :sm="16" :md="12">
       <ElCard shadow="never">
         <template #header>
-          <h2>Informazioni partecipante</h2>
+          <h2>{{ $t('teams.participantInfo') }}</h2>
         </template>
         <IndividualTeamForm
           @subscribe="
@@ -82,7 +82,6 @@ async function subscribe(formRef: FormInstance | undefined, form: Runner) {
               subscribe(formRef, form);
             }
           "
-          :alert="alert"
           :discount="availableDiscount"
         />
       </ElCard>
