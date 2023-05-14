@@ -29,6 +29,8 @@ export default {
     backToHome: 'Torna alla home',
     back: 'Indietro',
     error: 'Si è verificato un problema',
+    yes: 'Sì',
+    no: 'No',
   },
   events: {
     subscriptionsStart: 'Inizio iscrizioni',

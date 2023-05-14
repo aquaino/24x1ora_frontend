@@ -4,6 +4,7 @@ import { useAppStore } from '@/store';
 import { logout } from '@/utils';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { ref } from 'vue';
 
 /**
  * MAIN FUNCTION
@@ -28,6 +29,11 @@ const { t } = useI18n();
 const appStore = useAppStore();
 const alreadyVerified = appStore.user.email_verified_at !== null;
 
+const alert = ref({
+  type: 'error',
+  text: '',
+});
+
 /* Methods */
 
 async function verifyEmail() {
@@ -39,7 +45,7 @@ async function verifyEmail() {
       query: { alertType: 'success', alertText: t('auth.emailConfirmed') },
     });
   } catch (error) {
-    console.log(error);
+    alert.value.text = t('api.generalError');
   }
 }
 </script>
@@ -84,4 +90,5 @@ async function verifyEmail() {
       </template>
     </ElResult>
   </div>
+  <ElAlert v-show="alert.text" :type="alert.type" :title="alert.text" show-icon />
 </template>

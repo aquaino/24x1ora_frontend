@@ -48,6 +48,11 @@ const message = ref({
   text: route.query.messageText as string,
 });
 
+const alert = ref({
+  type: 'error',
+  text: '',
+});
+
 /* Methods */
 
 async function getEventIds() {
@@ -57,7 +62,7 @@ async function getEventIds() {
       return event.id;
     });
   } catch (error) {
-    console.log(error);
+    alert.value.text = t('api.generalError');
   }
 }
 
@@ -76,7 +81,7 @@ async function getSubscriptions() {
       });
     });
   } catch (error) {
-    console.log(error);
+    alert.value.text = t('api.generalError');
   }
 }
 
@@ -139,7 +144,7 @@ async function confirmTeam(eventId: number, teamId: number) {
       text: t('teams.teamConfirmed', { msg: teamId }),
     };
   } catch (error) {
-    console.log(error);
+    alert.value.text = t('api.generalError');
   }
 }
 
@@ -177,6 +182,11 @@ watch(
     :description="$t('teams.noTeams')"
   />
   <div v-else>
+    <ElRow v-if="alert.text" justify="center">
+      <ElCol :xs="24" :sm="16" :md="14" :lg="10" class="is-margin-bottom-15">
+        <ElAlert type="error" show-icon :closable="false" :title="alert.text" />
+      </ElCol>
+    </ElRow>
     <div v-for="subscription in subscriptions" :key="`subscription-${subscription.teams[0].id}`">
       <div class="is-flex is-justify-center is-align-center is-margin-bottom-20">
         <ElIcon color="var(--el-color-primary)" size="32"><TrophyBase /></ElIcon>
@@ -307,11 +317,11 @@ watch(
                     team.paymentUploaded &&
                     !team.confirmed
                   "
-                  title="Confermare l'iscrizione?"
+                  :title="$t('teams.askConfirmation')"
                   width="200"
-                  confirm-button-text="Sì"
+                  :confirm-button-text="$t('general.yes')"
+                  :cancel-button-text="$t('general.no')"
                   hide-icon
-                  cancel-button-text="No"
                   @confirm="confirmTeam(subscription.event.id, team.id)"
                 >
                   <template #reference>
