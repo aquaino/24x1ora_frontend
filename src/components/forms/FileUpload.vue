@@ -13,7 +13,7 @@ const uploadRef = ref<UploadInstance>();
 const props = defineProps<{
   action: string;
   filename: string;
-  files: string[];
+  files?: string[];
 }>();
 
 /* Events */
@@ -42,7 +42,7 @@ defineExpose({ submit });
     <template #trigger>
       <ElButton :icon="UploadFilled">Carica</ElButton>
     </template>
-    <div class="is-margin-top-05" v-if="props.files">
+    <div class="is-margin-top-05" v-if="typeof props.files !== 'undefined'">
       <ElAlert
         v-if="hasAttachment(new RegExp(`${props.filename}.*`), props.files)"
         type="success"

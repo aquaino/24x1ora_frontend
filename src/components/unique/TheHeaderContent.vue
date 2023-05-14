@@ -23,13 +23,13 @@ const menu: MenuItem[] = [
     routeName: 'events',
     icon: Calendar,
     text: t('general.event', 2),
-    title: t('general.eventsTitle'),
+    title: t('menu.eventsTitle'),
   },
   {
     routeName: 'subscriptions',
     icon: Tickets,
     text: t('general.team', 2),
-    title: t('general.teamsTitle'),
+    title: t('teams.teamsTitle'),
   },
   { routeName: 'user', icon: User, text: t('general.profile'), title: t('menu.profileTitle') },
   {

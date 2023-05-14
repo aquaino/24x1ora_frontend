@@ -121,7 +121,7 @@ onMounted(async () => {
                   $router.push({
                     name: 'subscribe',
                     params: {
-                      eventId: event['id'],
+                      eventId: event!['id'],
                       raceId: race.id,
                     },
                     query: {
