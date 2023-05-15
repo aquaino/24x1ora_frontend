@@ -58,7 +58,7 @@ export default {
     otherCard: 'Altra tessera',
     confirmEnrollment: 'Conferma iscrizione',
     discountText: {
-      enableIfMember: "Attivare se si è membris dell'associazione",
+      enableIfMember: "Attivare se si è membri dell'associazione",
       toHave: 'per avere diritto a',
       ofSale: 'di sconto',
       onCost: "sul costo dell'iscrizione",

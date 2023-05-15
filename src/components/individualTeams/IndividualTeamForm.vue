@@ -88,7 +88,7 @@ async function getSubscriptionData() {
 
 function generateDiscountText(society: string, discount: number) {
   return `${t('teams.discountText.enableIfMember')} "${society}" ${t('teams.discountText.toHave')}
-          <strong>${discount}€ ${t('teams.discountText.toHave')}</strong> ${t(
+          <strong>${discount}€ ${t('teams.discountText.ofSale')}</strong> ${t(
     'teams.discountText.onCost',
   )}.`;
 }
