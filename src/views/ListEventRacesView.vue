@@ -93,6 +93,14 @@ onMounted(async () => {
             <template #content>
               <div class="is-flex is-justify-space-between is-align-center">
                 <ElDescriptions direction="vertical" :column="2">
+                  <ElDescriptionsItem :label="$t('general.type')" :span="2">
+                    {{
+                      race.type.class[0] === 'i'
+                        ? $t('races.individualRace')
+                        : // race.type.class[0] === 's'
+                          $t('races.teamRace')
+                    }}
+                  </ElDescriptionsItem>
                   <ElDescriptionsItem :label="$t('general.date')" width="100px">{{
                     formatDateTime(event['date'], 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
                   }}</ElDescriptionsItem>
@@ -118,17 +126,32 @@ onMounted(async () => {
             <template #footer>
               <ElButton
                 @click="
-                  $router.push({
-                    name: 'subscribe',
-                    params: {
-                      eventId: event!['id'],
-                      raceId: race.id,
-                    },
-                    query: {
-                      raceName: race.type.name,
-                      availableDiscount: race.available_discount,
-                    },
-                  })
+                  if (race.type.class[0] === 'i') {
+                    $router.push({
+                      name: 'subscribe-individual',
+                      params: {
+                        eventId: event!['id'],
+                        raceId: race.id,
+                      },
+                      query: {
+                        raceName: race.type.name,
+                        availableDiscount: race.available_discount,
+                      },
+                    });
+                    // race.type.class[0] === 's'
+                  } else {
+                    $router.push({
+                      name: 'subscribe-multiple',
+                      params: {
+                        eventId: event!['id'],
+                        raceId: race.id,
+                      },
+                      query: {
+                        raceName: race.type.name,
+                        availableDiscount: race.available_discount,
+                      },
+                    });
+                  }
                 "
                 :title="$t('races.subscribeToRace')"
                 :disabled="!store.user.email_verified_at"

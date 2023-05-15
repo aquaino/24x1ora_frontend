@@ -31,6 +31,7 @@ export default {
     error: 'Si è verificato un problema',
     yes: 'Sì',
     no: 'No',
+    type: 'Tipologia',
   },
   events: {
     subscriptionsStart: 'Inizio iscrizioni',
@@ -45,6 +46,8 @@ export default {
     noRaces: 'Nessuna gara disponibile',
     subscribe: 'Iscriviti',
     subscribeToRace: 'Iscriviti alla gara',
+    individualRace: 'Gara individuale',
+    teamRace: 'Gara a squadre',
   },
   teams: {
     disableDiscountWarning:
@@ -92,6 +95,7 @@ export default {
     updateTeamTitle: 'Modifica iscrizione #{msg1} - Gara "{msg2}"',
     updateTeamSubtitle: "Modifica i dati dell'iscrizione tramite il form sottostante",
     paymentCertificate: 'Ricevuta di bonifico',
+    multipleSubscriptionSubtitle: 'Completa gli step per iscrivere la tua squadra alla gara',
   },
   menu: {
     menuTitle: 'Menu di navigazione',

@@ -58,9 +58,14 @@ const router = createRouter({
           component: () => import('@/views/ListEventRacesView.vue'),
         },
         {
-          path: '/events/:eventId/races/:raceId/subscribe',
-          name: 'subscribe',
+          path: '/events/:eventId/races/:raceId/subscribe-individual',
+          name: 'subscribe-individual',
           component: () => import('@/views/CreateIndividualTeamView.vue'),
+        },
+        {
+          path: '/events/:eventId/races/:raceId/subscribe-multiple',
+          name: 'subscribe-multiple',
+          component: () => import('@/views/CreateMultipleRunnersTeamView.vue'),
         },
         {
           path: '/subscriptions',
