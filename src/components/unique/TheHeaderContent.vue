@@ -26,12 +26,12 @@ const menu: MenuItem[] = [
     title: t('menu.eventsTitle'),
   },
   {
-    routeName: 'subscriptions',
+    routeName: 'race-registrations',
     icon: Tickets,
     text: t('general.team', 2),
     title: t('teams.teamsTitle'),
   },
-  { routeName: 'user', icon: User, text: t('general.profile'), title: t('menu.profileTitle') },
+  { routeName: 'profile', icon: User, text: t('general.profile'), title: t('menu.profileTitle') },
   {
     routeName: 'logout',
     icon: SwitchButton,

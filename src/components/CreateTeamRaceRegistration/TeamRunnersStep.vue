@@ -7,6 +7,14 @@ import type { FormInstance, FormRules } from 'element-plus';
 import { resetForm } from '@/utils';
 import { Delete } from '@element-plus/icons-vue';
 
+/**
+ * MAIN FUNCTION
+ * Get team runners and pass them to main view.
+ *
+ * LOGIC
+ * Compose the team specifying each runner informations.
+ */
+
 /* Interfaces */
 
 interface RunnersData {

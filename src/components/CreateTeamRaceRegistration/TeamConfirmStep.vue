@@ -2,6 +2,11 @@
 import AppCard from '../base/AppCard.vue';
 import { useI18n } from 'vue-i18n';
 
+/**
+ * MAIN FUNCTION
+ * Show team summary and confirm the subscription.
+ */
+
 /* Data */
 
 const { t } = useI18n();
@@ -13,9 +18,9 @@ const emits = defineEmits(['step-completed']);
 
 <template>
   <ElCol :xs="24" :sm="12" :lg="10">
-    <AppCard shadow="never" :title="$t('teams.subscriptionSummary')">
+    <AppCard shadow="never" :title="$t('general.confirm')">
       <template #content>
-        Desideri confermare l'iscrizione della squadra alla gara?
+        {{ $t('teams.askConfirmMultipleTeam') }}
         <div class="is-margin-top-15">
           <ElButton type="success">{{ $t('general.confirm') }}</ElButton>
         </div>

@@ -96,9 +96,8 @@ onMounted(async () => {
                   <ElDescriptionsItem :label="$t('general.type')" :span="2">
                     {{
                       race.type.class[0] === 'i'
-                        ? $t('races.individualRace')
-                        : // race.type.class[0] === 's'
-                          $t('races.teamRace')
+                        ? $t('races.individualRace') // race.type.class[0] === 's'
+                        : $t('races.teamRace')
                     }}
                   </ElDescriptionsItem>
                   <ElDescriptionsItem :label="$t('general.date')" width="100px">{{
@@ -128,7 +127,7 @@ onMounted(async () => {
                 @click="
                   if (race.type.class[0] === 'i') {
                     $router.push({
-                      name: 'subscribe-individual',
+                      name: 'individual-race-registration',
                       params: {
                         eventId: event!['id'],
                         raceId: race.id,
@@ -141,7 +140,7 @@ onMounted(async () => {
                     // race.type.class[0] === 's'
                   } else {
                     $router.push({
-                      name: 'subscribe-multiple',
+                      name: 'team-race-registration',
                       params: {
                         eventId: event!['id'],
                         raceId: race.id,

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import TeamInfoStep from '@/components/multipleTeams/TeamInfoStep.vue';
-import TeamRunnersStep from '@/components/multipleTeams/TeamRunnersStep.vue';
-import TeamConfirmStep from '@/components/multipleTeams/TeamConfirmStep.vue';
+import TeamDataStep from '@/components/CreateTeamRaceRegistration/TeamDataStep.vue';
+import TeamRunnersStep from '@/components/CreateTeamRaceRegistration/TeamRunnersStep.vue';
+import TeamConfirmStep from '@/components/CreateTeamRaceRegistration/TeamConfirmStep.vue';
 import type { Team } from '@/api/interfaces';
 import AppPageTitle from '@/components/base/AppPageTitle.vue';
 import { useRoute } from 'vue-router';
@@ -45,11 +45,11 @@ const team: Team = Object();
   <ElSteps :active="currentStep.index" align-center class="is-margin-top-30">
     <ElStep :title="$t('teams.teamInfo')" />
     <ElStep :title="$t('teams.runnersInfo')" />
-    <ElStep :title="$t('teams.confirmSubscription')" />
+    <ElStep :title="$t('general.confirm')" />
   </ElSteps>
   <!-- Steps content -->
   <ElRow justify="center" :gutter="20" class="is-margin-top-25 is-margin-bottom-15">
-    <TeamInfoStep
+    <TeamDataStep
       v-if="currentStep.index === 0"
       @step-completed="
         (completed, input) => {

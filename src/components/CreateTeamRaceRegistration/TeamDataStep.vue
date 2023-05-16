@@ -3,6 +3,14 @@ import { reactive, watch } from 'vue';
 import AppCard from '../base/AppCard.vue';
 import { useI18n } from 'vue-i18n';
 
+/**
+ * MAIN FUNCTION
+ * Get general team data.
+ *
+ * LOGIC
+ * Get team info from input and pass them to main view.
+ */
+
 /* Interfaces */
 
 interface TeamInfo {

@@ -4,7 +4,7 @@ import type { Ref } from 'vue';
 import AppPageTitle from '@/components/base/AppPageTitle.vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { FormInstance } from 'element-plus';
-import IndividualTeamForm from '@/components/individualTeams/IndividualTeamForm.vue';
+import IndividualRaceRegistrationForm from '@/components/individualRaceRegistrations/IndividualRaceRegistrationForm.vue';
 import { teamsApi } from '@/api/resources';
 import type { RunnerUpdate, Team } from '@/api/interfaces';
 import AppCard from '@/components/base/AppCard.vue';
@@ -64,7 +64,7 @@ async function updateSubscription(formRef: FormInstance | undefined, form: Runne
         // Update data
         await teamsApi.updateIndividualTeam(eventId, teamId, form);
         router.push({
-          name: 'subscriptions',
+          name: 'race-registrations',
           query: {
             messageType: 'success',
             messageText: t('teams.teamUpdated', { msg: teamId }),
@@ -113,13 +113,13 @@ onMounted(async () => {
   <AppPageTitle
     :title="$t('teams.updateTeamTitle', { msg1: teamId, msg2: raceName })"
     :subtitle="$t('teams.updateTeamSubtitle')"
-    :back-to="{ name: 'subscriptions' }"
+    :back-to="{ name: 'race-registrations' }"
   />
   <ElRow justify="center">
     <ElCol :xs="24" :sm="16" :md="12" :lg="8">
       <AppCard :title="$t('teams.participantInfo')" shadow="never" v-loading="loading">
         <template #content>
-          <IndividualTeamForm
+          <IndividualRaceRegistrationForm
             update
             :event-id="eventId"
             :team-id="teamId"
@@ -152,7 +152,7 @@ onMounted(async () => {
                 />
               </ElFormItem>
             </template>
-          </IndividualTeamForm>
+          </IndividualRaceRegistrationForm>
         </template>
       </AppCard>
     </ElCol>
