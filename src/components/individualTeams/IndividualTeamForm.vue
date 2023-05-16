@@ -173,11 +173,11 @@ onMounted(async () => {
           @click.prevent="
             update ? emits('update-subscription', formRef, form) : emits('subscribe', formRef, form)
           "
-          >Conferma</ElButton
+          >{{ $t('general.confirm') }}</ElButton
         >
-        <ElButton v-if="!update" @click="resetForm(formRef)" :title="$t('forms.resetForm')"
-          >Reset</ElButton
-        >
+        <ElButton v-if="!update" @click="resetForm(formRef)" :title="$t('forms.resetForm')">{{
+          $t('forms.reset')
+        }}</ElButton>
       </ElFormItem>
     </ElForm>
   </div>

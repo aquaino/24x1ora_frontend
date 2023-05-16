@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import TeamInfoStep from '@/components/multipleTeams/TeamInfoStep.vue';
+import TeamRunnersStep from '@/components/multipleTeams/TeamRunnersStep.vue';
+import TeamConfirmStep from '@/components/multipleTeams/TeamConfirmStep.vue';
 import type { Team } from '@/api/interfaces';
 import AppPageTitle from '@/components/base/AppPageTitle.vue';
 import { useRoute } from 'vue-router';
@@ -23,10 +25,13 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute();
 
-const raceName = route.query.raceName;
+const currentStep = ref({
+  index: 0,
+  completed: false,
+});
+const totalSteps = 3;
 
-const step = ref(0);
-const currentStepCompleted = ref(false);
+const raceName = route.query.raceName;
 const team: Team = Object();
 </script>
 
@@ -34,33 +39,53 @@ const team: Team = Object();
   <AppPageTitle
     :title="$t('teams.subscriptionTitle', { msg: raceName })"
     :subtitle="$t('teams.multipleSubscriptionSubtitle')"
-    :back-to="{ name: 'races' }"
+    :back-to="{ name: 'races', params: { id: route.params.eventId } }"
   />
   <!-- Steps header -->
-  <ElSteps :active="step" align-center class="is-margin-top-30">
-    <ElStep title="Informazioni squadra" />
-    <ElStep title="Inserimento corridori" />
-    <ElStep title="Conferma iscrizione" />
+  <ElSteps :active="currentStep.index" align-center class="is-margin-top-30">
+    <ElStep :title="$t('teams.teamInfo')" />
+    <ElStep :title="$t('teams.runnersInfo')" />
+    <ElStep :title="$t('teams.confirmSubscription')" />
   </ElSteps>
   <!-- Steps content -->
-  <ElRow justify="center" class="is-margin-top-25 is-margin-bottom-15">
+  <ElRow justify="center" :gutter="20" class="is-margin-top-25 is-margin-bottom-15">
     <TeamInfoStep
-      v-if="step === 0"
+      v-if="currentStep.index === 0"
       @step-completed="
-        (completed, form) => {
-          currentStepCompleted = completed;
-          completed ? (team.name = form.name) : (team = form);
+        (completed, input) => {
+          currentStep.completed = completed;
+          team.name = input.name;
         }
       "
     />
-    <div v-else-if="step === 1">Step 2</div>
-    <div v-else>Step 3</div>
+    <TeamRunnersStep
+      v-if="currentStep.index === 1"
+      @step-completed="
+        (completed, input) => {
+          currentStep.completed = completed;
+          team.runners = input.runners;
+        }
+      "
+    />
+    <TeamConfirmStep v-if="currentStep.index === totalSteps - 1" />
   </ElRow>
   <!-- Steps navigation -->
-  <ElRow justify="center">
-    <ElCol :span="18" class="is-margin-top-15">
-      <ElButton @click="step--">Indietro</ElButton>
-      <ElButton type="primary" @click="step++" :disabled="!currentStepCompleted">Avanti</ElButton>
+  <ElRow justify="center" class="is-margin-top-15">
+    <ElCol :xs="24" :sm="22" :md="20" class="is-flex is-justify-space-between">
+      <ElButton @click="currentStep.index--" v-if="currentStep.index !== 0">{{
+        $t('general.back')
+      }}</ElButton>
+      <ElButton
+        v-if="currentStep.index !== totalSteps - 1"
+        type="primary"
+        @click="
+          currentStep.index++;
+          currentStep.completed = false;
+        "
+        :class="currentStep.index === 0 ? 'is-margin-left-auto' : ''"
+        :disabled="!currentStep.completed"
+        >{{ $t('general.next') }}</ElButton
+      >
     </ElCol>
   </ElRow>
 </template>
