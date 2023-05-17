@@ -188,11 +188,22 @@ watch(
       </ElCol>
     </ElRow>
     <div v-for="subscription in subscriptions" :key="`subscription-${subscription.teams[0].id}`">
-      <div class="is-flex is-justify-center is-align-center is-margin-bottom-20">
-        <ElIcon color="var(--el-color-primary)" size="32"><TrophyBase /></ElIcon>
-        <h2 class="is-margin-left-05 is-margin-top-0" style="line-height: 32px">
-          {{ subscription.event.name }}
-        </h2>
+      <div class="is-flex is-justify-space-between is-align-center is-margin-bottom-20">
+        <div class="is-flex">
+          <ElIcon color="var(--el-color-primary)" size="32"><TrophyBase /></ElIcon>
+          <h2 class="is-margin-left-05 is-margin-top-0" style="line-height: 32px">
+            {{ subscription.event.name }}
+          </h2>
+        </div>
+        <div v-if="subscription.teams.length > 0" style="color: var(--el-text-color-regular)">
+          {{
+            $t(
+              'teams.registrationsCount',
+              { msg: subscription.teams.length },
+              subscription.teams.length,
+            )
+          }}
+        </div>
       </div>
       <ElRow :justify="subscription.teams.length <= 3 ? 'center' : 'start'" :gutter="20">
         <ElCol

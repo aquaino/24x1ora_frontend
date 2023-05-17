@@ -92,6 +92,7 @@ export default {
     updateTeamTitle: 'Modifica iscrizione #{msg1} - Gara "{msg2}"',
     updateTeamSubtitle: "Modifica i dati dell'iscrizione tramite il form sottostante",
     paymentCertificate: 'Ricevuta di bonifico',
+    registrationsCount: '{msg} iscrizione | {msg} iscrizioni',
   },
   menu: {
     menuTitle: 'Menu di navigazione',
