@@ -32,6 +32,8 @@ const currentStep = ref({
 const totalSteps = 3;
 
 const raceName = route.query.raceName;
+const runnersPerTeam = parseInt(route.query.runnersPerTeam as string);
+
 const team: Team = Object();
 </script>
 
@@ -42,7 +44,12 @@ const team: Team = Object();
     :back-to="{ name: 'races', params: { id: route.params.eventId } }"
   />
   <!-- Steps header -->
-  <ElSteps :active="currentStep.index" align-center class="is-margin-top-30">
+  <ElSteps
+    :active="currentStep.index"
+    align-center
+    finish-status="success"
+    class="is-margin-top-30"
+  >
     <ElStep :title="$t('teams.teamInfo')" />
     <ElStep :title="$t('teams.runnersInfo')" />
     <ElStep :title="$t('general.confirm')" />
@@ -60,6 +67,7 @@ const team: Team = Object();
     />
     <TeamRunnersStep
       v-if="currentStep.index === 1"
+      :runners-per-team="runnersPerTeam"
       @step-completed="
         (completed, input) => {
           currentStep.completed = completed;
@@ -72,9 +80,12 @@ const team: Team = Object();
   <!-- Steps navigation -->
   <ElRow justify="center" class="is-margin-top-15">
     <ElCol :xs="24" :sm="22" :md="20" class="is-flex is-justify-space-between">
-      <ElButton @click="currentStep.index--" v-if="currentStep.index !== 0">{{
-        $t('general.back')
-      }}</ElButton>
+      <ElButton
+        @click="currentStep.index--"
+        v-if="currentStep.index !== 0"
+        :title="$t('general.back')"
+        >{{ $t('general.back') }}</ElButton
+      >
       <ElButton
         v-if="currentStep.index !== totalSteps - 1"
         type="primary"
@@ -83,6 +94,7 @@ const team: Team = Object();
           currentStep.completed = false;
         "
         :class="currentStep.index === 0 ? 'is-margin-left-auto' : ''"
+        :title="$t('general.next')"
         :disabled="!currentStep.completed"
         >{{ $t('general.next') }}</ElButton
       >

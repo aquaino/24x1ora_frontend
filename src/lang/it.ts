@@ -104,7 +104,8 @@ export default {
     teamInfo: 'Dati squadra',
     runnersInfo: 'Dati partecipanti',
     teamRunners: 'Elenco partecipanti',
-    askConfirmMultipleTeam: "Confermare l'iscrizione della squadra appena creata alla gara?",
+    askConfirmMultipleTeam: "Confermare l'iscrizione della squadra appena creata?",
+    exceedTeamParticipants: 'Squadra completa, eliminare un partecipante per aggiungerne uno nuovo',
   },
   menu: {
     menuTitle: 'Menu di navigazione',

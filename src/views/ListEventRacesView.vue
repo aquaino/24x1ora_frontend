@@ -147,7 +147,7 @@ onMounted(async () => {
                       },
                       query: {
                         raceName: race.type.name,
-                        availableDiscount: race.available_discount,
+                        runnersPerTeam: race.type.runners_per_team,
                       },
                     });
                   }

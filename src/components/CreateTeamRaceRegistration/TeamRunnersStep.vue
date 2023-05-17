@@ -13,6 +13,9 @@ import { Delete } from '@element-plus/icons-vue';
  *
  * LOGIC
  * Compose the team specifying each runner informations.
+ *
+ * EXCEPTIONS
+ * - Reach team participants limit -> Alert
  */
 
 /* Interfaces */
@@ -21,6 +24,12 @@ interface RunnersData {
   currentRunner: Runner;
   runners: Runner[];
 }
+
+/* Props */
+
+const props = defineProps<{
+  runnersPerTeam: number;
+}>();
 
 /* Data */
 
@@ -42,10 +51,14 @@ const input: RunnersData = reactive({
 });
 
 const formRef = ref<FormInstance>();
-
 const formRules = reactive<FormRules>({
   first_name: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
   last_name: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
+});
+
+const alert = ref({
+  type: 'error',
+  text: '',
 });
 
 /* Events */
@@ -57,7 +70,7 @@ const emits = defineEmits(['step-completed']);
 watch(
   input,
   () => {
-    input.runners.length > 0
+    input.runners.length === props.runnersPerTeam
       ? emits('step-completed', true, input)
       : emits('step-completed', false, input);
   },
@@ -67,12 +80,18 @@ watch(
 /* Methods */
 
 async function addParticipant(formRef: FormInstance | undefined) {
+  alert.value.text = '';
   if (!formRef) return;
-  await formRef.validate(async (valid) => {
-    if (valid) {
-      input.runners.push(Object.assign({}, input.currentRunner));
-    }
-  });
+
+  if (input.runners.length + 1 > props.runnersPerTeam)
+    alert.value.text = t('teams.exceedTeamParticipants');
+  else {
+    await formRef.validate(async (valid) => {
+      if (valid) {
+        input.runners.push(Object.assign({}, input.currentRunner));
+      }
+    });
+  }
 }
 
 function removeParticipant(index: number) {
@@ -138,14 +157,22 @@ function removeParticipant(index: number) {
             }}</ElButton>
           </ElFormItem>
         </ElForm>
+        <ElAlert
+          v-show="alert.text"
+          :type="alert.type"
+          :title="alert.text"
+          show-icon
+          class="is-margin-top-15"
+        />
       </template>
     </AppCard>
   </ElCol>
   <ElCol :xs="24" :sm="14" :md="16">
     <AppCard shadow="never" :title="$t('teams.teamRunners')">
+      <template #right-header> {{ input.runners.length }} / {{ props.runnersPerTeam }} </template>
       <template #content>
         <ElTable :data="input.runners" :empty-text="$t('general.noRows')" style="width: 100%">
-          <ElTableColumn type="index" />
+          <ElTableColumn label="#" type="index" />
           <ElTableColumn prop="first_name" :label="$t('forms.firstname')" />
           <ElTableColumn prop="last_name" :label="$t('forms.lastname')" />
           <ElTableColumn prop="birth_date" :label="$t('forms.birthDate')" />
@@ -154,7 +181,7 @@ function removeParticipant(index: number) {
           <ElTableColumn prop="fidal_id" :label="$t('teams.fidalCard')" />
           <ElTableColumn prop="csi_id" :label="$t('teams.csiCard')" />
           <ElTableColumn prop="other_id" :label="$t('teams.otherCard')" />
-          <ElTableColumn>
+          <ElTableColumn v-if="input.runners.length > 0" fixed="right" align="center" width="50">
             <template #default="{ $index }">
               <ElButton
                 class="table-action-button"
@@ -173,6 +200,6 @@ function removeParticipant(index: number) {
 
 <style scoped>
 .table-action-button {
-  padding: 0 8px;
+  padding: 0 7px;
 }
 </style>
