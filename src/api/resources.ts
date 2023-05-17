@@ -11,6 +11,7 @@ import type {
   UserInputWihtConfirmPassword,
   User,
   UserInput,
+  TeamData,
 } from './interfaces';
 
 export const eventsApi = {
@@ -26,17 +27,6 @@ export const eventsApi = {
       throw error;
     });
     return response.data.events;
-  },
-
-  async subscribeIndividual(eventId: number, raceId: number, runner: Runner): Promise<Team> {
-    const response = await apiClient
-      .post(`/events/${eventId}/races/${raceId}/teams`, {
-        runner: runner,
-      })
-      .catch((error) => {
-        throw error;
-      });
-    return response.data.team;
   },
 };
 
@@ -94,6 +84,30 @@ export const teamsApi = {
         throw error;
       });
     return response.data;
+  },
+
+  async createIndividualRaceRegistration(
+    eventId: number,
+    raceId: number,
+    runner: Runner,
+  ): Promise<Team> {
+    const response = await apiClient
+      .post(`/events/${eventId}/races/${raceId}/teams`, {
+        runner: runner,
+      })
+      .catch((error) => {
+        throw error;
+      });
+    return response.data.team;
+  },
+
+  async createTeamRaceRegistration(eventId: number, raceId: number, teamData: TeamData): Promise<Team> {
+    const response = await apiClient
+      .post(`/events/${eventId}/races/${raceId}/teams`, teamData)
+      .catch((error) => {
+        throw error;
+      });
+    return response.data.team;
   },
 };
 

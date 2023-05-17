@@ -112,7 +112,7 @@ onMounted(async () => {
                       race.type.duration / 60 === 1 ? $t('general.hour', 1) : $t('general.hour', 2)
                     }}</ElDescriptionsItem
                   >
-                  <ElDescriptionsItem :label="$t('general.runnersForTeam')">{{
+                  <ElDescriptionsItem :label="$t('general.runnersPerTeam')">{{
                     race.type.runners_per_team
                   }}</ElDescriptionsItem>
                 </ElDescriptions>
@@ -147,7 +147,6 @@ onMounted(async () => {
                       },
                       query: {
                         raceName: race.type.name,
-                        runnersPerTeam: race.type.runners_per_team,
                       },
                     });
                   }

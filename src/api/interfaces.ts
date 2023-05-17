@@ -59,6 +59,12 @@ export interface RunnerUpdate extends Partial<Runner> {
   last_name: string;
 }
 
+export interface TeamData {
+  name: string;
+  manager: string;
+  manager_cell: string;
+}
+
 export interface Team {
   id: number;
   event_id: number;

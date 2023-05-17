@@ -1,40 +1,64 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import TeamDataStep from '@/components/CreateTeamRaceRegistration/TeamDataStep.vue';
-import TeamRunnersStep from '@/components/CreateTeamRaceRegistration/TeamRunnersStep.vue';
-import TeamConfirmStep from '@/components/CreateTeamRaceRegistration/TeamConfirmStep.vue';
-import type { Team } from '@/api/interfaces';
+import { ref, reactive } from 'vue';
 import AppPageTitle from '@/components/base/AppPageTitle.vue';
-import { useRoute } from 'vue-router';
-
-/**
- * MAIN FUNCTION
- * Create a team with multiple runners.
- *
- * LOGIC
- * Get team and runners from steps and create team with a WS call.
- * 1. Input team name
- * 2. Compose team with runners
- * 3. Confirm team
- *
- * EXCEPTIONS
- * - WS call fails -> Error alert
- */
+import { useRoute, useRouter } from 'vue-router';
+import AppCard from '@/components/base/AppCard.vue';
+import { useI18n } from 'vue-i18n';
+import type { FormInstance, FormRules } from 'element-plus';
+import type { TeamData } from '@/api/interfaces';
+import { teamsApi } from '@/api/resources';
 
 /* Data */
 
+const { t } = useI18n();
+
+const router = useRouter();
 const route = useRoute();
-
-const currentStep = ref({
-  index: 0,
-  completed: false,
-});
-const totalSteps = 3;
-
 const raceName = route.query.raceName;
-const runnersPerTeam = parseInt(route.query.runnersPerTeam as string);
+const eventId = parseInt(route.params.eventId as string);
+const raceId = parseInt(route.params.raceId as string);
 
-const team: Team = Object();
+const formRef = ref<FormInstance>();
+const form: TeamData = reactive({
+  name: '',
+  manager: '',
+  manager_cell: '',
+});
+const formRules = reactive<FormRules>({
+  name: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
+  manager: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
+  manager_cell: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
+});
+
+const alert = ref({
+  type: 'error',
+  text: '',
+});
+
+/* Methods */
+
+async function createTeam(formRef: FormInstance | undefined) {
+  if (!formRef) return;
+  await formRef.validate(async (valid) => {
+    if (valid) {
+      try {
+        const newTeam = await teamsApi.createTeamRaceRegistration(eventId, raceId, form);
+        router.push({
+          name: 'race-registrations',
+          query: {
+            messageType: 'success',
+            messageText: t('teams.teamInserted', { msg: newTeam.id }),
+          },
+        });
+      } catch (error: any) {
+        alert.value = {
+          type: 'error',
+          text: t('api.generalError'),
+        };
+      }
+    }
+  });
+}
 </script>
 
 <template>
@@ -43,61 +67,46 @@ const team: Team = Object();
     :subtitle="$t('teams.multipleSubscriptionSubtitle')"
     :back-to="{ name: 'races', params: { id: route.params.eventId } }"
   />
-  <!-- Steps header -->
-  <ElSteps
-    :active="currentStep.index"
-    align-center
-    finish-status="success"
-    class="is-margin-top-30"
-  >
-    <ElStep :title="$t('teams.teamInfo')" />
-    <ElStep :title="$t('teams.runnersInfo')" />
-    <ElStep :title="$t('general.confirm')" />
-  </ElSteps>
-  <!-- Steps content -->
   <ElRow justify="center" :gutter="20" class="is-margin-top-25 is-margin-bottom-15">
-    <TeamDataStep
-      v-if="currentStep.index === 0"
-      @step-completed="
-        (completed, input) => {
-          currentStep.completed = completed;
-          team.name = input.name;
-        }
-      "
-    />
-    <TeamRunnersStep
-      v-if="currentStep.index === 1"
-      :runners-per-team="runnersPerTeam"
-      @step-completed="
-        (completed, input) => {
-          currentStep.completed = completed;
-          team.runners = input.runners;
-        }
-      "
-    />
-    <TeamConfirmStep v-if="currentStep.index === totalSteps - 1" />
-  </ElRow>
-  <!-- Steps navigation -->
-  <ElRow justify="center" class="is-margin-top-15">
-    <ElCol :xs="24" :sm="22" :md="20" class="is-flex is-justify-space-between">
-      <ElButton
-        @click="currentStep.index--"
-        v-if="currentStep.index !== 0"
-        :title="$t('general.back')"
-        >{{ $t('general.back') }}</ElButton
-      >
-      <ElButton
-        v-if="currentStep.index !== totalSteps - 1"
-        type="primary"
-        @click="
-          currentStep.index++;
-          currentStep.completed = false;
-        "
-        :class="currentStep.index === 0 ? 'is-margin-left-auto' : ''"
-        :title="$t('general.next')"
-        :disabled="!currentStep.completed"
-        >{{ $t('general.next') }}</ElButton
-      >
+    <ElCol :xs="24" :sm="12" :md="8" :lg="6">
+      <AppCard shadow="never" :title="$t('teams.teamInfo')">
+        <template #content>
+          <ElForm
+            ref="formRef"
+            :model="form"
+            :rules="formRules"
+            status-icon
+            label-width="auto"
+            class="is-width-100"
+            @submit.prevent="createTeam(formRef)"
+          >
+            <ElFormItem :label="$t('forms.name')" prop="name" required>
+              <ElInput v-model="form.name" />
+            </ElFormItem>
+            <ElFormItem :label="$t('teams.manager')" prop="manager" required>
+              <ElInput v-model="form.manager" />
+            </ElFormItem>
+            <ElFormItem :label="$t('teams.managerCell')" prop="manager_cell" required>
+              <ElInput v-model="form.manager_cell" />
+            </ElFormItem>
+            <ElFormItem class="is-margin-bottom-0">
+              <ElButton
+                type="success"
+                native-type="submit"
+                :title="$t('teams.confirmEnrollment')"
+                >{{ $t('general.confirm') }}</ElButton
+              >
+            </ElFormItem>
+          </ElForm>
+        </template>
+        <ElAlert
+          v-show="alert.text"
+          :type="alert.type"
+          :title="alert.text"
+          show-icon
+          class="is-margin-top-15"
+        />
+      </AppCard>
     </ElCol>
   </ElRow>
 </template>
