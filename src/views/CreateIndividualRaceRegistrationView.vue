@@ -4,7 +4,7 @@ import AppPageTitle from '@/components/base/AppPageTitle.vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { FormInstance } from 'element-plus';
 import { teamsApi } from '@/api/resources';
-import IndividualRaceRegistrationForm from '@/components/individualRaceRegistrations/IndividualRaceRegistrationForm.vue';
+import IndividualRaceRegistrationForm from '@/components/IndividualRaceRegistrationForm.vue';
 import type { Runner } from '@/api/interfaces';
 import { useI18n } from 'vue-i18n';
 

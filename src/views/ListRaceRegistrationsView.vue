@@ -11,7 +11,7 @@ import { useRoute } from 'vue-router';
 import { hasAttachment } from '@/utils';
 import { useAppStore } from '@/store';
 import { useI18n } from 'vue-i18n';
-import TeamRegistrationCard from '@/components/ListRaceRegistrationsView/TeamRegistrationCard.vue';
+import TeamRegistrationCard from '@/components/TeamRegistrationCard.vue';
 
 /**
  * MAIN FUNCTION

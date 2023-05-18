@@ -4,7 +4,7 @@ import type { Ref } from 'vue';
 import AppPageTitle from '@/components/base/AppPageTitle.vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { FormInstance } from 'element-plus';
-import IndividualRaceRegistrationForm from '@/components/individualRaceRegistrations/IndividualRaceRegistrationForm.vue';
+import IndividualRaceRegistrationForm from '@/components/IndividualRaceRegistrationForm.vue';
 import { teamsApi } from '@/api/resources';
 import type { RunnerUpdate, Team } from '@/api/interfaces';
 import AppCard from '@/components/base/AppCard.vue';

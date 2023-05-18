@@ -5,10 +5,17 @@ import { useRoute, useRouter } from 'vue-router';
 import AppCard from '@/components/base/AppCard.vue';
 import { useI18n } from 'vue-i18n';
 import type { FormInstance, FormRules } from 'element-plus';
-import type { TeamData } from '@/api/interfaces';
 import { teamsApi } from '@/api/resources';
 
-/* Data */
+/* INTERFACES */
+
+interface TeamBasicData {
+  name: string;
+  manager: string;
+  manager_cell: string;
+}
+
+/* DATA */
 
 const { t } = useI18n();
 
@@ -19,7 +26,7 @@ const eventId = parseInt(route.params.eventId as string);
 const raceId = parseInt(route.params.raceId as string);
 
 const formRef = ref<FormInstance>();
-const form: TeamData = reactive({
+const form: TeamBasicData = reactive({
   name: '',
   manager: '',
   manager_cell: '',
@@ -35,7 +42,7 @@ const alert = ref({
   text: '',
 });
 
-/* Methods */
+/* METHODS */
 
 async function createTeam(formRef: FormInstance | undefined) {
   if (!formRef) return;

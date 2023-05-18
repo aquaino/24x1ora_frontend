@@ -168,7 +168,7 @@ async function confirmTeam() {
           :title="$t('teams.editTeam')"
           @click="
             $router.push({
-              name: 'update-individual-registration',
+              name: individual ? 'update-individual-registration' : 'update-team-registration',
               params: { eventId: event.id, teamId: props.team.id },
               query: {
                 raceName: props.team.type.name,
