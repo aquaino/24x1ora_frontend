@@ -38,7 +38,7 @@ const alert = ref({
 
 /* Events */
 
-const emits = defineEmits(['subscribe', 'update-subscription', 'data-fetched']);
+const emits = defineEmits(['subscribe', 'update-registration', 'data-fetched']);
 
 /* Data */
 
@@ -171,13 +171,13 @@ onMounted(async () => {
           native-type="submit"
           :title="$t('teams.confirmEnrollment')"
           @click.prevent="
-            update ? emits('update-subscription', formRef, form) : emits('subscribe', formRef, form)
+            update ? emits('update-registration', formRef, form) : emits('subscribe', formRef, form)
           "
-          >Conferma</ElButton
+          >{{ $t('general.confirm') }}</ElButton
         >
-        <ElButton v-if="!update" @click="resetForm(formRef)" :title="$t('forms.resetForm')"
-          >Reset</ElButton
-        >
+        <ElButton v-if="!update" @click="resetForm(formRef)" :title="$t('forms.resetForm')">{{
+          $t('forms.reset')
+        }}</ElButton>
       </ElFormItem>
     </ElForm>
   </div>

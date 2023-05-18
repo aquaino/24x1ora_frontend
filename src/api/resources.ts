@@ -11,6 +11,7 @@ import type {
   UserInputWihtConfirmPassword,
   User,
   UserInput,
+  TeamData,
 } from './interfaces';
 
 export const eventsApi = {
@@ -26,17 +27,6 @@ export const eventsApi = {
       throw error;
     });
     return response.data.events;
-  },
-
-  async subscribeIndividual(eventId: number, raceId: number, runner: Runner): Promise<Team> {
-    const response = await apiClient
-      .post(`/events/${eventId}/races/${raceId}/teams`, {
-        runner: runner,
-      })
-      .catch((error) => {
-        throw error;
-      });
-    return response.data.team;
   },
 };
 
@@ -81,6 +71,15 @@ export const teamsApi = {
     return response.data.team.runners[0];
   },
 
+  async updateTeam(eventId: number, teamId: number, team: Team): Promise<Team> {
+    const response = await apiClient
+      .patch(`events/${eventId}/teams/${teamId}`, team)
+      .catch((error) => {
+        throw error;
+      });
+    return response.data.team;
+  },
+
   async confirmTeam(eventId: number, teamId: number) {
     await apiClient.post(`events/${eventId}/teams/${teamId}/confirmPayment`).catch((error) => {
       throw error;
@@ -94,6 +93,34 @@ export const teamsApi = {
         throw error;
       });
     return response.data;
+  },
+
+  async createIndividualRaceRegistration(
+    eventId: number,
+    raceId: number,
+    runner: Runner,
+  ): Promise<Team> {
+    const response = await apiClient
+      .post(`/events/${eventId}/races/${raceId}/teams`, {
+        runner: runner,
+      })
+      .catch((error) => {
+        throw error;
+      });
+    return response.data.team;
+  },
+
+  async createTeamRaceRegistration(
+    eventId: number,
+    raceId: number,
+    teamData: TeamData,
+  ): Promise<Team> {
+    const response = await apiClient
+      .post(`/events/${eventId}/races/${raceId}/teams`, teamData)
+      .catch((error) => {
+        throw error;
+      });
+    return response.data.team;
   },
 };
 

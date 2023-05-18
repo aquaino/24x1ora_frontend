@@ -93,6 +93,13 @@ onMounted(async () => {
             <template #content>
               <div class="is-flex is-justify-space-between is-align-center">
                 <ElDescriptions direction="vertical" :column="2">
+                  <ElDescriptionsItem :label="$t('general.type')" :span="2">
+                    {{
+                      race.type.class[0] === 'i'
+                        ? $t('races.individualRace') // race.type.class[0] === 's'
+                        : $t('races.teamRace')
+                    }}
+                  </ElDescriptionsItem>
                   <ElDescriptionsItem :label="$t('general.date')" width="100px">{{
                     formatDateTime(event['date'], 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
                   }}</ElDescriptionsItem>
@@ -105,7 +112,7 @@ onMounted(async () => {
                       race.type.duration / 60 === 1 ? $t('general.hour', 1) : $t('general.hour', 2)
                     }}</ElDescriptionsItem
                   >
-                  <ElDescriptionsItem :label="$t('general.runnersForTeam')">{{
+                  <ElDescriptionsItem :label="$t('general.runnersPerTeam')">{{
                     race.type.runners_per_team
                   }}</ElDescriptionsItem>
                 </ElDescriptions>
@@ -118,17 +125,31 @@ onMounted(async () => {
             <template #footer>
               <ElButton
                 @click="
-                  $router.push({
-                    name: 'subscribe',
-                    params: {
-                      eventId: event!['id'],
-                      raceId: race.id,
-                    },
-                    query: {
-                      raceName: race.type.name,
-                      availableDiscount: race.available_discount,
-                    },
-                  })
+                  if (race.type.class[0] === 'i') {
+                    $router.push({
+                      name: 'individual-race-registration',
+                      params: {
+                        eventId: event!['id'],
+                        raceId: race.id,
+                      },
+                      query: {
+                        raceName: race.type.name,
+                        availableDiscount: race.available_discount,
+                      },
+                    });
+                    // race.type.class[0] === 's'
+                  } else {
+                    $router.push({
+                      name: 'team-race-registration',
+                      params: {
+                        eventId: event!['id'],
+                        raceId: race.id,
+                      },
+                      query: {
+                        raceName: race.type.name,
+                      },
+                    });
+                  }
                 "
                 :title="$t('races.subscribeToRace')"
                 :disabled="!store.user.email_verified_at"

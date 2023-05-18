@@ -4,13 +4,9 @@
       'base': #c01f2e,
     ),
   ),
-  $font-size: (
-    'extra-large': 22px,
-    'large': 20px,
-    'medium': 18px,
-    'base': 16px,
-    'small': 15px,
-    'extra-small': 14px,
+  $font-family: (
+    '':
+      "'Open Sans', 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif",
   )
 );
 
@@ -18,12 +14,15 @@
 @use 'element-plus/theme-chalk/src/display.scss';
 @use 'element-plus/theme-chalk/src/index.scss' as *;
 
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
 /* General */
 
 html,
 body,
 #app,
 .el-container {
+  font-family: var(--el-font-family);
   height: 100% !important;
 }
 
@@ -97,6 +96,14 @@ body {
 
 .is-margin-top-20 {
   margin-top: 2rem !important;
+}
+
+.is-margin-top-25 {
+  margin-top: 2.5rem !important;
+}
+
+.is-margin-top-30 {
+  margin-top: 3rem !important;
 }
 
 .is-margin-bottom-05 {

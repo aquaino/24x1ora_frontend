@@ -21,7 +21,7 @@ const router = createRouter({
         {
           path: '/logout',
           name: 'logout',
-          component: () => import('@/components/unique/TheLogout.vue'),
+          component: () => import('@/views/LogoutView.vue'),
           meta: {
             requireLogin: true,
           },
@@ -58,24 +58,34 @@ const router = createRouter({
           component: () => import('@/views/ListEventRacesView.vue'),
         },
         {
-          path: '/events/:eventId/races/:raceId/subscribe',
-          name: 'subscribe',
-          component: () => import('@/views/CreateIndividualTeamView.vue'),
+          path: '/events/:eventId/races/:raceId/individual-race-registration',
+          name: 'individual-race-registration',
+          component: () => import('@/views/CreateIndividualRaceRegistrationView.vue'),
         },
         {
-          path: '/subscriptions',
-          name: 'subscriptions',
-          component: () => import('@/views/ListUserTeamsView.vue'),
+          path: '/events/:eventId/races/:raceId/team-race-registration',
+          name: 'team-race-registration',
+          component: () => import('@/views/CreateTeamRaceRegistrationView.vue'),
         },
         {
-          path: '/events/:eventId/teams/:teamId/edit',
-          name: 'update-subscription',
-          component: () => import('@/views/UpdateIndividualTeamView.vue'),
+          path: '/race-registrations',
+          name: 'race-registrations',
+          component: () => import('@/views/ListRaceRegistrationsView.vue'),
         },
         {
-          path: '/user',
-          name: 'user',
-          component: () => import('@/views/UserProfileView.vue'),
+          path: '/events/:eventId/teams/:teamId/update-individual',
+          name: 'update-individual-registration',
+          component: () => import('@/views/UpdateIndividualRaceRegistrationView.vue'),
+        },
+        {
+          path: '/events/:eventId/teams/:teamId/update-team',
+          name: 'update-team-registration',
+          component: () => import('@/views/UpdateTeamRaceRegistrationView.vue'),
+        },
+        {
+          path: '/profile',
+          name: 'profile',
+          component: () => import('@/views/ProfileView.vue'),
         },
         {
           path: '/:pathMatch(.*)*',

@@ -3,8 +3,8 @@ import { ref } from 'vue';
 import AppPageTitle from '@/components/base/AppPageTitle.vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { FormInstance } from 'element-plus';
-import { eventsApi } from '@/api/resources';
-import IndividualTeamForm from '@/components/individualTeams/IndividualTeamForm.vue';
+import { teamsApi } from '@/api/resources';
+import IndividualRaceRegistrationForm from '@/components/IndividualRaceRegistrationForm.vue';
 import type { Runner } from '@/api/interfaces';
 import { useI18n } from 'vue-i18n';
 
@@ -44,13 +44,13 @@ async function subscribe(formRef: FormInstance | undefined, form: Runner) {
   await formRef.validate(async (valid) => {
     if (valid) {
       try {
-        const newTeam = await eventsApi.subscribeIndividual(
+        const newTeam = await teamsApi.createIndividualRaceRegistration(
           parseInt(eventId),
           parseInt(raceId),
           form,
         );
         router.push({
-          name: 'subscriptions',
+          name: 'race-registrations',
           query: {
             messageType: 'success',
             messageText: t('teams.teamInserted', { msg: newTeam.id }),
@@ -76,7 +76,7 @@ async function subscribe(formRef: FormInstance | undefined, form: Runner) {
         <template #header>
           <h2>{{ $t('teams.participantInfo') }}</h2>
         </template>
-        <IndividualTeamForm
+        <IndividualRaceRegistrationForm
           @subscribe="
             (formRef, form) => {
               subscribe(formRef, form);
