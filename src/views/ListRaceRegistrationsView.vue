@@ -149,11 +149,26 @@ watch(
       </ElCol>
     </ElRow>
     <div v-for="registration in registrations" :key="`registration-${registration.teams[0].id}`">
-      <div class="is-flex is-justify-center is-align-center is-margin-bottom-20">
-        <ElIcon color="var(--el-color-primary)" size="32"><TrophyBase /></ElIcon>
-        <h2 class="is-margin-left-05 is-margin-top-0" style="line-height: 32px">
-          {{ registration.event.name }}
-        </h2>
+      <div>
+        <div class="is-flex is-justify-center is-align-center">
+          <ElIcon color="var(--el-color-primary)" size="32"><TrophyBase /></ElIcon>
+          <h2 class="is-margin-left-05 is-margin-top-0" style="line-height: 32px">
+            {{ registration.event.name }}
+          </h2>
+        </div>
+        <div
+          v-if="registration.teams.length > 0"
+          style="color: var(--el-text-color-regular)"
+          class="is-text-right is-margin-bottom-10"
+        >
+          {{
+            $t(
+              'teams.registrationsCount',
+              { msg: registration.teams.length },
+              registration.teams.length,
+            )
+          }}
+        </div>
       </div>
       <ElRow :justify="registration.teams.length <= 3 ? 'center' : 'start'" :gutter="20">
         <ElCol

@@ -40,33 +40,28 @@ watch(
 
 <template>
   <AppCard shadow="never" :title="$t('teams.teamRunners')">
-    <template #right-header> {{ completedRunnersCount }} / {{ team.runners.length }} </template>
+    <template #right-header>
+      <span style="color: var(--el-text-color-regular)"
+        >{{ completedRunnersCount }} /
+        {{ team.runners.length }}
+      </span>
+    </template>
     <template #content>
       <ElRow v-for="(runner, index) in runners" :key="`runner-row-${index}`">
-        <ElForm ref="formRef" status-icon label-position="top" @submit.prevent>
+        <ElForm ref="formRef" status-icon label-position="top" class="is-width-100" @submit.prevent>
           <ElRow :gutter="10">
             <ElCol :sm="8">
-              <ElFormItem
-                :label="$t('forms.firstname')"
-                prop="first_name"
-                class="is-width-100"
-                required
-              >
+              <ElFormItem :label="$t('forms.firstname')" required>
                 <ElInput v-model="runner.first_name" />
               </ElFormItem>
             </ElCol>
             <ElCol :sm="8">
-              <ElFormItem
-                :label="$t('forms.lastname')"
-                prop="last_name"
-                class="is-width-100"
-                required
-              >
+              <ElFormItem :label="$t('forms.lastname')" required>
                 <ElInput v-model="runner.last_name" />
               </ElFormItem>
             </ElCol>
             <ElCol :sm="8">
-              <ElFormItem :label="$t('forms.birthDate')" prop="birth_date" class="is-width-100">
+              <ElFormItem :label="$t('forms.birthDate')">
                 <ElDatePicker
                   v-model="runner.birth_date"
                   type="date"

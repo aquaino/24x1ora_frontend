@@ -73,13 +73,13 @@ watch(
   <AppCard shadow="never" :title="$t('teams.teamInfo')">
     <template #content>
       <ElForm ref="formRef" :model="form" status-icon label-position="top" @submit.prevent>
-        <ElFormItem :label="$t('forms.name')" prop="name" required>
+        <ElFormItem :label="$t('forms.name')" required>
           <ElInput v-model="form.name" />
         </ElFormItem>
-        <ElFormItem :label="$t('teams.manager')" prop="manager" required>
+        <ElFormItem :label="$t('teams.manager')" required>
           <ElInput v-model="form.manager" />
         </ElFormItem>
-        <ElFormItem :label="$t('teams.managerCell')" prop="manager_cell" required>
+        <ElFormItem :label="$t('teams.managerCell')" required>
           <ElInput v-model="form.manager_cell" />
         </ElFormItem>
         <ElFormItem :label="$t('teams.paymentCertificate')" class="is-align-center">
