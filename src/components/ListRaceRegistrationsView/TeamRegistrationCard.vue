@@ -1,0 +1,203 @@
+<script setup lang="ts">
+import AppCard from '@/components/base/AppCard.vue';
+import { formatDateTime } from '@/utils';
+import type { TeamWithAttachmentStatus } from '@/views/ListRaceRegistrationsView.vue';
+import { useI18n } from 'vue-i18n';
+import { Ticket, Document, Money } from '@element-plus/icons-vue';
+import { ElPopconfirm } from 'element-plus';
+import { useAppStore } from '@/store';
+import { teamsApi } from '@/api/resources';
+import type { RaceEvent } from '@/api/interfaces';
+
+/* PROPS */
+
+const props = defineProps<{
+  team: TeamWithAttachmentStatus;
+  event: RaceEvent;
+  individual: boolean;
+}>();
+
+/* DATA */
+
+const { t } = useI18n();
+const store = useAppStore();
+
+/* EVENTS */
+
+const emits = defineEmits(['team-confirmed', 'error']);
+
+/* METHODS */
+
+function getTeamProgress(): {
+  percentage: Object;
+  status: Object;
+  title: string;
+} {
+  return !props.team.medcertUploaded && !props.team.paymentUploaded && !props.team.confirmed
+    ? {
+        percentage: 20,
+        status: 'exception',
+        title: t('teams.uploadMedcertAndPayment'),
+      }
+    : props.team.medcertUploaded && !props.team.paymentUploaded && !props.team.confirmed
+    ? {
+        percentage: 40,
+        status: 'exception',
+        title: t('teams.uploadPayment'),
+      }
+    : !props.team.medcertUploaded && props.team.paymentUploaded && !props.team.confirmed
+    ? {
+        percentage: 60,
+        status: 'exception',
+        title: t('teams.uploadMedcert'),
+      }
+    : props.team.medcertUploaded && props.team.paymentUploaded && !props.team.confirmed
+    ? {
+        percentage: 80,
+        status: 'warning',
+        title: t('teams.waitingForConfirmation'),
+      }
+    : {
+        percentage: 100,
+        status: 'success',
+        title: t('teams.subscriptionConfirmed'),
+      };
+}
+
+async function confirmTeam() {
+  try {
+    await teamsApi.confirmTeam(props.event.id, props.team.id);
+    emits('team-confirmed', props.team.id);
+  } catch (error) {
+    emits('error');
+  }
+}
+</script>
+
+<template>
+  <AppCard shadow="hover" :title="`#${props.team.id} - ${props.team.name}`">
+    <template #right-header>
+      <div class="is-flex">
+        <ElIcon
+          v-if="props.individual"
+          size="24"
+          :color="props.team.medcertUploaded ? 'var(--el-color-success)' : 'var(--el-color-error)'"
+          :title="
+            props.team.medcertUploaded
+              ? $t('teams.medcertUploaded')
+              : $t('teams.medcertNotUploaded')
+          "
+          ><Document
+        /></ElIcon>
+        <ElIcon
+          size="24"
+          :color="props.team.paymentUploaded ? 'var(--el-color-success)' : 'var(--el-color-error)'"
+          :title="
+            props.team.paymentUploaded
+              ? $t('teams.paymentUploaded')
+              : $t('teams.paymentNotUploaded')
+          "
+          style="margin-left: 0.25rem"
+          ><Money
+        /></ElIcon>
+      </div>
+    </template>
+    <template #content>
+      <ElProgress
+        v-if="individual"
+        :percentage="getTeamProgress().percentage"
+        :status="getTeamProgress().status"
+        :stroke-width="10"
+        :title="getTeamProgress().title"
+        class="is-width-100 is-margin-bottom-10"
+      />
+      <div class="is-flex is-justify-space-between is-align-center">
+        <ElDescriptions direction="vertical" :column="2">
+          <ElDescriptionsItem :label="$t('general.race')" width="150px">{{
+            props.team.type.name
+          }}</ElDescriptionsItem>
+          <ElDescriptionsItem :label="$t('teams.paymentCode')">{{
+            props.team.payment_code
+          }}</ElDescriptionsItem>
+          <ElDescriptionsItem :label="$t('general.date')">{{
+            formatDateTime(event.date, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
+          }}</ElDescriptionsItem>
+          <ElDescriptionsItem :label="$t('general.start')"
+            >{{ event.start_hour + props.team.type.start_offset }}:00</ElDescriptionsItem
+          >
+          <ElDescriptionsItem :label="$t('general.duration')"
+            >{{ props.team.type.duration / 60 }}
+            {{
+              props.team.type.duration / 60 === 1 ? $t('general.hour', 1) : $t('general.hour', 2)
+            }}</ElDescriptionsItem
+          >
+          <ElDescriptionsItem :label="$t('general.created')">{{
+            formatDateTime(props.team.created_at, 'ISO', 'DATETIME_SHORT')
+          }}</ElDescriptionsItem>
+        </ElDescriptions>
+        <div class="is-text-center" style="font-size: 20px; font-weight: 300">
+          <ElIcon size="32" color="var(--el-color-info-light-5)"><Ticket /></ElIcon>
+          <div>
+            <div v-if="parseInt(props.team.discount) > 0" style="text-decoration: line-through">
+              {{ parseInt(props.team.price) }}€
+            </div>
+            <div>{{ parseInt(props.team.price) - parseInt(props.team.discount) }}€</div>
+          </div>
+        </div>
+      </div>
+      <ElCollapse>
+        <ElCollapseItem :title="$t('teams.paymentDetails')">
+          <div class="is-margin-bottom-10">{{ $t('teams.viaBankTransfer') }}</div>
+          <ElDescriptions direction="horizontal" :column="1">
+            <ElDescriptionsItem label="IBAN">IT 59 O 05484 63690 CC0270704537</ElDescriptionsItem>
+            <ElDescriptionsItem :label="$t('teams.registeredTo')"
+              >Circolo Culturale del Gruppo Alpini di Buttrio APS</ElDescriptionsItem
+            >
+            <ElDescriptionsItem :label="$t('teams.paymentCausal')"
+              >{{ props.team.payment_code }} {{ props.team.name }}
+              {{ props.team.type.name }}</ElDescriptionsItem
+            >
+          </ElDescriptions>
+        </ElCollapseItem>
+      </ElCollapse>
+    </template>
+    <template #footer>
+      <div class="is-margin-top-05">
+        <ElButton
+          type="primary"
+          :title="$t('teams.editTeam')"
+          @click="
+            $router.push({
+              name: 'update-individual-registration',
+              params: { eventId: event.id, teamId: props.team.id },
+              query: {
+                raceName: props.team.type.name,
+              },
+            })
+          "
+          >{{ $t('general.edit') }}</ElButton
+        >
+        <ElPopconfirm
+          v-if="
+            store.user.isAdmin &&
+            props.team.medcertUploaded &&
+            props.team.paymentUploaded &&
+            !props.team.confirmed
+          "
+          :title="$t('teams.askConfirmation')"
+          width="200"
+          :confirm-button-text="$t('general.yes')"
+          :cancel-button-text="$t('general.no')"
+          hide-icon
+          @confirm="confirmTeam()"
+        >
+          <template #reference>
+            <ElButton type="success" :title="$t('teams.confirmEnrollment')">{{
+              $t('general.confirm')
+            }}</ElButton>
+          </template>
+        </ElPopconfirm>
+      </div>
+    </template>
+  </AppCard>
+</template>

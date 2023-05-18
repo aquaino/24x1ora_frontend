@@ -124,7 +124,7 @@ onMounted(async () => {
             :event-id="eventId"
             :team-id="teamId"
             @data-fetched="loading = false"
-            @update-subscription="
+            @update-registration="
               (formRef, form) => {
                 updateSubscription(formRef, form);
               }

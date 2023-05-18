@@ -65,7 +65,7 @@ const router = createRouter({
         {
           path: '/events/:eventId/races/:raceId/team-race-registration',
           name: 'team-race-registration',
-          component: () => import('@/views/CreateTeamRaceRegistration.vue'),
+          component: () => import('@/views/CreateTeamRaceRegistrationView.vue'),
         },
         {
           path: '/race-registrations',
@@ -74,7 +74,7 @@ const router = createRouter({
         },
         {
           path: '/events/:eventId/teams/:teamId/update',
-          name: 'update-subscription',
+          name: 'update-individual-registration',
           component: () => import('@/views/UpdateIndividualRaceRegistrationView.vue'),
         },
         {
