@@ -47,42 +47,62 @@ watch(
       </span>
     </template>
     <template #content>
-      <ElRow v-for="(runner, index) in runners" :key="`runner-row-${index}`">
-        <ElForm ref="formRef" status-icon label-position="top" class="is-width-100" @submit.prevent>
-          <ElRow :gutter="10">
-            <ElCol :sm="8">
-              <ElFormItem :label="$t('forms.firstname')" required>
+      <ElForm ref="formRef" status-icon @submit.prevent>
+        <table class="is-width-100">
+          <thead>
+            <tr>
+              <td class="hidden-xs-only"></td>
+              <td class="is-required">{{ $t('forms.firstname') }}</td>
+              <td class="is-required">{{ $t('forms.lastname') }}</td>
+              <td>{{ $t('forms.birthDate') }}</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(runner, index) in runners" :key="`runner-row-${index}`">
+              <td class="hidden-xs-only">{{ index + 1 }}</td>
+              <td>
                 <ElInput v-model="runner.first_name" />
-              </ElFormItem>
-            </ElCol>
-            <ElCol :sm="8">
-              <ElFormItem :label="$t('forms.lastname')" required>
+              </td>
+              <td>
                 <ElInput v-model="runner.last_name" />
-              </ElFormItem>
-            </ElCol>
-            <ElCol :sm="8">
-              <ElFormItem :label="$t('forms.birthDate')">
+              </td>
+              <td>
                 <ElDatePicker
                   v-model="runner.birth_date"
                   type="date"
                   value-format="YYYY-MM-DD"
                   class="is-width-100"
                 />
-              </ElFormItem>
-            </ElCol>
-          </ElRow>
-        </ElForm>
-        <ElDivider
-          v-if="index !== runners.length - 1"
-          class="is-margin-top-0 is-margin-bottom-05"
-        />
-      </ElRow>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ElForm>
     </template>
   </AppCard>
 </template>
 
 <style scoped>
-.el-row .el-col {
-  margin-bottom: 0 !important;
+thead td {
+  color: var(--el-text-color-regular);
+  line-height: 22px;
+}
+
+tbody td:not(:last-child) {
+  padding-right: 16px;
+}
+
+tbody tr:not(:first-child) td {
+  padding-top: 14px;
+}
+
+tbody tr:first-child td {
+  padding-top: 10px;
+}
+
+.is-required::before {
+  content: '*';
+  color: var(--el-color-danger);
+  margin-right: 4px;
 }
 </style>

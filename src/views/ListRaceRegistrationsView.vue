@@ -159,7 +159,7 @@ watch(
         <div
           v-if="registration.teams.length > 0"
           style="color: var(--el-text-color-regular)"
-          class="is-text-right is-margin-bottom-10"
+          class="is-text-center is-margin-bottom-10 is-margin-top-05"
         >
           {{
             $t(
