@@ -11,18 +11,7 @@ import { Ticket } from '@element-plus/icons-vue';
 import { useAppStore } from '@/store';
 import { useI18n } from 'vue-i18n';
 
-/**
- * MAIN FUNCTION
- * Show races belonging to an event.
- *
- * LOGIC
- * Display races list and allow user to enroll.
- *
- * EXCEPTIONS
- * - WS call failure -> Error alert
- */
-
-/* Data */
+/* DATA */
 
 const route = useRoute();
 const eventId = route.params.id as string;
@@ -39,7 +28,7 @@ const alert = ref({
   text: '',
 });
 
-/* Methods */
+/* METHODS */
 
 async function getRaces() {
   try {
@@ -51,7 +40,7 @@ async function getRaces() {
   }
 }
 
-/* Mounted */
+/* MOUNTED */
 onMounted(async () => {
   await getRaces();
 });

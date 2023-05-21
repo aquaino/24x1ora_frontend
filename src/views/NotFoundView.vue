@@ -1,9 +1,4 @@
-<script setup lang="ts">
-/**
- * MAIN FUNCTION
- * Give feedback about not found pages and let user to return to homepage.
- */
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <ElResult

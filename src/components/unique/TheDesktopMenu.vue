@@ -3,18 +3,13 @@ import type { MenuItem } from '../../interfaces';
 import { useAppStore } from '@/store';
 import { storeToRefs } from 'pinia';
 
-/**
- * MAIN FUNCTION
- * Define desktop navigation menu.
- */
-
-/* Props */
+/* PROPS */
 
 const props = defineProps<{
   menuItems: MenuItem[];
 }>();
 
-/* Data */
+/* DATA */
 
 const store = useAppStore();
 const { navigation } = storeToRefs(store);

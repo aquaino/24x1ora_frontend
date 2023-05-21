@@ -5,26 +5,26 @@ import { useAppStore } from '@/store';
 import { hasAttachment } from '@/utils';
 import type { UploadInstance } from 'element-plus';
 
-/* Data */
-const store = useAppStore();
-const uploadRef = ref<UploadInstance>();
-
-/* Props */
+/* PROPS */
 const props = defineProps<{
   action: string;
   filename: string;
   files?: string[];
 }>();
 
-/* Events */
+/* DATA */
+const store = useAppStore();
+const uploadRef = ref<UploadInstance>();
+
+/* EVENTS */
 const emits = defineEmits(['show-file']);
 
-/* Methods */
+/* METHODS */
 const submit = () => {
   uploadRef.value!.submit();
 };
 
-/* Expose */
+/* EXPOSE */
 defineExpose({ submit });
 </script>
 
@@ -52,7 +52,9 @@ defineExpose({ submit });
       >
         <template #title>
           {{ $t('forms.fileUploadedComma') }}
-          <ElButton type="link" @click="emits('show-file')" class="file-link">{{ $t('forms.clickHere') }}</ElButton>
+          <ElButton type="link" @click="emits('show-file')" class="file-link">{{
+            $t('forms.clickHere')
+          }}</ElButton>
           {{ $t('forms.toShowIt') }}
         </template>
       </ElAlert>

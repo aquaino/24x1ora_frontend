@@ -197,3 +197,9 @@ body {
   font-size: 13px !important;
   font-weight: 500 !important;
 }
+
+/* Alerts */
+
+.el-alert__content {
+  line-height: initial !important;
+}

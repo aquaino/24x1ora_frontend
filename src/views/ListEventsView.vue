@@ -9,18 +9,7 @@ import AppCard from '@/components/base/AppCard.vue';
 import partenza_2019 from '/partenza_2019.jpg';
 import { useI18n } from 'vue-i18n';
 
-/**
- * MAIN FUNCTION
- * Show available events.
- *
- * LOGIC
- * Get and show events list.
- *
- * EXCEPTIONS
- * - WS call failure -> Error alert
- */
-
-/* Data */
+/* DATA */
 
 const { t } = useI18n();
 
@@ -32,7 +21,7 @@ const alert = ref({
   text: '',
 });
 
-/* Methods */
+/* METHODS */
 
 async function getEvents() {
   try {
@@ -43,7 +32,8 @@ async function getEvents() {
   }
 }
 
-/* Mounted */
+/* MOUNTED */
+
 onMounted(async () => {
   await getEvents();
 });

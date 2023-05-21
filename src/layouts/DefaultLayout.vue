@@ -3,10 +3,7 @@ import TheHeaderContent from '@/components/unique/TheHeaderContent.vue';
 import TheFooterContent from '@/components/unique/TheFooterContent.vue';
 import { useI18n } from 'vue-i18n';
 
-/**
- * MAIN FUNCTION
- * Define page structure for authenticated users.
- */
+/* DATA */
 
 const i18n = useI18n();
 let html = document.querySelector('html');

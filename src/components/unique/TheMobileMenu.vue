@@ -1,22 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Menu } from '@element-plus/icons-vue';
+import { Fold } from '@element-plus/icons-vue';
 import type { MenuItem } from '../../interfaces';
 import { useAppStore } from '@/store';
 import { storeToRefs } from 'pinia';
 
-/**
- * MAIN FUNCTION
- * Define mobile and tablet navigation menu.
- */
-
-/* Props */
+/* PROPS */
 
 const props = defineProps<{
   menuItems: MenuItem[];
 }>();
 
-/* Data */
+/* DATA */
 
 const appName = import.meta.env.VITE_APP_NAME;
 const mobileMenu = ref(false);
@@ -35,7 +30,7 @@ const { navigation } = storeToRefs(store);
       circle
       :title="$t('menu.menuTitle')"
     >
-      <ElIcon size="32"><Menu /></ElIcon>
+      <ElIcon size="32"><Fold /></ElIcon>
     </ElButton>
     <ElDrawer v-model="mobileMenu" size="67%">
       <template #header>

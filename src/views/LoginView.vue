@@ -7,19 +7,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { useAppStore } from '@/store';
 import { useI18n } from 'vue-i18n';
 
-/**
- * MAIN FUNCTION
- * Login to the portal.
- *
- * LOGIC
- * Get user credentials from input and check them to login.
- *
- * EXCEPTIONS
- * - Wrong credentials -> Error alert
- * - WS call failure -> Error alert
- */
-
-/* Data */
+/* DATA */
 
 const { t } = useI18n();
 
@@ -49,7 +37,7 @@ const alert = ref({
   text: route.query.alertText ? (route.query.alertText as string) : '',
 });
 
-/* Methods */
+/* METHODS */
 
 async function login(formRef: FormInstance | undefined) {
   if (!formRef) return;

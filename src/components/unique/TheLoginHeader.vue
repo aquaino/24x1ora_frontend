@@ -1,10 +1,5 @@
 <script setup lang="ts">
 import logo from '/logo.png';
-
-/**
- * MAIN FUNCTION
- * Define the page header for unauthenticated users.
- */
 </script>
 
 <template>

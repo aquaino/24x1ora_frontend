@@ -6,19 +6,7 @@ import AppCard from '@/components/base/AppCard.vue';
 import AppPageTitle from '@/components/base/AppPageTitle.vue';
 import { useI18n } from 'vue-i18n';
 
-/**
- * MAIN FUNCTION
- * Show and update user info.
- *
- * LOGIC
- * Show user info and update them from input.
- *
- * EXCEPTIONS
- * - User already exists -> Error alert
- * - WS call failure -> Error alert
- */
-
-/* Data */
+/* DATA */
 
 const { t } = useI18n();
 const loading = ref(true);
@@ -28,7 +16,7 @@ const alert = ref({
   text: '',
 });
 
-/* Methods */
+/* METHODS */
 
 async function getUserData() {
   try {
@@ -39,7 +27,7 @@ async function getUserData() {
   }
 }
 
-/* Mounted */
+/* MOUNTED */
 
 onMounted(async () => {
   await getUserData();

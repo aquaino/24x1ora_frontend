@@ -7,12 +7,7 @@ import type { MenuItem } from '../../interfaces';
 import { useAppStore } from '@/store';
 import { useI18n } from 'vue-i18n';
 
-/**
- * MAIN FUNCTION
- * Display header informations: logo and desktop/mobile navigation.
- */
-
-/* Data */
+/* DATA */
 
 const appName = import.meta.env.VITE_APP_NAME;
 const store = useAppStore();

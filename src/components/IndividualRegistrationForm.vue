@@ -6,19 +6,7 @@ import { resetForm } from '@/utils';
 import { teamsApi } from '@/api/resources';
 import { useI18n } from 'vue-i18n';
 
-/**
- * MAIN FUNCTION
- * Define individual team creation/update form.
- *
- * LOGIC
- * Get user input and pass it to parent page using specific events.
- * If in update mode, fetch current team data and populate fields.
- *
- * EXCEPTIONS
- * - WS call fails -> Error alert
- */
-
-/* Props */
+/* PROPS */
 
 const props = defineProps<{
   update?: boolean;
@@ -27,7 +15,7 @@ const props = defineProps<{
   discount: number;
 }>();
 
-/* Data */
+/* DATA */
 
 const { t } = useI18n();
 
@@ -36,11 +24,11 @@ const alert = ref({
   text: '',
 });
 
-/* Events */
+/* EVENTS */
 
 const emits = defineEmits(['subscribe', 'update-registration', 'data-fetched']);
 
-/* Data */
+/* DATA */
 
 const form = reactive<Runner>({
   id: null,
@@ -60,7 +48,7 @@ const formRules = reactive<FormRules>({
   last_name: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
 });
 
-/* Methods */
+/* METHODS */
 
 async function getSubscriptionData() {
   try {
@@ -93,7 +81,7 @@ function generateDiscountText(society: string, discount: number) {
   )}.`;
 }
 
-/* Mounted */
+/* MOUNTED */
 
 onMounted(async () => {
   if (props.update) {

@@ -4,22 +4,11 @@ import AppPageTitle from '@/components/base/AppPageTitle.vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { FormInstance } from 'element-plus';
 import { teamsApi } from '@/api/resources';
-import IndividualRaceRegistrationForm from '@/components/IndividualRaceRegistrationForm.vue';
+import IndividualRaceRegistrationForm from '@/components/IndividualRegistrationForm.vue';
 import type { Runner } from '@/api/interfaces';
 import { useI18n } from 'vue-i18n';
 
-/**
- * MAIN FUNCTION
- * Create an individual team.
- *
- * LOGIC
- * Get team data from form and create team with a WS call.
- *
- * EXCEPTIONS
- * - WS call fails -> Error alert
- */
-
-/* Data */
+/* DATA */
 
 const router = useRouter();
 const route = useRoute();
@@ -37,7 +26,7 @@ const alert = ref({
   text: '',
 });
 
-/* Methods */
+/* METHODS */
 
 async function subscribe(formRef: FormInstance | undefined, form: Runner) {
   if (!formRef) return;

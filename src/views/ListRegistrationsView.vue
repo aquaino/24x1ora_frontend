@@ -13,17 +13,6 @@ import { useAppStore } from '@/store';
 import { useI18n } from 'vue-i18n';
 import TeamRegistrationCard from '@/components/TeamRegistrationCard.vue';
 
-/**
- * MAIN FUNCTION
- * Show all user teams.
- *
- * LOGIC
- * Display user teams for all events and allow to update them.
- *
- * EXCEPTIONS
- * Nothing to report.
- */
-
 /* INTERFACES */
 
 export interface TeamWithAttachmentStatus extends Team {

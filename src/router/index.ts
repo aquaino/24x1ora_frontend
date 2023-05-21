@@ -60,27 +60,27 @@ const router = createRouter({
         {
           path: '/events/:eventId/races/:raceId/individual-race-registration',
           name: 'individual-race-registration',
-          component: () => import('@/views/CreateIndividualRaceRegistrationView.vue'),
+          component: () => import('@/views/CreateIndividualRegistrationView.vue'),
         },
         {
           path: '/events/:eventId/races/:raceId/team-race-registration',
           name: 'team-race-registration',
-          component: () => import('@/views/CreateTeamRaceRegistrationView.vue'),
+          component: () => import('@/views/CreateTeamRegistrationView.vue'),
         },
         {
           path: '/race-registrations',
           name: 'race-registrations',
-          component: () => import('@/views/ListRaceRegistrationsView.vue'),
+          component: () => import('@/views/ListRegistrationsView.vue'),
         },
         {
           path: '/events/:eventId/teams/:teamId/update-individual',
           name: 'update-individual-registration',
-          component: () => import('@/views/UpdateIndividualRaceRegistrationView.vue'),
+          component: () => import('@/views/UpdateIndividualRegistrationView.vue'),
         },
         {
           path: '/events/:eventId/teams/:teamId/update-team',
           name: 'update-team-registration',
-          component: () => import('@/views/UpdateTeamRaceRegistrationView.vue'),
+          component: () => import('@/views/UpdateTeamRegistrationView.vue'),
         },
         {
           path: '/profile',

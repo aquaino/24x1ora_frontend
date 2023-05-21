@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppCard from '@/components/base/AppCard.vue';
 import { formatDateTime } from '@/utils';
-import type { TeamWithAttachmentStatus } from '@/views/ListRaceRegistrationsView.vue';
+import type { TeamWithAttachmentStatus } from '@/views/ListRegistrationsView.vue';
 import { useI18n } from 'vue-i18n';
 import { Ticket, Document, Money } from '@element-plus/icons-vue';
 import { ElPopconfirm } from 'element-plus';

@@ -2,12 +2,7 @@
 import { onMounted } from 'vue';
 import { logout } from '@/utils';
 
-/**
- * MAIN FUNCTION
- * Provide a page/route to reach for loggging out the user.
- */
-
-/* Mounted */
+/* MOUNTED */
 
 onMounted(() => {
   logout(true);

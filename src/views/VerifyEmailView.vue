@@ -6,19 +6,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
 
-/**
- * MAIN FUNCTION
- * Confirm new user e-mail address.
- *
- * LOGIC
- * Take user token from GET pars and use it for verifying e-mail with a WS call.
- *
- * EXCEPTIONS
- * - User token not provided -> Feedback to retry
- * - User e-mail already verified -> Feedback
- */
-
-/* Data */
+/* DATA */
 
 const router = useRouter();
 const route = useRoute();
@@ -34,7 +22,7 @@ const alert = ref({
   text: '',
 });
 
-/* Methods */
+/* METHODS */
 
 async function verifyEmail() {
   try {

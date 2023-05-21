@@ -1,10 +1,4 @@
-<script setup lang="ts">
-/**
- * MAIN FUNCTION
- * Display footer informations: support address, copyright, authors,
- * GDPR and back to top button.
- */
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="is-text-center is-small is-margin-top-20">

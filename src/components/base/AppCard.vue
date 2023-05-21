@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { useSlots } from 'vue';
 
-/**
- * MAIN FUNCTION
- * Define card component to reuse in app.
- */
-
-/* Props */
+/* PROPS */
 
 const props = defineProps<{
   title?: string;
@@ -16,7 +11,7 @@ const props = defineProps<{
   shadow?: string;
 }>();
 
-/* Data */
+/* DATA */
 
 const slots = useSlots();
 const hasFooter = !!slots['footer'];

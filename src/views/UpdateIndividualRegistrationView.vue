@@ -4,25 +4,14 @@ import type { Ref } from 'vue';
 import AppPageTitle from '@/components/base/AppPageTitle.vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { FormInstance } from 'element-plus';
-import IndividualRaceRegistrationForm from '@/components/IndividualRaceRegistrationForm.vue';
+import IndividualRaceRegistrationForm from '@/components/IndividualRegistrationForm.vue';
 import { teamsApi } from '@/api/resources';
 import type { RunnerUpdate, Team } from '@/api/interfaces';
 import AppCard from '@/components/base/AppCard.vue';
 import FileUpload from '@/components/forms/FileUpload.vue';
 import { useI18n } from 'vue-i18n';
 
-/**
- * MAIN FUNCTION
- * Update individual team.
- *
- * LOGIC
- * Display team data and allow user to update them.
- *
- * EXCEPTIONS
- * - WS call fails -> Error alert
- */
-
-/* Data */
+/* DATA */
 
 const router = useRouter();
 const route = useRoute();
@@ -51,7 +40,7 @@ const alert = ref({
   text: '',
 });
 
-/* Methods */
+/* METHODS */
 
 async function updateSubscription(formRef: FormInstance | undefined, form: RunnerUpdate) {
   if (!formRef) return;
@@ -97,7 +86,7 @@ async function downloadAttachment(fileName: string) {
   }
 }
 
-/* Mounted */
+/* MOUNTED */
 
 onMounted(async () => {
   try {

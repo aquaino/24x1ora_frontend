@@ -9,19 +9,7 @@ import { ArrowLeftBold } from '@element-plus/icons-vue';
 import router from '@/router';
 import { useI18n } from 'vue-i18n';
 
-/**
- * MAIN FUNCTION
- * Register new user.
- *
- * LOGIC
- * Get user data from input and register him.
- *
- * EXCEPTIONS
- * - User already exists -> Error alert
- * - WS call failure -> Error alert
- */
-
-/* Data */
+/* DATA */
 
 const store = useAppStore();
 const { t } = useI18n();
@@ -67,7 +55,7 @@ const alert = ref({
   text: '',
 });
 
-/* Methods */
+/* METHODS */
 
 async function register(formRef: FormInstance | undefined) {
   store.clearUserData();

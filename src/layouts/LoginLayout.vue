@@ -3,10 +3,7 @@ import TheLoginHeader from '@/components/unique/TheLoginHeader.vue';
 import TheFooterContent from '@/components/unique/TheFooterContent.vue';
 import { useI18n } from 'vue-i18n';
 
-/**
- * MAIN FUNCTION
- * Define page structure for unauthenticated users.
- */
+/* DATA */
 
 const i18n = useI18n();
 let html = document.querySelector('html');
