@@ -124,6 +124,7 @@ onMounted(async () => {
           v-model="form.birth_date"
           type="date"
           value-format="YYYY-MM-DD"
+          format="DD/MM/YYYY"
           class="is-width-100"
         />
       </ElFormItem>

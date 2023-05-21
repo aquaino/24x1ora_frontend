@@ -51,15 +51,15 @@ watch(
         <table class="is-width-100">
           <thead>
             <tr>
-              <td class="hidden-xs-only"></td>
+              <td></td>
               <td class="is-required">{{ $t('forms.firstname') }}</td>
               <td class="is-required">{{ $t('forms.lastname') }}</td>
-              <td>{{ $t('forms.birthDate') }}</td>
+              <td class="date-column">{{ $t('forms.birthDate') }}</td>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(runner, index) in runners" :key="`runner-row-${index}`">
-              <td class="hidden-xs-only">{{ index + 1 }}</td>
+              <td>{{ index + 1 }}</td>
               <td>
                 <ElInput v-model="runner.first_name" />
               </td>
@@ -71,6 +71,7 @@ watch(
                   v-model="runner.birth_date"
                   type="date"
                   value-format="YYYY-MM-DD"
+                  format="DD/MM/YYYY"
                   class="is-width-100"
                 />
               </td>
@@ -90,6 +91,15 @@ thead td {
 
 tbody td:not(:last-child) {
   padding-right: 16px;
+}
+
+@media screen and (max-width: 768px) {
+  tbody td:not(:last-child) {
+    padding-right: 5px;
+  }
+  .date-column {
+    width: 45%;
+  }
 }
 
 tbody tr:not(:first-child) td {

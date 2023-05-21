@@ -151,6 +151,9 @@ export default {
     upload: 'Carica',
     fileAlreadyUploaded: 'File già caricato',
     fileNotUploaded: 'Nessun file caricato',
+    fileUploadedComma: 'File caricato,',
+    clickHere: 'clicca qui',
+    toShowIt: 'per visualizzarlo',
   },
   api: {
     generalError: 'Si è verificato un problema, riprovare più tardi',

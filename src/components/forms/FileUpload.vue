@@ -38,9 +38,10 @@ defineExpose({ submit });
     method="POST"
     :auto-upload="false"
     :limit="1"
+    class="is-width-100"
   >
     <template #trigger>
-      <ElButton :icon="UploadFilled">Carica</ElButton>
+      <ElButton :icon="UploadFilled">{{ $t('forms.upload') }}</ElButton>
     </template>
     <div class="is-margin-top-05" v-if="typeof props.files !== 'undefined'">
       <ElAlert
@@ -49,13 +50,19 @@ defineExpose({ submit });
         show-icon
         :closable="false"
       >
-        <template #title
-          >File caricato,
-          <ElButton type="link" @click="emits('show-file')" class="file-link">clicca qui</ElButton>
-          per visualizzarlo</template
-        >
+        <template #title>
+          {{ $t('forms.fileUploadedComma') }}
+          <ElButton type="link" @click="emits('show-file')" class="file-link">{{ $t('forms.clickHere') }}</ElButton>
+          {{ $t('forms.toShowIt') }}
+        </template>
       </ElAlert>
-      <ElAlert v-else title="Nessun file caricato" type="error" show-icon :closable="false" />
+      <ElAlert
+        v-else
+        :title="$t('forms.fileNotUploaded')"
+        type="error"
+        show-icon
+        :closable="false"
+      />
     </div>
   </ElUpload>
 </template>

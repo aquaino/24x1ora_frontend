@@ -59,10 +59,10 @@ onMounted(async () => {
         <template #content>
           <ElForm ref="formRef" :model="form" status-icon label-width="auto">
             <ElFormItem :label="$t('forms.fullname')" prop="name">
-              <ElInput v-model="form.name" disabled />
+              <ElInput v-model="form.name" readonly />
             </ElFormItem>
             <ElFormItem :label="$t('forms.email')" prop="email">
-              <ElInput v-model="form.email" disabled />
+              <ElInput v-model="form.email" readonly />
             </ElFormItem>
           </ElForm>
         </template>
