@@ -53,6 +53,8 @@ export default {
     subscribeToRace: 'Iscriviti alla gara',
     individualRace: 'Gara individuale',
     teamRace: 'Gara a squadre',
+    depositText:
+      '* Importo comprensivo di cauzione: la cauzione di {msg}€ per squadra sarà rimborsata al termine della manifestazione, dietro restituzione dei microchip, presso la segreteria.',
   },
   teams: {
     disableDiscountWarning:

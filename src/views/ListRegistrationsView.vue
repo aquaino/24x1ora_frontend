@@ -11,7 +11,7 @@ import { useRoute } from 'vue-router';
 import { hasAttachment } from '@/utils';
 import { useAppStore } from '@/store';
 import { useI18n } from 'vue-i18n';
-import TeamRegistrationCard from '@/components/TeamRegistrationCard.vue';
+import RegistrationCard from '@/components/RegistrationCard.vue';
 
 /* INTERFACES */
 
@@ -168,7 +168,7 @@ watch(
           :md="8"
           :lg="6"
         >
-          <TeamRegistrationCard
+          <RegistrationCard
             :team="team"
             :event="registration.event"
             @team-confirmed="

@@ -107,7 +107,7 @@ onMounted(async () => {
                 </ElDescriptions>
                 <div class="is-text-center" style="font-size: 20px; font-weight: 300">
                   <ElIcon size="32" color="var(--el-color-info-light-5)"><Ticket /></ElIcon>
-                  <div>{{ race.price }}€</div>
+                  <div>{{ `${race.price}€` + (race.deposit ? '*' : '') }}</div>
                 </div>
               </div>
             </template>
@@ -145,6 +145,9 @@ onMounted(async () => {
                 type="primary"
                 >{{ $t('races.subscribe') }}</ElButton
               >
+              <div v-if="race.deposit" class="is-margin-top-10 is-help-text">
+                {{ $t('races.depositText', { msg: race.deposit }) }}
+              </div>
             </template>
           </AppCard>
           <ElAlert
