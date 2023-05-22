@@ -4,7 +4,6 @@ import type { Ref } from 'vue';
 import type { RaceEvent, Team } from '@/api/interfaces';
 import { eventsApi } from '@/api/resources';
 import AppPageTitle from '@/components/base/AppPageTitle.vue';
-import { TrophyBase } from '@element-plus/icons-vue';
 import { teamsApi } from '@/api/resources';
 import { ElMessage } from 'element-plus';
 import { useRoute } from 'vue-router';
@@ -20,15 +19,11 @@ export interface TeamWithAttachmentStatus extends Team {
   paymentUploaded: boolean;
 }
 
-interface RaceRegistration extends Team {
-  event: RaceEvent;
-  teams: TeamWithAttachmentStatus[];
-}
-
 /* DATA */
 
-const eventIds: Ref<number[]> = ref(Array());
-const registrations: Ref<RaceRegistration[]> = ref(Array());
+const events: Ref<RaceEvent[] | null> = ref(null);
+const currentEvent: Ref<RaceEvent | null> = ref(null);
+const teams: Ref<TeamWithAttachmentStatus[] | null> = ref(null);
 
 const loading = ref(true);
 
@@ -46,30 +41,36 @@ const alert = ref({
   text: '',
 });
 
+/* MOUNTED */
+
+onMounted(async () => {
+  if (store.user.email_verified_at) {
+    await getEvents();
+    if (events.value && events.value.length > 0) {
+      currentEvent.value = events.value[events.value.length - 1];
+      await getEventTeams(currentEvent.value.id);
+    }
+  }
+  loading.value = false;
+});
+
 /* METHODS */
 
-async function getEventIds() {
+async function getEvents() {
   try {
-    const events = await eventsApi.getEvents();
-    eventIds.value = (events as RaceEvent[]).map((event: RaceEvent) => {
-      return event.id;
-    });
+    events.value = await eventsApi.getEvents();
   } catch (error) {
     alert.value.text = t('api.generalError');
   }
 }
 
-async function getSubscriptions() {
+async function getEventTeams(eventId: number) {
   try {
-    for (let index = 0; index < eventIds.value.length; index++) {
-      const eventAndTeams = await teamsApi.getEventTeams(eventIds.value[index]);
-      registrations.value.push(eventAndTeams as RaceRegistration);
-    }
-    registrations.value.forEach((subscription) => {
-      subscription.teams.forEach((team: any) => {
-        team['medcertUploaded'] = hasAttachment(/medcert.*/, team.attachments);
-        team['paymentUploaded'] = hasAttachment(/payment.*/, team.attachments);
-      });
+    const eventAndTeams = await teamsApi.getEventTeams(eventId);
+    teams.value = eventAndTeams.teams.map((team: any) => {
+      team['medcertUploaded'] = hasAttachment(/medcert.*/, team.attachments);
+      team['paymentUploaded'] = hasAttachment(/payment.*/, team.attachments);
+      return team;
     });
   } catch (error) {
     alert.value.text = t('api.generalError');
@@ -87,27 +88,21 @@ function showMessage() {
   }
 }
 
-async function reFetchRegistrations(teamId: number) {
-  loading.value = true;
-  await getEventIds();
-  await getSubscriptions();
-  loading.value = false;
-  message.value = {
-    type: 'success',
-    text: t('teams.teamConfirmed', { msg: teamId }),
-  };
-}
-
-/* MOUNTED */
-
-onMounted(async () => {
-  // Get user teams for each event
-  if (store.user.email_verified_at) {
-    await getEventIds();
-    await getSubscriptions();
+async function refreshAndNotify(teamId: number, action: string) {
+  await getEventTeams(currentEvent.value!.id);
+  if (action === 'confirm') {
+    message.value = {
+      type: 'success',
+      text: t('teams.teamConfirmed', { msg: teamId }),
+    };
+  } else if (action === 'delete') {
+    message.value = {
+      type: 'error',
+      text: t('teams.teamDelete'),
+    };
   }
   loading.value = false;
-});
+}
 
 /* WATCH */
 
@@ -127,70 +122,70 @@ watch(
     :back-to="{ name: 'events' }"
   />
   <div v-if="loading" v-loading="loading"></div>
-  <ElEmpty
-    v-else-if="registrations.length === 0 || registrations[0].teams.length === 0"
-    :description="$t('teams.noTeams')"
-  />
+  <ElEmpty v-else-if="teams && teams.length === 0" :description="$t('teams.noTeams')" />
   <div v-else>
     <ElRow v-if="alert.text" justify="center">
-      <ElCol :xs="24" :sm="16" :md="14" :lg="10" class="is-margin-bottom-15">
+      <ElCol :xs="24" :sm="16" :md="14" :lg="10">
         <ElAlert type="error" show-icon :closable="false" :title="alert.text" />
       </ElCol>
     </ElRow>
-    <div v-for="registration in registrations" :key="`registration-${registration.teams[0].id}`">
-      <div>
-        <div class="is-flex is-justify-center is-align-center">
-          <ElIcon color="var(--el-color-primary)" size="32"><TrophyBase /></ElIcon>
-          <h2 class="is-margin-left-05 is-margin-top-0" style="line-height: 32px">
-            {{ registration.event.name }}
-          </h2>
-        </div>
-        <div
-          v-if="registration.teams.length > 0"
-          style="color: var(--el-text-color-regular)"
-          class="is-text-center is-margin-bottom-10 is-margin-top-05"
+    <ElRow justify="space-between" :gutter="20" class="is-align-center is-margin-bottom-05">
+      <ElCol :xs="24" :sm="12" :md="8" :lg="6" style="margin-bottom: 0 !important">
+        <ElSelect
+          :placeholder="$t('forms.selectPlaceholder')"
+          v-model="currentEvent!.id"
+          @change="
+        (value: number) => {
+          getEventTeams(value);
+        }
+      "
+          class="is-margin-bottom-10 is-width-100"
         >
-          {{
-            $t(
-              'teams.registrationsCount',
-              { msg: registration.teams.length },
-              registration.teams.length,
-            )
-          }}
-        </div>
-      </div>
-      <ElRow :justify="registration.teams.length <= 3 ? 'center' : 'start'" :gutter="20">
-        <ElCol
-          v-for="team in registration.teams"
-          :key="`team-${team.id}`"
-          :xs="24"
-          :sm="12"
-          :md="8"
-          :lg="6"
-        >
-          <RegistrationCard
-            :team="team"
-            :event="registration.event"
-            @team-confirmed="
-              (teamId) => {
-                reFetchRegistrations(teamId);
-              }
-            "
-            @error="alert.text = t('api.generalError')"
-            :individual="team.type.class[0] === 'i'"
+          <ElOption
+            v-for="event in events"
+            :key="`event-${event.id}`"
+            :label="event.name"
+            :value="event.id"
           />
-        </ElCol>
-      </ElRow>
-    </div>
+        </ElSelect>
+      </ElCol>
+      <ElCol
+        :xs="24"
+        :sm="12"
+        :md="8"
+        :lg="6"
+        class="is-text-right"
+        style="margin-bottom: 0 !important"
+      >
+        <div
+          v-if="teams && teams.length > 0"
+          style="color: var(--el-text-color-regular)"
+          class="is-margin-bottom-10"
+        >
+          {{ $t('teams.registrationsCount', { msg: teams.length }, teams.length) }}
+        </div>
+      </ElCol>
+    </ElRow>
+    <ElRow :justify="teams!.length <= 3 ? 'center' : 'start'" :gutter="20">
+      <ElCol v-for="team in teams" :key="`team-${team.id}`" :xs="24" :sm="12" :md="8" :lg="6">
+        <RegistrationCard
+          :team="team"
+          :event="currentEvent!"
+          @team-confirmed="
+            (teamId) => {
+              refreshAndNotify(teamId, 'confirm');
+            }
+          "
+          @team-deleted="
+            (teamId) => {
+              refreshAndNotify(teamId, 'delete');
+            }
+          "
+          @error="alert.text = t('api.generalError')"
+          :individual="team.type.class[0] === 'i'"
+        />
+      </ElCol>
+    </ElRow>
   </div>
+  <!-- </div> -->
 </template>
-
-<style scoped>
-:deep(.el-progress__text) {
-  min-width: unset;
-}
-
-:deep(.el-progress__text) {
-  font-size: 18px !important;
-}
-</style>

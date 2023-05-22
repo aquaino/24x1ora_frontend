@@ -85,7 +85,7 @@ export default {
     waitingForConfirmation: 'Iscrizione in attesa di conferma',
     subscriptionConfirmed: 'Iscrizione confermata',
     teamsTitle: 'Iscrizioni attive',
-    teamsSubtitle: 'Elenco di tutte le iscrizioni attive per ogni evento',
+    teamsSubtitle: 'Elenco di tutte le iscrizioni attive per l\'evento selezionato',
     noTeams: 'Nessuna iscrizione inserita',
     medcert: 'Certificato medico',
     medcertUploaded: 'Certificato medico caricato',
@@ -108,6 +108,8 @@ export default {
     teamRunners: 'Elenco partecipanti',
     manager: 'Responsabile',
     managerCell: 'Telefono',
+    deleteTeam: 'Elimina iscrizione',
+    teamDeleted: 'Iscrizione cancellata',
   },
   menu: {
     menuTitle: 'Menu di navigazione',
@@ -156,6 +158,7 @@ export default {
     fileUploadedComma: 'File caricato,',
     clickHere: 'clicca qui',
     toShowIt: 'per visualizzarlo',
+    selectPlaceholder: 'Scegli...',
   },
   api: {
     generalError: 'Si è verificato un problema, riprovare più tardi',
