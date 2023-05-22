@@ -156,6 +156,7 @@ export default {
     fileUploadedComma: 'File caricato,',
     clickHere: 'clicca qui',
     toShowIt: 'per visualizzarlo',
+    selectPlaceholder: 'Scegli...',
   },
   api: {
     generalError: 'Si è verificato un problema, riprovare più tardi',

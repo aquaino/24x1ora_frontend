@@ -27,7 +27,9 @@ interface RaceRegistration extends Team {
 
 /* DATA */
 
-const eventIds: Ref<number[]> = ref(Array());
+const events: Ref<RaceEvent[]> = ref(Array());
+const currentEventId: Ref<number | null> = ref(null);
+
 const registrations: Ref<RaceRegistration[]> = ref(Array());
 
 const loading = ref(true);
@@ -46,30 +48,36 @@ const alert = ref({
   text: '',
 });
 
+/* MOUNTED */
+
+onMounted(async () => {
+  if (store.user.email_verified_at) {
+    await getEvents();
+    if (events.value.length > 0) {
+      currentEventId.value = events.value[events.value.length - 1].id;
+      await getEventTeams(currentEventId.value);
+    }
+  }
+  loading.value = false;
+});
+
 /* METHODS */
 
-async function getEventIds() {
+async function getEvents() {
   try {
-    const events = await eventsApi.getEvents();
-    eventIds.value = (events as RaceEvent[]).map((event: RaceEvent) => {
-      return event.id;
-    });
+    events.value = await eventsApi.getEvents();
   } catch (error) {
     alert.value.text = t('api.generalError');
   }
 }
 
-async function getSubscriptions() {
+async function getEventTeams(eventId: number) {
   try {
-    for (let index = 0; index < eventIds.value.length; index++) {
-      const eventAndTeams = await teamsApi.getEventTeams(eventIds.value[index]);
-      registrations.value.push(eventAndTeams as RaceRegistration);
-    }
-    registrations.value.forEach((subscription) => {
-      subscription.teams.forEach((team: any) => {
-        team['medcertUploaded'] = hasAttachment(/medcert.*/, team.attachments);
-        team['paymentUploaded'] = hasAttachment(/payment.*/, team.attachments);
-      });
+    const eventAndTeams = await teamsApi.getEventTeams(eventId);
+    registrations.value = eventAndTeams.teams.map((team: any) => {
+      team['medcertUploaded'] = hasAttachment(/medcert.*/, team.attachments);
+      team['paymentUploaded'] = hasAttachment(/payment.*/, team.attachments);
+      return team;
     });
   } catch (error) {
     alert.value.text = t('api.generalError');
@@ -87,27 +95,13 @@ function showMessage() {
   }
 }
 
-async function reFetchRegistrations(teamId: number) {
-  loading.value = true;
-  await getEventIds();
-  await getSubscriptions();
-  loading.value = false;
+async function refreshAndNotify(teamId: number) {
+  await getEventTeams(currentEventId.value as number);
   message.value = {
     type: 'success',
     text: t('teams.teamConfirmed', { msg: teamId }),
   };
 }
-
-/* MOUNTED */
-
-onMounted(async () => {
-  // Get user teams for each event
-  if (store.user.email_verified_at) {
-    await getEventIds();
-    await getSubscriptions();
-  }
-  loading.value = false;
-});
 
 /* WATCH */
 
@@ -133,12 +127,29 @@ watch(
   />
   <div v-else>
     <ElRow v-if="alert.text" justify="center">
-      <ElCol :xs="24" :sm="16" :md="14" :lg="10" class="is-margin-bottom-15">
+      <ElCol :xs="24" :sm="16" :md="14" :lg="10">
         <ElAlert type="error" show-icon :closable="false" :title="alert.text" />
       </ElCol>
     </ElRow>
+    <ElSelect
+      v-model="currentEventId"
+      :placeholder="$t('forms.selectPlaceholder')"
+      @change="
+        (value: number) => {
+          getEventTeams(value);
+        }
+      "
+      class="is-width-100 is-margin-bottom-15"
+    >
+      <ElOption
+        v-for="event in events"
+        :key="`event-${event.id}`"
+        :label="event.name"
+        :value="event.id"
+      />
+    </ElSelect>
     <div v-for="registration in registrations" :key="`registration-${registration.teams[0].id}`">
-      <div>
+      <!-- <div>
         <div class="is-flex is-justify-center is-align-center">
           <ElIcon color="var(--el-color-primary)" size="32"><TrophyBase /></ElIcon>
           <h2 class="is-margin-left-05 is-margin-top-0" style="line-height: 32px">
@@ -158,7 +169,7 @@ watch(
             )
           }}
         </div>
-      </div>
+      </div> -->
       <ElRow :justify="registration.teams.length <= 3 ? 'center' : 'start'" :gutter="20">
         <ElCol
           v-for="team in registration.teams"
@@ -173,7 +184,7 @@ watch(
             :event="registration.event"
             @team-confirmed="
               (teamId) => {
-                reFetchRegistrations(teamId);
+                refreshAndNotify(teamId);
               }
             "
             @error="alert.text = t('api.generalError')"
