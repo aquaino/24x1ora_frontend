@@ -76,7 +76,7 @@ onMounted(async () => {
           </ElAlert>
         </ElCol>
       </ElRow>
-      <ElRow :justify="races.length <= 4 ? 'center' : 'start'" :gutter="20" v-loading="loading">
+      <ElRow :justify="races.length <= 4 ? 'center' : 'start'" :gutter="20">
         <ElCol v-for="race in races" :key="`race-${race.id}`" :xs="24" :sm="12" :md="8" :lg="6">
           <AppCard v-if="event" shadow="hover" :title="race.type.name">
             <template #content>

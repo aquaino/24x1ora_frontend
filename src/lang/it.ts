@@ -37,6 +37,7 @@ export default {
     delete: 'Elimina',
     add: 'Aggiungi',
     cancel: 'Annulla',
+    state: 'Stato',
   },
   events: {
     subscriptionsStart: 'Inizio iscrizioni',
@@ -85,7 +86,7 @@ export default {
     waitingForConfirmation: 'Iscrizione in attesa di conferma',
     subscriptionConfirmed: 'Iscrizione confermata',
     teamsTitle: 'Iscrizioni attive',
-    teamsSubtitle: 'Elenco di tutte le iscrizioni attive per l\'evento selezionato',
+    teamsSubtitle: "Elenco di tutte le iscrizioni attive per l'evento selezionato",
     noTeams: 'Nessuna iscrizione inserita',
     medcert: 'Certificato medico',
     medcertUploaded: 'Certificato medico caricato',
@@ -110,7 +111,12 @@ export default {
     managerCell: 'Telefono',
     deleteTeam: 'Elimina iscrizione',
     teamDeleted: 'Iscrizione cancellata',
-    askDeletion: 'Eliminare l\'iscrizione?'
+    askDeletion: "Eliminare l'iscrizione?",
+    states: {
+      inserted: 'Inserita',
+      waiting: 'In attesa di conferma',
+      confirmed: 'Confermata',
+    },
   },
   menu: {
     menuTitle: 'Menu di navigazione',

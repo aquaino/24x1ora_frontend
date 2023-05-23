@@ -41,7 +41,7 @@ onMounted(async () => {
     :back-to="{ name: 'home' }"
   />
 
-  <ElRow justify="center" :gutter="20" v-loading="loading">
+  <ElRow justify="center" :gutter="20">
     <ElCol :xs="24" :sm="12" :md="8" :lg="6">
       <AppCard :title="$t('general.userInfo')">
         <template #content>

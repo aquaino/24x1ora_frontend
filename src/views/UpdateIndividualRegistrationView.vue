@@ -106,7 +106,7 @@ onMounted(async () => {
   />
   <ElRow justify="center">
     <ElCol :xs="24" :sm="16" :md="12" :lg="8">
-      <AppCard :title="$t('teams.participantInfo')" shadow="never" v-loading="loading">
+      <AppCard :title="$t('teams.participantInfo')" shadow="never">
         <template #content>
           <IndividualRaceRegistrationForm
             update

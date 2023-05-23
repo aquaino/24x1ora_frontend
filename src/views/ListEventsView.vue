@@ -43,7 +43,7 @@ onMounted(async () => {
   <AppPageTitle :title="$t('general.event', 2)" :subtitle="$t('general.availableEvents')" />
 
   <ElEmpty v-if="events.length === 0 && !loading" :description="$t('events.noEvents')" />
-  <ElRow v-else :justify="events.length <= 3 ? 'center' : 'start'" :gutter="20" v-loading="loading">
+  <ElRow v-else :justify="events.length <= 3 ? 'center' : 'start'" :gutter="20">
     <ElCol v-for="event in events" :key="`event-${event.id}`" :xs="24" :sm="12" :md="8" :lg="6">
       <AppCard
         :image="partenza_2019"

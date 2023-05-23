@@ -9,6 +9,13 @@ import { useAppStore } from '@/store';
 import { teamsApi } from '@/api/resources';
 import type { RaceEvent } from '@/api/interfaces';
 
+/* INTERFACES */
+
+interface TeamStatus {
+  type: string;
+  text: string;
+}
+
 /* PROPS */
 
 const props = defineProps<{
@@ -28,40 +35,18 @@ const emits = defineEmits(['team-confirmed', 'team-deleted', 'error']);
 
 /* METHODS */
 
-function getTeamProgress(): {
-  percentage: Object;
-  status: Object;
-  title: string;
-} {
-  return !props.team.medcertUploaded && !props.team.paymentUploaded && !props.team.confirmed
-    ? {
-        percentage: 20,
-        status: 'exception',
-        title: t('teams.uploadMedcertAndPayment'),
-      }
-    : props.team.medcertUploaded && !props.team.paymentUploaded && !props.team.confirmed
-    ? {
-        percentage: 40,
-        status: 'exception',
-        title: t('teams.uploadPayment'),
-      }
-    : !props.team.medcertUploaded && props.team.paymentUploaded && !props.team.confirmed
-    ? {
-        percentage: 60,
-        status: 'exception',
-        title: t('teams.uploadMedcert'),
-      }
-    : props.team.medcertUploaded && props.team.paymentUploaded && !props.team.confirmed
-    ? {
-        percentage: 80,
-        status: 'warning',
-        title: t('teams.waitingForConfirmation'),
-      }
-    : {
-        percentage: 100,
-        status: 'success',
-        title: t('teams.subscriptionConfirmed'),
-      };
+function getRegistrationStatus(): TeamStatus {
+  const team = props.team;
+  if (team.confirmed) {
+    return { type: 'success', text: t('teams.states.confirmed') };
+  } else if (
+    team.attachments.length === 2 ||
+    (!props.individual && team.attachments.length === 1)
+  ) {
+    return { type: 'warning', text: t('teams.states.waiting') };
+  } else {
+    return { type: 'danger', text: t('teams.states.inserted') };
+  }
 }
 
 async function confirmTeam() {
@@ -112,17 +97,16 @@ async function deleteTeam() {
       </div>
     </template>
     <template #content>
-      <ElProgress
-        v-if="individual"
-        :percentage="getTeamProgress().percentage"
-        :status="getTeamProgress().status"
-        :stroke-width="10"
-        :title="getTeamProgress().title"
-        class="is-width-100 is-margin-bottom-10"
-      />
       <div class="is-flex is-justify-space-between is-align-center">
         <ElDescriptions direction="vertical" :column="2">
-          <ElDescriptionsItem :label="$t('general.race')" width="150px">{{
+          <ElDescriptionsItem :label="$t('general.state')" width="150px" :span="2">
+            <span
+              :style="{ color: `var(--el-color-${getRegistrationStatus().type})` }"
+              class="is-bold"
+              >{{ getRegistrationStatus().text }}</span
+            >
+          </ElDescriptionsItem>
+          <ElDescriptionsItem :label="$t('general.race')">{{
             props.team.type.name
           }}</ElDescriptionsItem>
           <ElDescriptionsItem :label="$t('teams.paymentCode')">{{

@@ -121,7 +121,7 @@ watch(
     :subtitle="$t('teams.teamsSubtitle')"
     :back-to="{ name: 'events' }"
   />
-  <div v-if="loading" v-loading="loading"></div>
+  <div v-if="loading"></div>
   <ElEmpty v-else-if="teams && teams.length === 0" :description="$t('teams.noTeams')" />
   <div v-else>
     <ElRow v-if="alert.text" justify="center">
@@ -131,23 +131,25 @@ watch(
     </ElRow>
     <ElRow justify="space-between" :gutter="20" class="is-align-center is-margin-bottom-05">
       <ElCol :xs="24" :sm="12" :md="8" :lg="6" style="margin-bottom: 0 !important">
-        <ElSelect
-          :placeholder="$t('forms.selectPlaceholder')"
-          v-model="currentEvent!.id"
-          @change="
+        <ElFormItem :label="$t('general.event')">
+          <ElSelect
+            :placeholder="$t('forms.selectPlaceholder')"
+            v-model="currentEvent!.id"
+            @change="
         (value: number) => {
           getEventTeams(value);
         }
       "
-          class="is-margin-bottom-10 is-width-100"
-        >
-          <ElOption
-            v-for="event in events"
-            :key="`event-${event.id}`"
-            :label="event.name"
-            :value="event.id"
-          />
-        </ElSelect>
+            class="is-width-100"
+          >
+            <ElOption
+              v-for="event in events"
+              :key="`event-${event.id}`"
+              :label="event.name"
+              :value="event.id"
+            />
+          </ElSelect>
+        </ElFormItem>
       </ElCol>
       <ElCol
         :xs="24"
