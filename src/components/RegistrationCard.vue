@@ -24,7 +24,7 @@ const store = useAppStore();
 
 /* EVENTS */
 
-const emits = defineEmits(['team-confirmed', 'error']);
+const emits = defineEmits(['team-confirmed', 'team-deleted', 'error']);
 
 /* METHODS */
 
@@ -68,6 +68,15 @@ async function confirmTeam() {
   try {
     await teamsApi.confirmTeam(props.event.id, props.team.id);
     emits('team-confirmed', props.team.id);
+  } catch (error) {
+    emits('error');
+  }
+}
+
+async function deleteTeam() {
+  try {
+    await teamsApi.deleteTeam(props.event.id, props.team.id);
+    emits('team-deleted');
   } catch (error) {
     emits('error');
   }
@@ -177,13 +186,12 @@ async function confirmTeam() {
           "
           >{{ $t('general.edit') }}</ElButton
         >
+        <!-- TODO -->
+        <ElButton v-if="false" type="danger" :title="$t('teams.deleteTeam')" @click="deleteTeam()">
+          {{ $t('general.delete') }}
+        </ElButton>
         <ElPopconfirm
-          v-if="
-            store.user.isAdmin &&
-            props.team.medcertUploaded &&
-            props.team.paymentUploaded &&
-            !props.team.confirmed
-          "
+          v-if="store.user.isAdmin && !props.team.confirmed"
           :title="$t('teams.askConfirmation')"
           width="200"
           :confirm-button-text="$t('general.yes')"
@@ -192,12 +200,22 @@ async function confirmTeam() {
           @confirm="confirmTeam()"
         >
           <template #reference>
-            <ElButton type="success" :title="$t('teams.confirmEnrollment')">{{
-              $t('general.confirm')
-            }}</ElButton>
+            <ElButton type="success" :title="$t('teams.confirmEnrollment')">
+              {{ $t('general.confirm') }}
+            </ElButton>
           </template>
         </ElPopconfirm>
       </div>
     </template>
   </AppCard>
 </template>
+
+<style scoped>
+:deep(.el-progress__text) {
+  min-width: unset;
+}
+
+:deep(.el-progress__text) {
+  font-size: 18px !important;
+}
+</style>

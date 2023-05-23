@@ -86,6 +86,12 @@ export const teamsApi = {
     });
   },
 
+  async deleteTeam(eventId: number, teamId: number) {
+    await apiClient.delete(`events/${eventId}/teams/${teamId}`).catch((error) => {
+      throw error;
+    });
+  },
+
   async getAttachmentFile(eventId: number, teamId: number, fileName: string): Promise<MediaSource> {
     const response = await apiClient
       .get(`/events/${eventId}/teams/${teamId}/attachments/${fileName}`, { responseType: 'blob' })
