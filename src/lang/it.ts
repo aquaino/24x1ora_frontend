@@ -110,6 +110,7 @@ export default {
     managerCell: 'Telefono',
     deleteTeam: 'Elimina iscrizione',
     teamDeleted: 'Iscrizione cancellata',
+    askDeletion: 'Eliminare l\'iscrizione?'
   },
   menu: {
     menuTitle: 'Menu di navigazione',

@@ -3,7 +3,7 @@ import AppCard from '@/components/base/AppCard.vue';
 import { formatDateTime } from '@/utils';
 import type { TeamWithAttachmentStatus } from '@/views/ListRegistrationsView.vue';
 import { useI18n } from 'vue-i18n';
-import { Ticket, Document, Money } from '@element-plus/icons-vue';
+import { Ticket, Document, Money, EditPen, Delete, Check } from '@element-plus/icons-vue';
 import { ElPopconfirm } from 'element-plus';
 import { useAppStore } from '@/store';
 import { teamsApi } from '@/api/resources';
@@ -171,25 +171,36 @@ async function deleteTeam() {
       </ElCollapse>
     </template>
     <template #footer>
-      <div class="is-margin-top-05">
-        <ElButton
-          type="primary"
-          :title="$t('teams.editTeam')"
-          @click="
-            $router.push({
-              name: individual ? 'update-individual-registration' : 'update-team-registration',
-              params: { eventId: event.id, teamId: props.team.id },
-              query: {
-                raceName: props.team.type.name,
-              },
-            })
-          "
-          >{{ $t('general.edit') }}</ElButton
-        >
-        <!-- TODO -->
-        <ElButton v-if="false" type="danger" :title="$t('teams.deleteTeam')" @click="deleteTeam()">
-          {{ $t('general.delete') }}
-        </ElButton>
+      <ElRow justify="space-between" align="middle" class="is-margin-top-05">
+        <ElButtonGroup>
+          <ElButton
+            type="primary"
+            :title="$t('teams.editTeam')"
+            @click="
+              $router.push({
+                name: individual ? 'update-individual-registration' : 'update-team-registration',
+                params: { eventId: event.id, teamId: props.team.id },
+                query: {
+                  raceName: props.team.type.name,
+                },
+              })
+            "
+            :icon="EditPen"
+          />
+          <ElPopconfirm
+            v-if="!team.paymentUploaded"
+            :title="$t('teams.askDeletion')"
+            width="200"
+            :confirm-button-text="$t('general.yes')"
+            :cancel-button-text="$t('general.no')"
+            hide-icon
+            @confirm="deleteTeam()"
+          >
+            <template #reference>
+              <ElButton type="danger" :title="$t('teams.deleteTeam')" :icon="Delete" />
+            </template>
+          </ElPopconfirm>
+        </ElButtonGroup>
         <ElPopconfirm
           v-if="store.user.isAdmin && !props.team.confirmed"
           :title="$t('teams.askConfirmation')"
@@ -200,12 +211,10 @@ async function deleteTeam() {
           @confirm="confirmTeam()"
         >
           <template #reference>
-            <ElButton type="success" :title="$t('teams.confirmEnrollment')">
-              {{ $t('general.confirm') }}
-            </ElButton>
+            <ElButton type="success" :title="$t('teams.confirmEnrollment')" :icon="Check" />
           </template>
         </ElPopconfirm>
-      </div>
+      </ElRow>
     </template>
   </AppCard>
 </template>

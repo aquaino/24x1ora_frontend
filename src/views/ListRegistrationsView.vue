@@ -98,7 +98,7 @@ async function refreshAndNotify(teamId: number, action: string) {
   } else if (action === 'delete') {
     message.value = {
       type: 'error',
-      text: t('teams.teamDelete'),
+      text: t('teams.teamDeleted'),
     };
   }
   loading.value = false;
