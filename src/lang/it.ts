@@ -117,6 +117,7 @@ export default {
       waiting: 'In attesa di conferma',
       confirmed: 'Confermata',
     },
+    alreadyRegistered: 'Esiste già una iscrizione con i dati appena inseriti'
   },
   menu: {
     menuTitle: 'Menu di navigazione',

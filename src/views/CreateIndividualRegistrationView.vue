@@ -45,8 +45,12 @@ async function subscribe(formRef: FormInstance | undefined, form: Runner) {
             messageText: t('teams.teamInserted', { msg: newTeam.id }),
           },
         });
-      } catch (error) {
-        alert.value = { type: 'error', text: t('api.generalError') };
+      } catch (error: any) {
+        if (error.response.status === 400) {
+          alert.value = { type: 'error', text: t('teams.alreadyRegistered') };
+        } else {
+          alert.value = { type: 'error', text: t('api.generalError') };
+        }
       }
     }
   });
@@ -72,6 +76,13 @@ async function subscribe(formRef: FormInstance | undefined, form: Runner) {
             }
           "
           :discount="availableDiscount"
+        />
+        <ElAlert
+          v-show="alert.text"
+          :type="alert.type"
+          :title="alert.text"
+          show-icon
+          class="is-margin-top-15"
         />
       </ElCard>
     </ElCol>

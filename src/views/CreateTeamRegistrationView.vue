@@ -58,10 +58,11 @@ async function createTeam(formRef: FormInstance | undefined) {
           },
         });
       } catch (error: any) {
-        alert.value = {
-          type: 'error',
-          text: t('api.generalError'),
-        };
+        if (error.response.status === 400) {
+          alert.value = { type: 'error', text: t('teams.alreadyRegistered') };
+        } else {
+          alert.value = { type: 'error', text: t('api.generalError') };
+        }
       }
     }
   });
@@ -105,14 +106,14 @@ async function createTeam(formRef: FormInstance | undefined) {
               >
             </ElFormItem>
           </ElForm>
+          <ElAlert
+            v-show="alert.text"
+            :type="alert.type"
+            :title="alert.text"
+            show-icon
+            class="is-margin-top-15"
+          />
         </template>
-        <ElAlert
-          v-show="alert.text"
-          :type="alert.type"
-          :title="alert.text"
-          show-icon
-          class="is-margin-top-15"
-        />
       </AppCard>
     </ElCol>
   </ElRow>
