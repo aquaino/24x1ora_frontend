@@ -49,7 +49,7 @@ export const useAppStore = defineStore('store', {
       this.user.id = data.id;
       this.user.name = data.name;
       this.user.email = data.email;
-      this.user.isAdmin = data.isAdmin;
+      this.user.isAdmin = data.isAdmin === 1;
       this.user.email_verified_at = data.email_verified_at;
     },
     setRememberEmail(value: string | null) {

@@ -38,6 +38,7 @@ export default {
     add: 'Aggiungi',
     cancel: 'Annulla',
     state: 'Stato',
+    tableView: 'Vista tabellare',
   },
   events: {
     subscriptionsStart: 'Inizio iscrizioni',
@@ -110,14 +111,14 @@ export default {
     manager: 'Responsabile',
     managerCell: 'Telefono',
     deleteTeam: 'Elimina iscrizione',
-    teamDeleted: 'Iscrizione cancellata',
+    teamDeleted: 'Iscrizione eliminata',
     askDeletion: "Eliminare l'iscrizione?",
     states: {
       inserted: 'Inserita',
       waiting: 'In attesa di conferma',
       confirmed: 'Confermata',
     },
-    alreadyRegistered: 'Esiste già una iscrizione con i dati appena inseriti'
+    alreadyRegistered: 'Esiste già una iscrizione con i dati appena inseriti',
   },
   menu: {
     menuTitle: 'Menu di navigazione',

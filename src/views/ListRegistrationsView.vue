@@ -10,7 +10,8 @@ import { useRoute } from 'vue-router';
 import { hasAttachment } from '@/utils';
 import { useAppStore } from '@/store';
 import { useI18n } from 'vue-i18n';
-import RegistrationCard from '@/components/RegistrationCard.vue';
+import RegistrationsAsCards from '@/components/RegistrationsAsCards.vue';
+import RegistrationsAsTable from '@/components/RegistrationsAsTable.vue';
 
 /* INTERFACES */
 
@@ -30,6 +31,8 @@ const loading = ref(true);
 const route = useRoute();
 const store = useAppStore();
 const { t } = useI18n();
+
+const tableView: Ref<boolean> = ref(store.user.isAdmin!);
 
 const message = ref({
   type: route.query.messageType as 'success' | 'warning' | 'error' | 'info',
@@ -156,38 +159,47 @@ watch(
         :sm="12"
         :md="8"
         :lg="6"
-        class="is-text-right"
-        style="margin-bottom: 0 !important"
+        class="is-flex is-align-center"
+        style="justify-content: end"
       >
+        <ElSwitch
+          v-model="tableView"
+          :active-text="$t('general.tableView')"
+          class="is-margin-right-10"
+        />
         <div
           v-if="teams && teams.length > 0"
           style="color: var(--el-text-color-regular)"
-          class="is-margin-bottom-10"
+          class="is-margin-left-auto-mobile"
         >
           {{ $t('teams.registrationsCount', { msg: teams.length }, teams.length) }}
         </div>
       </ElCol>
     </ElRow>
-    <ElRow :justify="teams!.length <= 3 ? 'center' : 'start'" :gutter="20">
-      <ElCol v-for="team in teams" :key="`team-${team.id}`" :xs="24" :sm="12" :md="8" :lg="6">
-        <RegistrationCard
-          :team="team"
-          :event="currentEvent!"
-          @team-confirmed="
-            (teamId) => {
-              refreshAndNotify(teamId, 'confirm');
-            }
-          "
-          @team-deleted="
-            (teamId) => {
-              refreshAndNotify(teamId, 'delete');
-            }
-          "
-          @error="alert.text = t('api.generalError')"
-          :individual="team.type.class[0] === 'i'"
-        />
-      </ElCol>
-    </ElRow>
+    <component
+      :is="store.user.isAdmin && tableView ? RegistrationsAsTable : RegistrationsAsCards"
+      :teams="teams!"
+      :event="currentEvent!"
+      @team-confirmed="
+        (teamId: number) => {
+          refreshAndNotify(teamId, 'confirm');
+        }
+      "
+      @team-deleted="
+        (teamId: number) => {
+          refreshAndNotify(teamId, 'delete');
+        }
+      "
+      @error="alert.text = t('api.generalError')"
+    />
   </div>
   <!-- </div> -->
 </template>
+
+<style scoped>
+@media screen and (max-width: 768px) {
+  .is-margin-left-auto-mobile {
+    margin-left: auto;
+  }
+}
+</style>

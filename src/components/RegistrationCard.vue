@@ -11,7 +11,7 @@ import type { RaceEvent } from '@/api/interfaces';
 
 /* INTERFACES */
 
-interface TeamStatus {
+export interface TeamStatus {
   type: string;
   text: string;
 }

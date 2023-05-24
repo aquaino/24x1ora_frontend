@@ -90,7 +90,7 @@ export interface Team {
 export interface User {
   name: string;
   email: string;
-  isAdmin: boolean;
+  isAdmin: number;
   id: number;
   updated_at: string;
   created_at: string;
