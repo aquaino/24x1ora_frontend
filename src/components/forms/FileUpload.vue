@@ -52,7 +52,7 @@ defineExpose({ submit });
       >
         <template #title>
           {{ $t('forms.fileUploadedComma') }}
-          <ElButton type="link" @click="emits('show-file')" class="file-link">{{
+          <ElButton type="success" @click="emits('show-file')" class="file-button" link>{{
             $t('forms.clickHere')
           }}</ElButton>
           {{ $t('forms.toShowIt') }}
@@ -70,12 +70,7 @@ defineExpose({ submit });
 </template>
 
 <style scoped>
-.file-link {
-  background-color: transparent;
-  border: none;
-  color: inherit;
-  font-size: inherit;
-  font-weight: bold;
+.file-button {
   padding: 0;
   vertical-align: baseline;
 }

@@ -39,6 +39,7 @@ export default {
     cancel: 'Annulla',
     state: 'Stato',
     tableView: 'Vista tabellare',
+    show: "Visualizza"
   },
   events: {
     subscriptionsStart: 'Inizio iscrizioni',
@@ -119,6 +120,7 @@ export default {
       confirmed: 'Confermata',
     },
     alreadyRegistered: 'Esiste già una iscrizione con i dati appena inseriti',
+    amountToPay: 'Da pagare',
   },
   menu: {
     menuTitle: 'Menu di navigazione',
