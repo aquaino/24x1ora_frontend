@@ -70,6 +70,7 @@ async function deleteTeam() {
 
 <template>
   <AppCard shadow="hover" :title="`#${props.team.id} - ${props.team.name}`">
+    <!-- Attachments status -->
     <template #right-header>
       <div class="is-flex">
         <ElIcon
@@ -96,6 +97,7 @@ async function deleteTeam() {
         /></ElIcon>
       </div>
     </template>
+    <!-- Data -->
     <template #content>
       <div class="is-flex is-justify-space-between is-align-center">
         <ElDescriptions direction="vertical" :column="2">
@@ -138,6 +140,7 @@ async function deleteTeam() {
           </div>
         </div>
       </div>
+      <!-- Payment details -->
       <ElCollapse>
         <ElCollapseItem :title="$t('teams.paymentDetails')">
           <div class="is-margin-bottom-10">{{ $t('teams.viaBankTransfer') }}</div>
@@ -154,6 +157,7 @@ async function deleteTeam() {
         </ElCollapseItem>
       </ElCollapse>
     </template>
+    <!-- Actions -->
     <template #footer>
       <ElRow justify="space-between" align="middle" class="is-margin-top-05">
         <ElButtonGroup>
@@ -172,7 +176,6 @@ async function deleteTeam() {
             :icon="EditPen"
           />
           <ElPopconfirm
-            v-if="!team.paymentUploaded"
             :title="$t('teams.askDeletion')"
             width="200"
             :confirm-button-text="$t('general.yes')"
@@ -181,12 +184,17 @@ async function deleteTeam() {
             @confirm="deleteTeam()"
           >
             <template #reference>
-              <ElButton type="danger" :title="$t('teams.deleteTeam')" :icon="Delete" />
+              <ElButton
+                type="danger"
+                :disabled="team.paymentUploaded"
+                :title="$t('teams.deleteTeam')"
+                :icon="Delete"
+              />
             </template>
           </ElPopconfirm>
         </ElButtonGroup>
         <ElPopconfirm
-          v-if="store.user.isAdmin && !props.team.confirmed"
+          v-if="store.user.isAdmin"
           :title="$t('teams.askConfirmation')"
           width="200"
           :confirm-button-text="$t('general.yes')"
@@ -195,7 +203,7 @@ async function deleteTeam() {
           @confirm="confirmTeam()"
         >
           <template #reference>
-            <ElButton type="success" :title="$t('teams.confirmEnrollment')" :icon="Check" />
+            <ElButton type="success" :disabled="props.team.confirmed === 1" :title="$t('teams.confirmEnrollment')" :icon="Check" />
           </template>
         </ElPopconfirm>
       </ElRow>

@@ -216,7 +216,6 @@ async function downloadAttachment(
             :icon="EditPen"
           />
           <ElPopconfirm
-            v-if="!scope.row.paymentUploaded"
             :title="$t('teams.askDeletion')"
             width="200"
             :confirm-button-text="$t('general.yes')"
@@ -225,11 +224,15 @@ async function downloadAttachment(
             @confirm="deleteTeam(scope.row.id)"
           >
             <template #reference>
-              <ElButton type="danger" :title="$t('teams.deleteTeam')" :icon="Delete" />
+              <ElButton
+                type="danger"
+                :disabled="scope.row.paymentUploaded"
+                :title="$t('teams.deleteTeam')"
+                :icon="Delete"
+              />
             </template>
           </ElPopconfirm>
           <ElPopconfirm
-            v-if="!scope.row.confirmed"
             :title="$t('teams.askConfirmation')"
             width="200"
             :confirm-button-text="$t('general.yes')"
@@ -238,7 +241,7 @@ async function downloadAttachment(
             @confirm="confirmTeam(scope.row.id)"
           >
             <template #reference>
-              <ElButton type="success" :title="$t('teams.confirmEnrollment')" :icon="Check" />
+              <ElButton type="success" :disabled="scope.row.confirmed === 1" :title="$t('teams.confirmEnrollment')" :icon="Check" />
             </template>
           </ElPopconfirm>
         </ElButtonGroup>
