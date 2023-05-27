@@ -20,7 +20,7 @@ export default {
     runnersPerTeam: 'Corridori per squadra',
     hour: 'ora | ore',
     race: 'Gara',
-    created: 'Creata',
+    created: 'Creazione',
     edit: 'Modifica',
     confirm: 'Conferma',
     pageNotFoundTitle: 'Pagina non trovata',
@@ -33,13 +33,14 @@ export default {
     yes: 'Sì',
     no: 'No',
     type: 'Tipologia',
-    noRows: 'Nessuna riga',
+    noData: 'Nessun record',
     delete: 'Elimina',
     add: 'Aggiungi',
     cancel: 'Annulla',
     state: 'Stato',
     tableView: 'Vista tabellare',
-    show: "Visualizza"
+    show: 'Visualizza',
+    user: 'Utente | Utenti',
   },
   events: {
     subscriptionsStart: 'Inizio iscrizioni',
@@ -127,6 +128,7 @@ export default {
     eventsTitle: 'Visualizza eventi',
     teamsTitle: 'Visualizza iscrizioni',
     profileTitle: 'Gestisci profilo',
+    usersTitle: 'Visualizza utenti',
     logout: 'Esci',
     logoutTitle: 'Disconnettiti dal portale',
   },
@@ -148,6 +150,8 @@ export default {
     emailAlreadyVerifiedTitle: 'Indirizzo e-mail già verificato',
     emailAlreadyVerifiedSubtitle: 'Il tuo indirizzo e-mail risulta già verificato',
     emailVerifyError: "Verifica nuovamente l'indirizzo con le istruzioni ricevute via e-mail",
+    emailVerifiedAt: 'E-mail verificata',
+    isAdmin: 'Amministratore'
   },
   forms: {
     requiredField: 'Questo campo è obbligatorio',
@@ -170,6 +174,10 @@ export default {
     clickHere: 'clicca qui',
     toShowIt: 'per visualizzarlo',
     selectPlaceholder: 'Scegli...',
+  },
+  users: {
+    usersTitle: 'Utenti registrati',
+    usersSubtitle: 'Elenco di tutti gli utenti del portale',
   },
   api: {
     generalError: 'Si è verificato un problema, riprovare più tardi',

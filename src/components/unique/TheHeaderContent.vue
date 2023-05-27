@@ -2,7 +2,7 @@
 import logo from '/logo.png';
 import TheDesktopMenu from '@/components/unique/TheDesktopMenu.vue';
 import TheMobileMenu from '@/components/unique/TheMobileMenu.vue';
-import { Calendar, SwitchButton, Tickets, User } from '@element-plus/icons-vue';
+import { Calendar, SwitchButton, Tickets, User, Notebook } from '@element-plus/icons-vue';
 import type { MenuItem } from '../../interfaces';
 import { useAppStore } from '@/store';
 import { useI18n } from 'vue-i18n';
@@ -25,6 +25,13 @@ const menu: MenuItem[] = [
     icon: Tickets,
     text: t('general.team', 2),
     title: t('teams.teamsTitle'),
+  },
+  {
+    routeName: 'users',
+    icon: Notebook,
+    text: t('general.user', 2),
+    title: t('menu.usersTitle'),
+    requireAdmin: true,
   },
   { routeName: 'profile', icon: User, text: t('general.profile'), title: t('menu.profileTitle') },
   {

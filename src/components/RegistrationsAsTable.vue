@@ -33,7 +33,7 @@ const columns = [
   {
     prop: 'id',
     label: 'ID',
-    sortable: true,
+    sortable: false,
     format: false,
     width: '70',
   },
@@ -54,7 +54,7 @@ const columns = [
   {
     prop: 'payment_code',
     label: t('teams.paymentCode'),
-    sortable: true,
+    sortable: false,
     format: false,
     width: null,
   },
@@ -69,7 +69,7 @@ const columns = [
 
 /* METHODS */
 
-function format(format: boolean, cellValue: any) {
+function formatDate(format: boolean, cellValue: any) {
   if (format) {
     return formatDateTime(cellValue, 'ISO', 'DATETIME_SHORT');
   } else {
@@ -131,7 +131,7 @@ async function downloadAttachment(
 </script>
 
 <template>
-  <ElTable :data="props.teams" stripe>
+  <ElTable :data="props.teams" stripe :empty-text="$t('general.noData')">
     <!-- Data columns -->
     <ElTableColumn
       v-for="col in columns"
@@ -144,7 +144,7 @@ async function downloadAttachment(
         row: TeamWithAttachmentStatus, 
         column: TableColumnCtx<TeamWithAttachmentStatus>, 
         cellValue: any
-      ) => format(col.format, cellValue)"
+      ) => formatDate(col.format, cellValue)"
     />
     <!-- Attachments -->
     <ElTableColumn :label="$t('teams.medcert')">
@@ -241,7 +241,12 @@ async function downloadAttachment(
             @confirm="confirmTeam(scope.row.id)"
           >
             <template #reference>
-              <ElButton type="success" :disabled="scope.row.confirmed === 1" :title="$t('teams.confirmEnrollment')" :icon="Check" />
+              <ElButton
+                type="success"
+                :disabled="scope.row.confirmed === 1"
+                :title="$t('teams.confirmEnrollment')"
+                :icon="Check"
+              />
             </template>
           </ElPopconfirm>
         </ElButtonGroup>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed, type Ref } from 'vue';
 import type { MenuItem } from '../../interfaces';
 import { useAppStore } from '@/store';
 import { storeToRefs } from 'pinia';
@@ -13,6 +14,20 @@ const props = defineProps<{
 
 const store = useAppStore();
 const { navigation } = storeToRefs(store);
+
+/* COMPUTED */
+
+const menuItemsComputed: Ref<MenuItem[]> = computed(() => {
+  let res = Array();
+  if (store.user.isAdmin) {
+    res = props.menuItems;
+  } else {
+    res = props.menuItems.filter(function (item) {
+      return !item.requireAdmin;
+    });
+  }
+  return res;
+});
 </script>
 
 <template>
@@ -25,7 +40,7 @@ const { navigation } = storeToRefs(store);
       class="is-height-100"
     >
       <ElMenuItem
-        v-for="(menuItem, index) in props.menuItems"
+        v-for="(menuItem, index) in menuItemsComputed"
         :key="`menu-item-${index}`"
         :index="(index + 1).toString()"
         :route="{ name: menuItem.routeName }"

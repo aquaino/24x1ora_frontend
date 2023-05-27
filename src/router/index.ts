@@ -88,6 +88,14 @@ const router = createRouter({
           component: () => import('@/views/ProfileView.vue'),
         },
         {
+          path: '/users',
+          name: 'users',
+          component: () => import('@/views/ListUsersView.vue'),
+          meta: {
+            requireAdmin: true,
+          },
+        },
+        {
           path: '/:pathMatch(.*)*',
           name: 'not-found',
           component: () => import('@/views/NotFoundView.vue'),
@@ -97,20 +105,20 @@ const router = createRouter({
   ],
 });
 
-// Navigation guard to check against authentication
+// Navigation guard
 router.beforeEach((to, from, next) => {
+  // Set page title
+  document.title = import.meta.env.VITE_APP_NAME;
+
   const store = useAppStore();
+  // Check against authentication
   if (to.matched.some((record) => record.meta.requireLogin) && !store.user.access) {
     next({ name: 'login', query: { to: to.path } });
-  } else {
-    next();
-  }
-});
-
-// Navigation guard to prevent re-login and re-registration
-router.beforeEach((to, from, next) => {
-  const store = useAppStore();
-  if (
+    // Protect admin views
+  } else if (to.matched.some((record) => record.meta.requireAdmin) && !store.user.isAdmin) {
+    next({ name: 'not-found' });
+    // Prevent re-login and re-registration
+  } else if (
     to.matched.some(
       (record) => record.path.includes('/login') || record.path.includes('/register'),
     ) &&
@@ -120,12 +128,6 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
-});
-
-// Navigation guard to set page title
-router.beforeEach((to, from, next) => {
-  document.title = import.meta.env.VITE_APP_NAME;
-  next();
 });
 
 export default router;

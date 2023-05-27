@@ -173,4 +173,11 @@ export const usersApi = {
     });
     return response.data.user;
   },
+
+  async getUsers(): Promise<User[]> {
+    const response = await apiClient.get(`/users`).catch((error) => {
+      throw error;
+    });
+    return response.data.users;
+  }
 };

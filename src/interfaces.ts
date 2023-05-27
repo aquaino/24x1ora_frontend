@@ -5,4 +5,5 @@ export interface MenuItem {
   title: string;
   type?: string;
   divider?: boolean;
+  requireAdmin?: boolean;
 }
