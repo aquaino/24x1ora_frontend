@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import TheLoginHeader from '@/components/unique/TheLoginHeader.vue';
 import TheFooterContent from '@/components/unique/TheFooterContent.vue';
+import AppAlert from '@/components/app/AppAlert.vue';
 import { useI18n } from 'vue-i18n';
 
 /* DATA */
@@ -15,6 +16,7 @@ if (html) html.setAttribute('lang', i18n.locale.value);
     <ElCol :xs="24" :sm="12" :md="8" :lg="6" style="padding: 0 20px">
       <TheLoginHeader />
       <RouterView />
+      <AppAlert />
       <TheFooterContent />
     </ElCol>
   </ElRow>

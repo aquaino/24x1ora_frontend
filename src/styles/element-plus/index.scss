@@ -203,3 +203,9 @@ body {
 .el-alert__content {
   line-height: initial !important;
 }
+
+/* Forms */
+
+.el-form-item__error {
+  position: unset;
+}

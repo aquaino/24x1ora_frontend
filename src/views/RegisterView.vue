@@ -13,14 +13,15 @@ import { useI18n } from 'vue-i18n';
 
 const store = useAppStore();
 const { t } = useI18n();
-const formRef = ref<FormInstance>();
 
+const formRef = ref<FormInstance>();
 const form = reactive<UserInputWihtConfirmPassword>({
   name: '',
   email: '',
   password: '',
   confirmPassword: '',
 });
+
 const checkPasswords = function (rule: any, value: any, callback: any) {
   if (value !== form.confirmPassword) {
     callback(new Error(t('forms.passwordsNotMatching')));
@@ -50,11 +51,6 @@ const formRules = reactive<FormRules>({
   ],
 });
 
-const alert = ref({
-  type: 'error',
-  text: '',
-});
-
 /* METHODS */
 
 async function register(formRef: FormInstance | undefined) {
@@ -64,18 +60,15 @@ async function register(formRef: FormInstance | undefined) {
     if (valid) {
       try {
         await usersApi.register(form);
+        store.setFeedback('success', t('auth.registrationSuccess'));
         router.push({
           name: 'login',
-          query: {
-            alertType: 'success',
-            alertText: t('auth.registrationSuccess'),
-          },
         });
       } catch (error: any) {
         if (error.response.status === 422) {
-          alert.value.text = t('auth.alreadyRegistered');
+          store.setFeedback('error', t('auth.alreadyRegistered'));
         } else {
-          alert.value.text = t('api.generalError');
+          store.setFeedback('error');
         }
       }
     }
@@ -114,14 +107,14 @@ async function register(formRef: FormInstance | undefined) {
         <ElInput v-model="form.name" />
       </ElFormItem>
       <ElFormItem :label="$t('forms.email')" prop="email" required>
-        <ElInput v-model="form.email" type="email" />
+        <ElInput v-model="form.email" />
       </ElFormItem>
       <ElDivider />
       <ElFormItem :label="$t('forms.password')" prop="password" required>
-        <ElInput show-password v-model="form.password" type="password" />
+        <ElInput show-password v-model="form.password" />
       </ElFormItem>
       <ElFormItem :label="$t('forms.confirmPassword')" prop="confirmPassword" required>
-        <ElInput show-password v-model="form.confirmPassword" type="password" />
+        <ElInput show-password v-model="form.confirmPassword" />
       </ElFormItem>
       <ElFormItem>
         <ElButton type="primary" native-type="submit" :title="$t('auth.registerToPortal')">{{
@@ -132,13 +125,6 @@ async function register(formRef: FormInstance | undefined) {
         }}</ElButton>
       </ElFormItem>
     </ElForm>
-    <ElAlert
-      v-show="alert.text"
-      :type="alert.type"
-      :title="alert.text"
-      show-icon
-      class="is-margin-top-15"
-    />
   </ElCard>
 </template>
 

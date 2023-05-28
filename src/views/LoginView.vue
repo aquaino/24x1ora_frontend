@@ -3,21 +3,19 @@ import { ref, reactive } from 'vue';
 import { Message, Key } from '@element-plus/icons-vue';
 import { usersApi } from '@/api/resources';
 import type { FormInstance, FormRules } from 'element-plus';
-import { useRouter, useRoute } from 'vue-router';
+import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import { useAppStore } from '@/store';
 import { useI18n } from 'vue-i18n';
 
 /* DATA */
 
 const { t } = useI18n();
-
 const store = useAppStore();
 const router = useRouter();
-const route = useRoute();
 
-const formRef = ref<FormInstance>();
 const rememberEmail = ref(store.preferences.rememberEmail !== null);
 
+const formRef = ref<FormInstance>();
 const form = reactive({
   email: store.preferences.rememberEmail ? store.preferences.rememberEmail : '',
   password: '',
@@ -30,12 +28,9 @@ const formRules = reactive<FormRules>({
   password: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
 });
 
-const alert = ref({
-  type: route.query.alertType
-    ? (route.query.alertType as 'success' | 'warning' | 'error' | 'info')
-    : 'error',
-  text: route.query.alertText ? (route.query.alertText as string) : '',
-});
+/* BEFORE ROUTE LEAVE */
+
+onBeforeRouteLeave(() => store.clearFeedback());
 
 /* METHODS */
 
@@ -54,12 +49,9 @@ async function login(formRef: FormInstance | undefined) {
         router.push({ name: 'home' });
       } catch (error: any) {
         if (error.response.status === 401) {
-          alert.value = { type: 'error', text: t('auth.invalidCredentials') };
+          store.setFeedback('error', t('auth.invalidCredentials'));
         } else {
-          alert.value = {
-            type: 'error',
-            text: t('api.generalError'),
-          };
+          store.setFeedback('error');
         }
       }
     }
@@ -80,16 +72,16 @@ async function login(formRef: FormInstance | undefined) {
       status-icon
     >
       <ElFormItem prop="email" required>
-        <ElInput placeholder="E-mail" v-model="form.email" type="email">
+        <ElInput placeholder="E-mail" v-model="form.email">
           <template #prefix>
-            <ElIcon class="el-input__icon"><message /></ElIcon>
+            <ElIcon class="el-input__icon"><Message /></ElIcon>
           </template>
         </ElInput>
       </ElFormItem>
       <ElFormItem prop="password" required>
-        <ElInput placeholder="Password" show-password v-model="form.password" type="password">
+        <ElInput placeholder="Password" show-password v-model="form.password">
           <template #prefix>
-            <ElIcon class="el-input__icon"><key /></ElIcon>
+            <ElIcon class="el-input__icon"><Key /></ElIcon>
           </template>
         </ElInput>
       </ElFormItem>
@@ -109,13 +101,6 @@ async function login(formRef: FormInstance | undefined) {
         <RouterLink :to="{ name: 'register' }">{{ $t('auth.registerNow') }}</RouterLink>
       </ElLink>
     </div>
-    <ElAlert
-      v-show="alert.text"
-      :type="alert.type"
-      :title="alert.text"
-      show-icon
-      class="is-margin-top-15"
-    />
   </ElCard>
 </template>
 

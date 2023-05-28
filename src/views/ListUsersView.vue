@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { User } from '@/api/interfaces';
 import { usersApi } from '@/api/resources';
-import AppPageTitle from '@/components/base/AppPageTitle.vue';
+import AppPageTitle from '@/components/app/AppPageTitle.vue';
 import { onMounted, ref, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { formatDateTime } from '@/utils';

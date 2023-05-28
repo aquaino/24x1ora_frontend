@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, type Ref, watch, computed } from 'vue';
 import type { Runner, Team } from '@/api/interfaces';
-import AppCard from './base/AppCard.vue';
+import AppCard from './app/AppCard.vue';
 
 /* PROPS */
 

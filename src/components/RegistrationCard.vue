@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppCard from '@/components/base/AppCard.vue';
+import AppCard from '@/components/app/AppCard.vue';
 import { formatDateTime } from '@/utils';
 import type { TeamWithAttachmentStatus } from '@/views/ListRegistrationsView.vue';
 import { useI18n } from 'vue-i18n';

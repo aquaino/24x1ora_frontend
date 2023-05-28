@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import AppPageTitle from '@/components/base/AppPageTitle.vue';
+import AppPageTitle from '@/components/app/AppPageTitle.vue';
 import { useRoute, useRouter } from 'vue-router';
-import AppCard from '@/components/base/AppCard.vue';
+import AppCard from '@/components/app/AppCard.vue';
 import { useI18n } from 'vue-i18n';
 import type { FormInstance, FormRules } from 'element-plus';
 import { teamsApi } from '@/api/resources';

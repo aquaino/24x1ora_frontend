@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
-import AppPageTitle from '@/components/base/AppPageTitle.vue';
+import AppPageTitle from '@/components/app/AppPageTitle.vue';
 import TeamDataCard from '@/components/TeamDataCard.vue';
 import RunnersDataCard from '@/components/RunnersDataCard.vue';
 import type { Team } from '@/api/interfaces';

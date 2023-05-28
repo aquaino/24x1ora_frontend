@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Team } from '@/api/interfaces';
-import AppCard from './base/AppCard.vue';
+import AppCard from './app/AppCard.vue';
 import { reactive, watch } from 'vue';
 import type { FormInstance } from 'element-plus';
 import { ref } from 'vue';

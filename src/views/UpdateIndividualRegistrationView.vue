@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import type { Ref } from 'vue';
-import AppPageTitle from '@/components/base/AppPageTitle.vue';
+import AppPageTitle from '@/components/app/AppPageTitle.vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { FormInstance } from 'element-plus';
 import IndividualRaceRegistrationForm from '@/components/IndividualRegistrationForm.vue';
 import { teamsApi } from '@/api/resources';
 import type { RunnerUpdate, Team } from '@/api/interfaces';
-import AppCard from '@/components/base/AppCard.vue';
+import AppCard from '@/components/app/AppCard.vue';
 import FileUpload from '@/components/forms/FileUpload.vue';
 import { useI18n } from 'vue-i18n';
 

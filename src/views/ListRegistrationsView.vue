@@ -3,7 +3,7 @@ import { ref, onMounted, watch } from 'vue';
 import type { Ref } from 'vue';
 import type { RaceEvent, Team } from '@/api/interfaces';
 import { eventsApi } from '@/api/resources';
-import AppPageTitle from '@/components/base/AppPageTitle.vue';
+import AppPageTitle from '@/components/app/AppPageTitle.vue';
 import { teamsApi } from '@/api/resources';
 import { ElMessage } from 'element-plus';
 import { useRoute } from 'vue-router';

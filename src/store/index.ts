@@ -14,8 +14,16 @@ interface PreferencesData {
   rememberEmail: string | null;
 }
 
+export type FeedbackType = 'success' | 'warning' | 'error' | 'info';
+
+interface Feedback {
+  type: FeedbackType | null;
+  text: string | null;
+}
+
 interface NavigationData {
   activeMenuItem: string;
+  feedback: Feedback;
 }
 
 interface StoreData {
@@ -39,6 +47,10 @@ export const useAppStore = defineStore('store', {
     },
     navigation: {
       activeMenuItem: '1',
+      feedback: {
+        type: null,
+        text: null,
+      },
     },
   }),
   actions: {
@@ -66,6 +78,18 @@ export const useAppStore = defineStore('store', {
         isAdmin: null,
         email_verified_at: null,
         access: null,
+      };
+    },
+    setFeedback(type: FeedbackType, text?: string) {
+      this.navigation.feedback = {
+        type: type,
+        text: text || null,
+      };
+    },
+    clearFeedback() {
+      this.navigation.feedback = {
+        type: null,
+        text: null,
       };
     },
   },
