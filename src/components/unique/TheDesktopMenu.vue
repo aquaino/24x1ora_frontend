@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, type Ref } from 'vue';
-import type { MenuItem } from '../../interfaces';
+import type { MenuItem } from '../interfaces';
 import { useAppStore } from '@/store';
 import { storeToRefs } from 'pinia';
 

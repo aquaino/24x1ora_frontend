@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppCard from '@/components/app/AppCard.vue';
 import { formatDateTime } from '@/utils';
-import type { TeamWithAttachmentStatus } from '@/views/ListRegistrationsView.vue';
+import type { TeamWithAttachmentStatus } from './interfaces';
 import { useI18n } from 'vue-i18n';
 import { Ticket, Document, Money, EditPen, Delete, Check } from '@element-plus/icons-vue';
 import { ElPopconfirm } from 'element-plus';
@@ -203,7 +203,12 @@ async function deleteTeam() {
           @confirm="confirmTeam()"
         >
           <template #reference>
-            <ElButton type="success" :disabled="props.team.confirmed === 1" :title="$t('teams.confirmEnrollment')" :icon="Check" />
+            <ElButton
+              type="success"
+              :disabled="props.team.confirmed === 1"
+              :title="$t('teams.confirmEnrollment')"
+              :icon="Check"
+            />
           </template>
         </ElPopconfirm>
       </ElRow>

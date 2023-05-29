@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { RaceEvent } from '@/api/interfaces';
-import type { TeamWithAttachmentStatus } from '@/views/ListRegistrationsView.vue';
+import type { TeamWithAttachmentStatus } from './interfaces';
 import { useI18n } from 'vue-i18n';
 import { formatDateTime } from '@/utils';
 import type { TableColumnCtx } from 'element-plus';
@@ -131,7 +131,12 @@ async function downloadAttachment(
 </script>
 
 <template>
-  <ElTable :data="props.teams" stripe :empty-text="$t('general.noData')">
+  <ElTable
+    :data="props.teams"
+    stripe
+    :empty-text="$t('general.noData')"
+    :default-sort="{ prop: 'created_at', order: 'descending' }"
+  >
     <!-- Data columns -->
     <ElTableColumn
       v-for="col in columns"

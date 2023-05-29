@@ -151,7 +151,7 @@ export default {
     emailAlreadyVerifiedSubtitle: 'Il tuo indirizzo e-mail risulta già verificato',
     emailVerifyError: "Verifica nuovamente l'indirizzo con le istruzioni ricevute via e-mail",
     emailVerifiedAt: 'E-mail verificata',
-    isAdmin: 'Amministratore'
+    isAdmin: 'Amministratore',
   },
   forms: {
     requiredField: 'Questo campo è obbligatorio',

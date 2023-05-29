@@ -12,36 +12,25 @@ import { useAppStore } from '@/store';
 import { useI18n } from 'vue-i18n';
 import RegistrationsAsCards from '@/components/RegistrationsAsCards.vue';
 import RegistrationsAsTable from '@/components/RegistrationsAsTable.vue';
-
-/* INTERFACES */
-
-export interface TeamWithAttachmentStatus extends Team {
-  medcertUploaded: boolean;
-  paymentUploaded: boolean;
-}
-
-/* DATA */
-
-const events: Ref<RaceEvent[] | null> = ref(null);
-const currentEvent: Ref<RaceEvent | null> = ref(null);
-const teams: Ref<TeamWithAttachmentStatus[] | null> = ref(null);
-
-const loading = ref(true);
+import type { TeamWithAttachmentStatus } from '@/components/interfaces';
 
 const route = useRoute();
 const store = useAppStore();
 const { t } = useI18n();
 
+/* DATA */
+
+const events: Ref<RaceEvent[]> = ref([]);
+const currentEvent: Ref<RaceEvent | null> = ref(null);
+const teams: Ref<TeamWithAttachmentStatus[]> = ref([]);
+
 const tableView: Ref<boolean> = ref(store.user.isAdmin!);
+
+const loading: Ref<boolean> = ref(true);
 
 const message = ref({
   type: route.query.messageType as 'success' | 'warning' | 'error' | 'info',
   text: route.query.messageText as string,
-});
-
-const alert = ref({
-  type: 'error',
-  text: '',
 });
 
 /* MOUNTED */
@@ -49,35 +38,40 @@ const alert = ref({
 onMounted(async () => {
   if (store.user.email_verified_at) {
     await getEvents();
-    if (events.value && events.value.length > 0) {
+    if (events.value.length > 0) {
       currentEvent.value = events.value[events.value.length - 1];
       await getEventTeams(currentEvent.value.id);
     }
   }
-  loading.value = false;
 });
 
 /* METHODS */
 
 async function getEvents() {
+  loading.value = true;
   try {
     events.value = await eventsApi.getEvents();
   } catch (error) {
-    alert.value.text = t('api.generalError');
+    store.setFeedback('error');
   }
+  loading.value = false;
 }
 
 async function getEventTeams(eventId: number) {
+  loading.value = true;
   try {
     const eventAndTeams = await teamsApi.getEventTeams(eventId);
-    teams.value = eventAndTeams.teams.map((team: any) => {
-      team['medcertUploaded'] = hasAttachment(/medcert.*/, team.attachments);
-      team['paymentUploaded'] = hasAttachment(/payment.*/, team.attachments);
-      return team;
+    teams.value = eventAndTeams.teams.map((team: Team) => {
+      return {
+        ...team,
+        medcertUploaded: hasAttachment(/medcert.*/, team.attachments),
+        paymentUploaded: hasAttachment(/payment.*/, team.attachments),
+      };
     });
   } catch (error) {
-    alert.value.text = t('api.generalError');
+    store.setFeedback('error');
   }
+  loading.value = false;
 }
 
 function showMessage() {
@@ -104,7 +98,6 @@ async function refreshAndNotify(teamId: number, action: string) {
       text: t('teams.teamDeleted'),
     };
   }
-  loading.value = false;
 }
 
 /* WATCH */
@@ -125,60 +118,33 @@ watch(
     :back-to="{ name: 'events' }"
   />
   <div v-if="loading"></div>
-  <ElEmpty v-else-if="teams && teams.length === 0" :description="$t('teams.noTeams')" />
+  <ElEmpty v-else-if="events.length === 0" :description="$t('events.noEvents')" />
+  <ElEmpty v-else-if="teams.length === 0" :description="$t('teams.noTeams')" />
   <div v-else>
-    <ElRow v-if="alert.text" justify="center">
-      <ElCol :xs="24" :sm="16" :md="14" :lg="10">
-        <ElAlert type="error" show-icon :closable="false" :title="alert.text" />
-      </ElCol>
-    </ElRow>
-    <ElRow justify="space-between" :gutter="20" class="is-align-center is-margin-bottom-05">
-      <ElCol :xs="24" :sm="12" :md="8" :lg="6" style="margin-bottom: 0 !important">
-        <ElFormItem :label="$t('general.event')">
-          <ElSelect
-            :placeholder="$t('forms.selectPlaceholder')"
-            v-model="currentEvent!.id"
-            @change="
-        (value: number) => {
-          getEventTeams(value);
-        }
-      "
-            class="is-width-100"
-          >
-            <ElOption
-              v-for="event in events"
-              :key="`event-${event.id}`"
-              :label="event.name"
-              :value="event.id"
-            />
-          </ElSelect>
-        </ElFormItem>
-      </ElCol>
-      <ElCol
-        :xs="24"
-        :sm="12"
-        :md="8"
-        :lg="6"
-        class="is-flex is-align-center"
-        style="justify-content: end"
-      >
+    <ElRow justify="space-between" align="middle" :gutter="20">
+      <!-- Table view switch -->
+      <ElCol :xs="14" :sm="12" :md="8" :lg="6">
         <ElSwitch
           v-model="tableView"
           :active-text="$t('general.tableView')"
           class="is-margin-right-10"
         />
+      </ElCol>
+      <!-- Teams counter -->
+      <ElCol :xs="10" :sm="12" :md="8" :lg="6">
         <div
-          v-if="teams && teams.length > 0"
+          v-if="teams.length > 0"
           style="color: var(--el-text-color-regular)"
-          class="is-margin-left-auto-mobile"
+          class="is-text-right"
         >
           {{ $t('teams.registrationsCount', { msg: teams.length }, teams.length) }}
         </div>
       </ElCol>
     </ElRow>
+    <!-- Teams -->
     <component
       :is="store.user.isAdmin && tableView ? RegistrationsAsTable : RegistrationsAsCards"
-      :teams="teams!"
+      :teams="teams"
       :event="currentEvent!"
       @team-confirmed="
         (teamId: number) => {
@@ -190,16 +156,8 @@ watch(
           refreshAndNotify(teamId, 'delete');
         }
       "
-      @error="alert.text = t('api.generalError')"
+      @error="store.setFeedback('error')"
     />
   </div>
   <!-- </div> -->
 </template>
-
-<style scoped>
-@media screen and (max-width: 768px) {
-  .is-margin-left-auto-mobile {
-    margin-left: auto;
-  }
-}
-</style>

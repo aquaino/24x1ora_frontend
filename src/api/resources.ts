@@ -179,5 +179,5 @@ export const usersApi = {
       throw error;
     });
     return response.data.users;
-  }
+  },
 };

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Fold } from '@element-plus/icons-vue';
-import type { MenuItem } from '../../interfaces';
+import type { MenuItem } from '../interfaces';
 import { useAppStore } from '@/store';
 import { storeToRefs } from 'pinia';
 

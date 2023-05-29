@@ -3,7 +3,7 @@ import logo from '/logo.png';
 import TheDesktopMenu from '@/components/unique/TheDesktopMenu.vue';
 import TheMobileMenu from '@/components/unique/TheMobileMenu.vue';
 import { Calendar, SwitchButton, Tickets, User, Notebook } from '@element-plus/icons-vue';
-import type { MenuItem } from '../../interfaces';
+import type { MenuItem } from '../interfaces';
 import { useAppStore } from '@/store';
 import { useI18n } from 'vue-i18n';
 

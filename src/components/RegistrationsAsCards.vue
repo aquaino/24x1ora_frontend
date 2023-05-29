@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { RaceEvent } from '@/api/interfaces';
 import RegistrationCard from '@/components/RegistrationCard.vue';
-import type { TeamWithAttachmentStatus } from '@/views/ListRegistrationsView.vue';
+import type { TeamWithAttachmentStatus } from './interfaces';
 
 /* PROPS */
 
