@@ -6,6 +6,13 @@ import AppCard from '@/components/app/AppCard.vue';
 import { useI18n } from 'vue-i18n';
 import type { FormInstance, FormRules } from 'element-plus';
 import { teamsApi } from '@/api/resources';
+import { onBeforeRouteLeave } from 'vue-router';
+import { useAppStore } from '@/store';
+
+const { t } = useI18n();
+const router = useRouter();
+const route = useRoute();
+const store = useAppStore();
 
 /* INTERFACES */
 
@@ -17,10 +24,6 @@ interface TeamBasicData {
 
 /* DATA */
 
-const { t } = useI18n();
-
-const router = useRouter();
-const route = useRoute();
 const raceName = route.query.raceName;
 const eventId = parseInt(route.params.eventId as string);
 const raceId = parseInt(route.params.raceId as string);
@@ -37,10 +40,9 @@ const formRules = reactive<FormRules>({
   manager_cell: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
 });
 
-const alert = ref({
-  type: 'error',
-  text: '',
-});
+/* BEFORE ROUTE LEAVE */
+
+onBeforeRouteLeave(() => store.clearFeedback());
 
 /* METHODS */
 
@@ -51,17 +53,20 @@ async function createTeam(formRef: FormInstance | undefined) {
       try {
         const newTeam = await teamsApi.createTeamRaceRegistration(eventId, raceId, form);
         router.push({
-          name: 'race-registrations',
+          name: 'update-team-registration',
+          params: {
+            eventId: eventId,
+            teamId: newTeam.id,
+          },
           query: {
-            messageType: 'success',
-            messageText: t('teams.teamInserted', { msg: newTeam.id }),
+            raceName: newTeam.type.name,
           },
         });
       } catch (error: any) {
         if (error.response.status === 400) {
-          alert.value = { type: 'error', text: t('teams.alreadyRegistered') };
+          store.setFeedback('error', t('teams.alreadyRegistered'));
         } else {
-          alert.value = { type: 'error', text: t('api.generalError') };
+          store.setFeedback('error');
         }
       }
     }
@@ -106,13 +111,6 @@ async function createTeam(formRef: FormInstance | undefined) {
               >
             </ElFormItem>
           </ElForm>
-          <ElAlert
-            v-show="alert.text"
-            :type="alert.type"
-            :title="alert.text"
-            show-icon
-            class="is-margin-top-15"
-          />
         </template>
       </AppCard>
     </ElCol>

@@ -16,7 +16,7 @@ if (html) html.setAttribute('lang', i18n.locale.value);
     <ElCol :xs="24" :sm="12" :md="8" :lg="6" style="padding: 0 20px">
       <TheLoginHeader />
       <RouterView />
-      <AppAlert />
+      <AppAlert margin />
       <TheFooterContent />
     </ElCol>
   </ElRow>

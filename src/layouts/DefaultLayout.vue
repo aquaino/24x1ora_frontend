@@ -2,6 +2,7 @@
 import TheHeaderContent from '@/components/unique/TheHeaderContent.vue';
 import TheFooterContent from '@/components/unique/TheFooterContent.vue';
 import { useI18n } from 'vue-i18n';
+import AppAlert from '@/components/app/AppAlert.vue';
 
 /* DATA */
 
@@ -21,7 +22,14 @@ if (html) html.setAttribute('lang', i18n.locale.value);
       >
         <TheHeaderContent />
       </ElHeader>
-      <ElMain class="is-margin-bottom-10 is-margin-top-10"><RouterView /></ElMain>
+      <ElMain class="is-margin-bottom-10 is-margin-top-10">
+        <RouterView />
+        <ElRow justify="center">
+          <ElCol :sm="12" :md="8">
+            <AppAlert />
+          </ElCol>
+        </ElRow>
+      </ElMain>
     </div>
     <ElFooter height="200px">
       <TheFooterContent />

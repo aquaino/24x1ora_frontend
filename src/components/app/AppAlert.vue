@@ -7,6 +7,7 @@ import type { FeedbackType } from '@/store';
 export interface IProps {
   type?: FeedbackType;
   text?: string | null;
+  margin?: boolean;
 }
 
 /* DATA */
@@ -18,6 +19,7 @@ const store = useAppStore();
 const props = withDefaults(defineProps<IProps>(), {
   type: 'error',
   text: null,
+  margin: false,
 });
 </script>
 
@@ -27,6 +29,6 @@ const props = withDefaults(defineProps<IProps>(), {
     :type="store.navigation.feedback.type || props.type || 'error'"
     :title="store.navigation.feedback.text || props.text || $t('api.generalError')"
     show-icon
-    class="is-margin-top-15"
+    :class="props.margin ? 'is-margin-top-15' : ''"
   />
 </template>
