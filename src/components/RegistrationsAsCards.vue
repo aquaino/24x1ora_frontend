@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { RaceEvent } from '@/api/interfaces';
+import type { RaceEventDetails } from '@/api/interfaces';
 import RegistrationCard from '@/components/RegistrationCard.vue';
 import type { TeamWithAttachmentStatus } from './interfaces';
 
 /* PROPS */
 
 const props = defineProps<{
-  event: RaceEvent;
+  event: RaceEventDetails;
   teams: TeamWithAttachmentStatus[];
 }>();
 

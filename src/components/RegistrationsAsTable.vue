@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { RaceEvent } from '@/api/interfaces';
+import type { Race, RaceEventDetails } from '@/api/interfaces';
 import type { TeamWithAttachmentStatus } from './interfaces';
 import { useI18n } from 'vue-i18n';
 import { formatDateTime } from '@/utils';
@@ -13,11 +13,14 @@ import {
 } from '@element-plus/icons-vue';
 import { teamsApi } from '@/api/resources';
 import type { TeamStatus } from './RegistrationCard.vue';
+import { computed } from 'vue';
+
+const { t } = useI18n();
 
 /* PROPS */
 
 const props = defineProps<{
-  event: RaceEvent;
+  event: RaceEventDetails;
   teams: TeamWithAttachmentStatus[];
 }>();
 
@@ -25,57 +28,18 @@ const props = defineProps<{
 
 const emits = defineEmits(['team-confirmed', 'team-deleted', 'error']);
 
-/* DATA */
+/* COMPUTED */
 
-const { t } = useI18n();
-
-const columns = [
-  {
-    prop: 'id',
-    label: 'ID',
-    sortable: false,
-    format: false,
-    width: '70',
-  },
-  {
-    prop: 'name',
-    label: t('forms.name'),
-    sortable: true,
-    format: false,
-    width: null,
-  },
-  {
-    prop: 'type.name',
-    label: t('general.race'),
-    sortable: true,
-    format: false,
-    width: null,
-  },
-  {
-    prop: 'payment_code',
-    label: t('teams.paymentCode'),
-    sortable: false,
-    format: false,
-    width: null,
-  },
-  {
-    prop: 'created_at',
-    label: t('general.created'),
-    sortable: true,
-    format: true,
-    width: null,
-  },
-];
+const racesForFilter = computed(() => {
+  return props.event.races.map((race: Race) => {
+    return {
+      text: race.type.name,
+      value: race.type.name,
+    };
+  });
+});
 
 /* METHODS */
-
-function formatDate(format: boolean, cellValue: any) {
-  if (format) {
-    return formatDateTime(cellValue, 'ISO', 'DATETIME_SHORT');
-  } else {
-    return cellValue;
-  }
-}
 
 async function confirmTeam(teamId: number) {
   try {
@@ -128,29 +92,25 @@ async function downloadAttachment(
     console.log(error);
   }
 }
+
+const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
+  return row.type.name === value;
+};
 </script>
 
 <template>
-  <ElTable
-    :data="props.teams"
-    stripe
-    :empty-text="$t('general.noData')"
-    :default-sort="{ prop: 'created_at', order: 'descending' }"
-  >
-    <!-- Data columns -->
+  <ElTable :data="props.teams" stripe :default-sort="{ prop: 'created_at', order: 'descending' }">
+    <!-- Record columns -->
+    <ElTableColumn prop="id" label="ID" width="70" />
+    <ElTableColumn prop="name" :label="t('forms.name')" />
     <ElTableColumn
-      v-for="col in columns"
-      :key="col.prop"
-      :prop="col.prop"
-      :label="col.label"
-      :sortable="col.sortable"
-      :width="col.width"
-      :formatter="(
-        row: TeamWithAttachmentStatus, 
-        column: TableColumnCtx<TeamWithAttachmentStatus>, 
-        cellValue: any
-      ) => formatDate(col.format, cellValue)"
+      prop="type.name"
+      :label="t('general.race')"
+      sortable
+      :filters="racesForFilter"
+      :filter-method="raceFilter"
     />
+    <ElTableColumn prop="payment_code" :label="t('teams.paymentCode')" />
     <!-- Attachments -->
     <ElTableColumn :label="$t('teams.medcert')">
       <template #default="scope">
@@ -185,6 +145,16 @@ async function downloadAttachment(
         {{ parseInt(scope.row.price) - parseInt(scope.row.discount) }}€
       </template>
     </ElTableColumn>
+    <ElTableColumn
+      prop="created_at"
+      :label="t('general.created')"
+      :formatter="(
+        row: TeamWithAttachmentStatus, 
+        column: TableColumnCtx<TeamWithAttachmentStatus>, 
+        cellValue: string
+      ) => { return formatDateTime(cellValue, 'ISO', 'DATETIME_SHORT') }"
+      sortable
+    />
     <!-- State -->
     <ElTableColumn :label="$t('general.state')">
       <template #default="scope">

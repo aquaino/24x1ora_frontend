@@ -1,4 +1,14 @@
 export default {
+  name: 'it',
+  // Element Plus
+  el: {
+    table: {
+      emptyText: 'Nessun record',
+      confirmFilter: 'Conferma',
+      resetFilter: 'Ripristina',
+    },
+  },
+  // App
   general: {
     portal: 'Portale di registrazione alle gare',
     logoAlt: 'Logo 24x1Ora Buttrio',

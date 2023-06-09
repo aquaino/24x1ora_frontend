@@ -7,6 +7,7 @@ import ElementPlus from 'element-plus';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { createI18n } from 'vue-i18n';
 import messages from '@/lang';
+import it from './lang/it';
 
 const app = createApp(App);
 
@@ -23,5 +24,7 @@ const i18n = createI18n({
 });
 app.use(i18n);
 
-app.use(ElementPlus);
+app.use(ElementPlus, {
+  locale: it,
+});
 app.mount('#app');

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import type { Ref } from 'vue';
-import type { RaceEvent, Team } from '@/api/interfaces';
+import type { RaceEvent, RaceEventDetails, Team } from '@/api/interfaces';
 import { eventsApi } from '@/api/resources';
 import AppPageTitle from '@/components/app/AppPageTitle.vue';
 import { teamsApi } from '@/api/resources';
@@ -21,7 +21,7 @@ const { t } = useI18n();
 /* DATA */
 
 const events: Ref<RaceEvent[]> = ref([]);
-const currentEvent: Ref<RaceEvent | null> = ref(null);
+const currentEvent: Ref<RaceEventDetails | null> = ref(null);
 const teams: Ref<TeamWithAttachmentStatus[]> = ref([]);
 
 const tableView: Ref<boolean> = ref(store.user.isAdmin!);
@@ -37,41 +37,38 @@ const message = ref({
 
 onMounted(async () => {
   if (store.user.email_verified_at) {
-    await getEvents();
-    if (events.value.length > 0) {
-      currentEvent.value = events.value[events.value.length - 1];
-      await getEventTeams(currentEvent.value.id);
+    try {
+      await getEvents();
+      if (events.value.length > 0) {
+        await getCurrentEventDetails();
+        await getEventTeams(currentEvent.value!.id);
+      }
+    } catch (error) {
+      store.setFeedback('error');
     }
+    loading.value = false;
   }
 });
 
 /* METHODS */
 
 async function getEvents() {
-  loading.value = true;
-  try {
-    events.value = await eventsApi.getEvents();
-  } catch (error) {
-    store.setFeedback('error');
-  }
-  loading.value = false;
+  events.value = await eventsApi.getEvents();
 }
 
 async function getEventTeams(eventId: number) {
-  loading.value = true;
-  try {
-    const eventAndTeams = await teamsApi.getEventTeams(eventId);
-    teams.value = eventAndTeams.teams.map((team: Team) => {
-      return {
-        ...team,
-        medcertUploaded: hasAttachment(/medcert.*/, team.attachments),
-        paymentUploaded: hasAttachment(/payment.*/, team.attachments),
-      };
-    });
-  } catch (error) {
-    store.setFeedback('error');
-  }
-  loading.value = false;
+  const eventAndTeams = await teamsApi.getEventTeams(eventId);
+  teams.value = eventAndTeams.teams.map((team: Team) => {
+    return {
+      ...team,
+      medcertUploaded: hasAttachment(/medcert.*/, team.attachments),
+      paymentUploaded: hasAttachment(/payment.*/, team.attachments),
+    };
+  });
+}
+
+async function getCurrentEventDetails() {
+  currentEvent.value = await eventsApi.getEventDetails(events.value[events.value.length - 1].id);
 }
 
 function showMessage() {
@@ -86,7 +83,9 @@ function showMessage() {
 }
 
 async function refreshAndNotify(teamId: number, action: string) {
+  loading.value = true;
   await getEventTeams(currentEvent.value!.id);
+  loading.value = false;
   if (action === 'confirm') {
     message.value = {
       type: 'success',
