@@ -102,6 +102,19 @@ const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
   <ElTable :data="props.teams" stripe :default-sort="{ prop: 'created_at', order: 'descending' }">
     <!-- Record columns -->
     <ElTableColumn prop="id" label="ID" width="70" />
+    <ElTableColumn
+      prop="number"
+      :label="$t('teams.bibNumber')"
+      :formatter="
+        (
+          row: TeamWithAttachmentStatus, 
+          column: TableColumnCtx<TeamWithAttachmentStatus>, 
+          cellValue: number
+        ) => {
+          return cellValue || $t('general.undefined');
+        }
+      "
+    />
     <ElTableColumn prop="name" :label="t('forms.name')" />
     <ElTableColumn
       prop="type.name"

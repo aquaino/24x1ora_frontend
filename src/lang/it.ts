@@ -132,6 +132,7 @@ export default {
     },
     alreadyRegistered: 'Esiste già una iscrizione con i dati appena inseriti',
     amountToPay: 'Da pagare',
+    bibNumber: 'Pettorale',
   },
   menu: {
     menuTitle: 'Menu di navigazione',
