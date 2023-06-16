@@ -42,7 +42,7 @@ async function subscribe(formRef: FormInstance | undefined, form: Runner) {
           name: 'race-registrations',
           query: {
             messageType: 'success',
-            messageText: t('teams.teamInserted', { msg: newTeam.id }),
+            messageText: t('teams.teamInserted'),
           },
         });
       } catch (error: any) {

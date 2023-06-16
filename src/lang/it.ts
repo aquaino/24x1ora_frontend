@@ -7,6 +7,17 @@ export default {
       confirmFilter: 'Conferma',
       resetFilter: 'Ripristina',
     },
+    datepicker: {
+      weeks: {
+        sun: 'Dom',
+        mon: 'Lun',
+        tue: 'Mar',
+        wed: 'Mer',
+        thu: 'Gio',
+        fri: 'Ven',
+        sat: 'Sab',
+      }
+    }
   },
   // App
   general: {
@@ -87,9 +98,9 @@ export default {
       ofSale: 'di sconto',
       onCost: "sul costo dell'iscrizione",
     },
-    teamInserted: `Iscrizione <strong>#{msg}</strong> inserita con successo`,
-    teamUpdated: `Iscrizione <strong>#{msg}</strong> modificata con successo`,
-    teamConfirmed: `Iscrizione <strong>#{msg}</strong> confermata con successo`,
+    teamInserted: `Iscrizione inserita con successo`,
+    teamUpdated: `Iscrizione modificata con successo`,
+    teamConfirmed: `Iscrizione confermata con successo`,
     subscriptionTitle: 'Iscrizione alla gara "{msg}"',
     subscriptionSubtitle: 'Compila il form sottostante per iscriverti alla gara',
     participantInfo: 'Dati partecipante',

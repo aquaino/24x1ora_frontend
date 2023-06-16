@@ -89,7 +89,7 @@ async function refreshAndNotify(teamId: number, action: string) {
   if (action === 'confirm') {
     message.value = {
       type: 'success',
-      text: t('teams.teamConfirmed', { msg: teamId }),
+      text: t('teams.teamConfirmed'),
     };
   } else if (action === 'delete') {
     message.value = {

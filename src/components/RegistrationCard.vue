@@ -69,7 +69,7 @@ async function deleteTeam() {
 </script>
 
 <template>
-  <AppCard shadow="hover" :title="`#${props.team.id} - ${props.team.name}`">
+  <AppCard shadow="hover" :title="props.team.name">
     <!-- Attachments status -->
     <template #right-header>
       <div class="is-flex">
@@ -101,12 +101,15 @@ async function deleteTeam() {
     <template #content>
       <div class="is-flex is-justify-space-between is-align-center">
         <ElDescriptions direction="vertical" :column="2">
-          <ElDescriptionsItem :label="$t('general.state')" width="150px" :span="2">
+          <ElDescriptionsItem :label="$t('general.state')">
             <span
               :style="{ color: `var(--el-color-${getRegistrationStatus().type})` }"
               class="is-bold"
               >{{ getRegistrationStatus().text }}</span
             >
+          </ElDescriptionsItem>
+          <ElDescriptionsItem :label="$t('teams.bibNumber')">
+            {{ props.team.number || $t('general.undefined') }}
           </ElDescriptionsItem>
           <ElDescriptionsItem :label="$t('general.race')">{{
             props.team.type.name

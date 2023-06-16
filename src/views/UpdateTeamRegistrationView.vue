@@ -38,7 +38,7 @@ async function updateTeam() {
       name: 'race-registrations',
       query: {
         messageType: 'success',
-        messageText: t('teams.teamUpdated', { msg: teamId }),
+        messageText: t('teams.teamUpdated'),
       },
     });
   } catch (error) {
