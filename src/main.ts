@@ -7,7 +7,8 @@ import ElementPlus from 'element-plus';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { createI18n } from 'vue-i18n';
 import messages from '@/lang';
-import it from './lang/it';
+import it from 'element-plus/dist/locale/it.mjs';
+import 'dayjs/locale/it';
 
 const app = createApp(App);
 

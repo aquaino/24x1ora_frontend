@@ -1,25 +1,4 @@
 export default {
-  name: 'it',
-  // Element Plus
-  el: {
-    table: {
-      emptyText: 'Nessun record',
-      confirmFilter: 'Conferma',
-      resetFilter: 'Ripristina',
-    },
-    datepicker: {
-      weeks: {
-        sun: 'Dom',
-        mon: 'Lun',
-        tue: 'Mar',
-        wed: 'Mer',
-        thu: 'Gio',
-        fri: 'Ven',
-        sat: 'Sab',
-      }
-    }
-  },
-  // App
   general: {
     portal: 'Portale di registrazione alle gare',
     logoAlt: 'Logo 24x1Ora Buttrio',
