@@ -99,9 +99,14 @@ const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
 </script>
 
 <template>
-  <ElTable :data="props.teams" stripe :default-sort="{ prop: 'created_at', order: 'descending' }">
+  <ElTable
+    :data="props.teams"
+    stripe
+    :default-sort="{ prop: 'created_at', order: 'descending' }"
+    table-layout="auto"
+  >
     <!-- Record columns -->
-    <ElTableColumn prop="id" label="ID" width="70" />
+    <ElTableColumn prop="id" label="ID" />
     <ElTableColumn
       prop="number"
       :label="$t('teams.bibNumber')"
@@ -183,9 +188,9 @@ const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
       </template>
     </ElTableColumn>
     <!-- Actions -->
-    <ElTableColumn width="130">
+    <ElTableColumn>
       <template #default="scope">
-        <ElButtonGroup size="small">
+        <ElButtonGroup size="small" class="is-flex">
           <ElButton
             type="primary"
             :title="$t('teams.editTeam')"

@@ -209,3 +209,9 @@ body {
 .el-form-item__error {
   position: unset;
 }
+
+/* Tables */
+
+.el-table .cell {
+  word-break: normal !important;
+}
