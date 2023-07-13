@@ -1,52 +1,39 @@
+<img title="" src="./docs/subscriptions.png" alt="Subscriptions page" width="704" data-align="inline">
+
 # 24x1ora_frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+Web application to manage [*24x1Ora di Buttrio*](https://24oredibuttrio.it/) races, teams and individual participants.
 
-## Recommended IDE Setup
+## Technologies
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+* [Vue.js 3](https://vuejs.org/) framework
 
-## Type Support for `.vue` Imports in TS
+* [Element Plus](https://element-plus.org/en-US/) components library
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+* [TypeScript](https://www.typescriptlang.org/) programming language
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+## Project setup
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+### Development
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+Install project dependencies:
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+Run development server:
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Production
+
+Compile project:
 
 ```sh
 npm run build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+### 
