@@ -32,6 +32,7 @@ export function logout(redirectToLogin: boolean) {
   const router = useRouter();
   store.clearUserData();
   store.setActiveMenuItem('1');
+  store.navigation.RegistrationsAsTable.filters.race = [];
   axios.defaults.headers.common['Authorization'] = '';
   if (redirectToLogin) router.push({ name: 'login' });
 }

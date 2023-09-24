@@ -14,8 +14,10 @@ import {
 import { teamsApi } from '@/api/resources';
 import type { TeamStatus } from './RegistrationCard.vue';
 import { computed } from 'vue';
+import { useAppStore } from '@/store';
 
 const { t } = useI18n();
+const store = useAppStore();
 
 /* PROPS */
 
@@ -23,6 +25,15 @@ const props = defineProps<{
   event: RaceEventDetails;
   teams: TeamWithAttachmentStatus[];
 }>();
+
+/* COMPUTED */
+
+const defaultRaceFilter = computed(() => {
+  const raceFilters = store.navigation.RegistrationsAsTable.filters.race;
+  console.log(store.navigation.RegistrationsAsTable);
+
+  return raceFilters.length > 0 ? raceFilters : null;
+});
 
 /* EVENTS */
 
@@ -104,9 +115,24 @@ const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
     stripe
     :default-sort="{ prop: 'created_at', order: 'descending' }"
     table-layout="auto"
+    @filter-change="
+        (filters: any) => {
+          store.navigation.RegistrationsAsTable.filters = filters;
+        }
+      "
   >
     <!-- Record columns -->
-    <ElTableColumn prop="id" label="ID" />
+    <ElTableColumn v-if="store.user.isAdmin" prop="id" label="ID" />
+    <ElTableColumn prop="name" :label="t('forms.name')" />
+    <ElTableColumn
+      prop="type.name"
+      :label="t('general.race')"
+      sortable
+      :filters="racesForFilter"
+      :filter-method="raceFilter"
+      :filtered-value="defaultRaceFilter"
+      column-key="race"
+    />
     <ElTableColumn
       prop="number"
       :label="$t('teams.bibNumber')"
@@ -119,14 +145,6 @@ const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
           return cellValue || $t('general.undefined');
         }
       "
-    />
-    <ElTableColumn prop="name" :label="t('forms.name')" />
-    <ElTableColumn
-      prop="type.name"
-      :label="t('general.race')"
-      sortable
-      :filters="racesForFilter"
-      :filter-method="raceFilter"
     />
     <ElTableColumn prop="payment_code" :label="t('teams.paymentCode')" />
     <!-- Attachments -->

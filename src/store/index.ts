@@ -23,6 +23,9 @@ interface Feedback {
 
 interface NavigationData {
   activeMenuItem: string;
+  RegistrationsAsTable: {
+    filters: { race: string[] };
+  };
   feedback: Feedback;
 }
 
@@ -47,6 +50,9 @@ export const useAppStore = defineStore('store', {
     },
     navigation: {
       activeMenuItem: '1',
+      RegistrationsAsTable: {
+        filters: { race: [] },
+      },
       feedback: {
         type: null,
         text: null,
