@@ -45,43 +45,45 @@ onMounted(async () => {
   <ElEmpty v-if="events.length === 0 && !loading" :description="$t('events.noEvents')" />
   <ElRow v-else :justify="events.length <= 3 ? 'center' : 'start'" :gutter="20">
     <ElCol v-for="event in events" :key="`event-${event.id}`" :xs="24" :sm="12" :md="8" :lg="6">
-      <AppCard
-        :image="partenza_2019"
-        :image-alt="$t('general.eventImageAlt')"
-        shadow="hover"
-        :title="event.name"
-        :subtitle="formatDateTime(event.date, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')"
-      >
-        <template #content>
-          <ElDescriptions direction="vertical">
-            <ElDescriptionsItem :label="$t('events.subscriptionsStart')"
-              >{{
-                event.subscription_from
-                  ? formatDateTime(event.subscription_from, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
+      <ElBadge :value="event.date.substring(0, 4)" type="primary">
+        <AppCard
+          :image="partenza_2019"
+          :image-alt="$t('general.eventImageAlt')"
+          shadow="hover"
+          :title="event.name"
+          :subtitle="formatDateTime(event.date, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')"
+        >
+          <template #content>
+            <ElDescriptions direction="vertical">
+              <ElDescriptionsItem :label="$t('events.subscriptionsStart')"
+                >{{
+                  event.subscription_from
+                    ? formatDateTime(event.subscription_from, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
+                    : $t('general.undefined')
+                }}
+              </ElDescriptionsItem>
+              <ElDescriptionsItem :label="$t('events.subscriptionsEnd')">{{
+                event.subscription_to
+                  ? formatDateTime(event.subscription_to, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
                   : $t('general.undefined')
-              }}
-            </ElDescriptionsItem>
-            <ElDescriptionsItem :label="$t('events.subscriptionsEnd')">{{
-              event.subscription_to
-                ? formatDateTime(event.subscription_to, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
-                : $t('general.undefined')
-            }}</ElDescriptionsItem>
-          </ElDescriptions>
-        </template>
-        <template #footer>
-          <ElButton
-            @click="
-              $router.push({
-                name: 'races',
-                params: { id: event.id },
-              })
-            "
-            :title="$t('events.showEventRaces')"
-            type="primary"
-            >{{ $t('events.showRaces') }}</ElButton
-          >
-        </template>
-      </AppCard>
+              }}</ElDescriptionsItem>
+            </ElDescriptions>
+          </template>
+          <template #footer>
+            <ElButton
+              @click="
+                $router.push({
+                  name: 'races',
+                  params: { id: event.id },
+                })
+              "
+              :title="$t('events.showEventRaces')"
+              type="primary"
+              >{{ $t('events.showRaces') }}</ElButton
+            >
+          </template>
+        </AppCard>
+      </ElBadge>
       <ElAlert
         v-show="alert.text"
         :type="alert.type"
@@ -92,3 +94,9 @@ onMounted(async () => {
     </ElCol>
   </ElRow>
 </template>
+
+<style scoped>
+:deep(.el-badge__content) {
+  right: calc(18px + var(--el-badge-size) / 2);
+}
+</style>
