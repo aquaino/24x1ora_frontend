@@ -181,6 +181,16 @@ const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
         {{ parseInt(scope.row.price) - parseInt(scope.row.discount) }}€
       </template>
     </ElTableColumn>
+    <ElTableColumn :label="$t('teams.phoneNumber')">
+      <template #default="scope">
+        {{ scope.row.manager_cell || '-'}}
+      </template>
+    </ElTableColumn>
+    <ElTableColumn :label="$t('teams.club')">
+      <template #default="scope">
+        {{ scope.row.club || '-'}}
+      </template>
+    </ElTableColumn>
     <ElTableColumn
       prop="created_at"
       :label="t('general.created')"

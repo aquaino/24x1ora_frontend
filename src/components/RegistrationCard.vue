@@ -117,6 +117,10 @@ async function deleteTeam() {
           <ElDescriptionsItem :label="$t('teams.paymentCode')">{{
             props.team.payment_code
           }}</ElDescriptionsItem>
+          <ElDescriptionsItem :label="$t('teams.phoneNumber')">{{
+            props.team.manager_cell || '-'
+          }}</ElDescriptionsItem>
+          <ElDescriptionsItem :label="$t('teams.club')">{{ props.team.club || '-' }}</ElDescriptionsItem>
           <ElDescriptionsItem :label="$t('general.date')">{{
             formatDateTime(event.date, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
           }}</ElDescriptionsItem>

@@ -85,6 +85,7 @@ export interface Team {
   payment_code: string;
   type: RaceType;
   runners: Runner[];
+  club: string;
 }
 
 export interface User {
