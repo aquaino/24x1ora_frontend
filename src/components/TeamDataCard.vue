@@ -24,6 +24,8 @@ const form = reactive({
   name: props.team.name,
   manager: props.team.manager,
   manager_cell: props.team.manager_cell,
+  tent_request: props.team.tent_request === 1,
+  tent_notes: props.team.tent_notes,
 });
 
 const paymentUploadRef = ref();
@@ -81,6 +83,18 @@ watch(
         </ElFormItem>
         <ElFormItem :label="$t('teams.managerCell')" required>
           <ElInput v-model="form.manager_cell" />
+        </ElFormItem>
+        <ElFormItem prop="tent_request">
+          <template #label>
+            <span style="line-height: initial">{{ $t('teams.requestTent') }}</span>
+          </template>
+          <ElCheckbox v-model="form.tent_request" />
+        </ElFormItem>
+        <ElFormItem v-if="form.tent_request" prop="tent_notes">
+          <template #label>
+            <span style="line-height: initial">{{ $t('teams.tentNotes') }}</span>
+          </template>
+          <ElInput v-model="form.tent_notes" type="textarea" :rows="4" id="test" />
         </ElFormItem>
         <ElFormItem :label="$t('teams.paymentCertificate')" class="is-align-center">
           <FileUpload

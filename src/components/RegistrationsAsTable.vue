@@ -207,7 +207,7 @@ const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
     <ElTableColumn :label="$t('teams.tent')">
       <template #default="scope">
         <ElButton
-          v-if="scope.row.tent_notes.length > 0"
+          v-if="scope.row.tent_request === 1"
           link
           @click="
             tentDialog.visible = true;

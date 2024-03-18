@@ -150,7 +150,7 @@ async function deleteTeam() {
         </div>
       </div>
       <!-- Tent details -->
-      <ElCollapse v-if="props.team.tent_notes.length > 0">
+      <ElCollapse v-if="props.team.tent_request === 1">
         <ElCollapseItem :title="$t('teams.tentNotes')">
           <div>{{ props.team.tent_notes }}</div>
         </ElCollapseItem>

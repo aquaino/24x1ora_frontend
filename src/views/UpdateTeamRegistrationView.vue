@@ -74,6 +74,8 @@ onMounted(async () => {
             team!.name = basicTeamData.name;
             team!.manager = basicTeamData.manager;
             team!.manager_cell = basicTeamData.manager_cell;
+            team!.tent_request = basicTeamData.tent_request;
+            team!.tent_notes = basicTeamData.tent_notes;
           }
         "
       />

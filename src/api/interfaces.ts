@@ -76,7 +76,7 @@ export interface Team {
   number: number;
   manager: string;
   manager_cell: string;
-  tent_request: boolean;
+  tent_request: number;
   tent_notes: string;
   confirmed: number;
   created_at: string;
