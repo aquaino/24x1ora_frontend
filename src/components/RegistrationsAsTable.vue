@@ -30,8 +30,6 @@ const props = defineProps<{
 
 const defaultRaceFilter = computed(() => {
   const raceFilters = store.navigation.RegistrationsAsTable.filters.race;
-  console.log(store.navigation.RegistrationsAsTable);
-
   return raceFilters.length > 0 ? raceFilters : null;
 });
 
@@ -183,12 +181,12 @@ const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
     </ElTableColumn>
     <ElTableColumn :label="$t('teams.phoneNumber')">
       <template #default="scope">
-        {{ scope.row.manager_cell || '-'}}
+        {{ scope.row.manager_cell || '-' }}
       </template>
     </ElTableColumn>
     <ElTableColumn :label="$t('teams.club')">
       <template #default="scope">
-        {{ scope.row.club || '-'}}
+        {{ scope.row.club || '-' }}
       </template>
     </ElTableColumn>
     <ElTableColumn

@@ -13,6 +13,7 @@ import { useI18n } from 'vue-i18n';
 import RegistrationsAsCards from '@/components/RegistrationsAsCards.vue';
 import RegistrationsAsTable from '@/components/RegistrationsAsTable.vue';
 import type { TeamWithAttachmentStatus } from '@/components/interfaces';
+import { DateTime } from 'luxon';
 
 const route = useRoute();
 const store = useAppStore();
@@ -23,6 +24,8 @@ const { t } = useI18n();
 const events: Ref<RaceEvent[]> = ref([]);
 const currentEvent: Ref<RaceEventDetails | null> = ref(null);
 const teams: Ref<TeamWithAttachmentStatus[]> = ref([]);
+
+const selectedEventId: Ref<number | undefined> = ref(undefined);
 
 const tableView: Ref<boolean> = ref(store.user.isAdmin!);
 
@@ -40,6 +43,7 @@ onMounted(async () => {
     try {
       await getEvents();
       if (events.value.length > 0) {
+        setCurrentEvent();
         await getCurrentEventDetails();
         await getEventTeams(currentEvent.value!.id);
       }
@@ -68,7 +72,7 @@ async function getEventTeams(eventId: number) {
 }
 
 async function getCurrentEventDetails() {
-  currentEvent.value = await eventsApi.getEventDetails(events.value[events.value.length - 1].id);
+  currentEvent.value = await eventsApi.getEventDetails(selectedEventId.value as number);
 }
 
 function showMessage() {
@@ -99,6 +103,18 @@ async function refreshAndNotify(teamId: number, action: string) {
   }
 }
 
+function setCurrentEvent() {
+  let currentYear = DateTime.local().year;
+  let currentEvent = events.value.find((event) => {
+    return event.date.substring(0, 4) == currentYear;
+  });
+  if (currentEvent) {
+    selectedEventId.value = currentEvent.id;
+  } else {
+    selectedEventId.value = events.value[events.value.length - 1].id;
+  }
+}
+
 /* WATCH */
 
 watch(
@@ -108,6 +124,10 @@ watch(
   },
   { immediate: true },
 );
+
+watch(selectedEventId, async () => {
+  await getEventTeams(selectedEventId.value as number);
+});
 </script>
 
 <template>
@@ -121,16 +141,17 @@ watch(
   <ElEmpty v-else-if="teams.length === 0" :description="$t('teams.noTeams')" />
   <div v-else>
     <ElRow justify="space-between" align="middle" :gutter="20">
-      <!-- Table view switch -->
-      <ElCol :xs="14" :sm="12" :md="8" :lg="6">
-        <ElSwitch
-          v-model="tableView"
-          :active-text="$t('general.tableView')"
-          class="is-margin-right-10"
-        />
+      <ElCol :xs="14" :sm="12" :md="16">
+        <!-- Event selection -->
+        <ElSelect v-model="selectedEventId" placeholder="Evento" class="is-margin-right-10">
+          <ElOption v-for="event in events" :key="event.id" :label="event.name" :value="event.id">
+          </ElOption>
+        </ElSelect>
+        <!-- Table view switch -->
+        <ElSwitch v-model="tableView" :active-text="$t('general.tableView')" />
       </ElCol>
       <!-- Teams counter -->
-      <ElCol :xs="10" :sm="12" :md="8" :lg="6">
+      <ElCol :xs="10" :sm="12" :md="8">
         <div
           v-if="teams.length > 0"
           style="color: var(--el-text-color-regular)"
