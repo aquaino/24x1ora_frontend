@@ -127,6 +127,7 @@ export default {
     club: "Società d'appartenenza",
     requestTent: 'Richiedi spazio tenda',
     tentNotes: 'Informazioni aggiuntive tenda',
+    tent: 'Tenda',
   },
   menu: {
     menuTitle: 'Menu di navigazione',

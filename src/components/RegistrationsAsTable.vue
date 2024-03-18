@@ -15,6 +15,7 @@ import { teamsApi } from '@/api/resources';
 import type { TeamStatus } from './RegistrationCard.vue';
 import { computed } from 'vue';
 import { useAppStore } from '@/store';
+import { ElMessageBox } from 'element-plus';
 
 const { t } = useI18n();
 const store = useAppStore();
@@ -102,6 +103,10 @@ async function downloadAttachment(
   }
 }
 
+function openTentNotes(notes: string) {
+  ElMessageBox.alert(notes, t('teams.tentNotes'));
+}
+
 const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
   return row.type.name === value;
 };
@@ -187,6 +192,19 @@ const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
     <ElTableColumn :label="$t('teams.club')">
       <template #default="scope">
         {{ scope.row.club || '-' }}
+      </template>
+    </ElTableColumn>
+    <ElTableColumn :label="$t('teams.tent')">
+      <template #default="scope">
+        <ElButton
+          v-if="scope.row.tent_notes.length > 0"
+          link
+          @click="openTentNotes(scope.row.tent_notes)"
+        >
+          <ElIcon color="var(--el-color-success)"><CircleCheckFilled /></ElIcon>
+          <span class="is-small">{{ $t('general.show') }}</span>
+        </ElButton>
+        <ElIcon v-else style="color: var(--el-color-danger)"><CircleCloseFilled /></ElIcon>
       </template>
     </ElTableColumn>
     <ElTableColumn

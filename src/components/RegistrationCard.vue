@@ -120,7 +120,9 @@ async function deleteTeam() {
           <ElDescriptionsItem :label="$t('teams.phoneNumber')">{{
             props.team.manager_cell || '-'
           }}</ElDescriptionsItem>
-          <ElDescriptionsItem :label="$t('teams.club')">{{ props.team.club || '-' }}</ElDescriptionsItem>
+          <ElDescriptionsItem :label="$t('teams.club')">{{
+            props.team.club || '-'
+          }}</ElDescriptionsItem>
           <ElDescriptionsItem :label="$t('general.date')">{{
             formatDateTime(event.date, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
           }}</ElDescriptionsItem>
@@ -147,6 +149,12 @@ async function deleteTeam() {
           </div>
         </div>
       </div>
+      <!-- Tent details -->
+      <ElCollapse v-if="props.team.tent_notes.length > 0">
+        <ElCollapseItem :title="$t('teams.tentNotes')">
+          <div>{{ props.team.tent_notes }}</div>
+        </ElCollapseItem>
+      </ElCollapse>
       <!-- Payment details -->
       <ElCollapse>
         <ElCollapseItem :title="$t('teams.paymentDetails')">
