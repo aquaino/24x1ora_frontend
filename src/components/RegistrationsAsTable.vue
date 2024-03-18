@@ -206,18 +206,21 @@ const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
     <!-- Tent info -->
     <ElTableColumn :label="$t('teams.tent')">
       <template #default="scope">
-        <ElButton
-          v-if="scope.row.tent_request === 1"
-          link
-          @click="
-            tentDialog.visible = true;
-            tentDialog.body = scope.row.tent_notes;
-          "
-        >
-          <ElIcon color="var(--el-color-success)"><CircleCheckFilled /></ElIcon>
-          <span class="is-small">{{ $t('general.show') }}</span>
-        </ElButton>
-        <ElIcon v-else style="color: var(--el-color-danger)"><CircleCloseFilled /></ElIcon>
+        <span v-if="scope.row.type.class[0] === 'i'">-</span>
+        <span v-else>
+          <ElButton
+            v-if="scope.row.tent_request === 1"
+            link
+            @click="
+              tentDialog.visible = true;
+              tentDialog.body = scope.row.tent_notes;
+            "
+          >
+            <ElIcon color="var(--el-color-success)"><CircleCheckFilled /></ElIcon>
+            <span class="is-small">{{ $t('general.show') }}</span>
+          </ElButton>
+          <ElIcon v-else style="color: var(--el-color-danger)"><CircleCloseFilled /></ElIcon>
+        </span>
       </template>
     </ElTableColumn>
     <ElTableColumn

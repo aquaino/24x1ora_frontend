@@ -141,7 +141,7 @@ watch(selectedEventId, async () => {
   <ElEmpty v-else-if="teams.length === 0" :description="$t('teams.noTeams')" />
   <div v-else>
     <ElRow justify="space-between" align="middle" :gutter="20">
-      <ElCol :xs="14" :sm="12" :md="16">
+      <ElCol :xs="18" :sm="12" :md="10" :lg="8" class="is-flex">
         <!-- Event selection -->
         <ElSelect v-model="selectedEventId" placeholder="Evento" class="is-margin-right-10">
           <ElOption v-for="event in events" :key="event.id" :label="event.name" :value="event.id">
@@ -151,7 +151,7 @@ watch(selectedEventId, async () => {
         <ElSwitch v-model="tableView" :active-text="$t('general.tableView')" />
       </ElCol>
       <!-- Teams counter -->
-      <ElCol :xs="10" :sm="12" :md="8">
+      <ElCol :xs="6" :sm="12" :md="14" :lg="16">
         <div
           v-if="teams.length > 0"
           style="color: var(--el-text-color-regular)"
