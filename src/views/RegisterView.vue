@@ -56,7 +56,7 @@ const formRules = reactive<FormRules>({
 async function register(formRef: FormInstance | undefined) {
   store.clearUserData();
   if (!formRef) return;
-  await formRef.validate(async (valid) => {
+  await formRef.validate(async (valid: boolean) => {
     if (valid) {
       try {
         await usersApi.register(form);

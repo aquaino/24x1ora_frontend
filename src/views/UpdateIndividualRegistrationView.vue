@@ -44,7 +44,7 @@ const alert = ref({
 
 async function updateSubscription(formRef: FormInstance | undefined, form: RunnerUpdate) {
   if (!formRef) return;
-  await formRef.validate(async (valid) => {
+  await formRef.validate(async (valid: boolean) => {
     if (valid) {
       try {
         // Upload medical and/or payment certificates

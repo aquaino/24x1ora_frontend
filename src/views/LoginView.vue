@@ -38,7 +38,7 @@ async function login(formRef: FormInstance | undefined) {
   if (!formRef) return;
   // Set wether to remember email or not
   store.setRememberEmail(rememberEmail.value ? form.email : null);
-  await formRef.validate(async (valid) => {
+  await formRef.validate(async (valid: boolean) => {
     if (valid) {
       try {
         // Authenticate and save user data

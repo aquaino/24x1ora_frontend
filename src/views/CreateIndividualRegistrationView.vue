@@ -30,14 +30,10 @@ const alert = ref({
 
 async function subscribe(formRef: FormInstance | undefined, form: Runner) {
   if (!formRef) return;
-  await formRef.validate(async (valid) => {
+  await formRef.validate(async (valid: boolean) => {
     if (valid) {
       try {
-        const newTeam = await teamsApi.createIndividualRaceRegistration(
-          parseInt(eventId),
-          parseInt(raceId),
-          form,
-        );
+        await teamsApi.createIndividualRaceRegistration(parseInt(eventId), parseInt(raceId), form);
         router.push({
           name: 'race-registrations',
           query: {

@@ -52,7 +52,7 @@ onBeforeRouteLeave(() => store.clearFeedback());
 
 async function createTeam(formRef: FormInstance | undefined) {
   if (!formRef) return;
-  await formRef.validate(async (valid) => {
+  await formRef.validate(async (valid: boolean) => {
     if (valid) {
       try {
         const newTeam = await teamsApi.createTeamRaceRegistration(eventId, raceId, form);
