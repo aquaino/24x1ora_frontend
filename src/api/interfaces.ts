@@ -63,6 +63,8 @@ export interface TeamData {
   name: string;
   manager: string;
   manager_cell: string;
+  tent_request: boolean;
+  tent_notes: string;
 }
 
 export interface Team {

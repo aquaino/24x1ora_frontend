@@ -125,6 +125,8 @@ export default {
     bibNumber: 'Pettorale',
     phoneNumber: 'Numero cellulare',
     club: "Società d'appartenenza",
+    requestTent: 'Richiedi spazio tenda',
+    tentNotes: 'Informazioni aggiuntive tenda',
   },
   menu: {
     menuTitle: 'Menu di navigazione',

@@ -20,6 +20,8 @@ interface TeamBasicData {
   name: string;
   manager: string;
   manager_cell: string;
+  tent_request: boolean;
+  tent_notes: string;
 }
 
 /* DATA */
@@ -33,6 +35,8 @@ const form: TeamBasicData = reactive({
   name: '',
   manager: '',
   manager_cell: '',
+  tent_request: false,
+  tent_notes: '',
 });
 const formRules = reactive<FormRules>({
   name: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
@@ -89,7 +93,7 @@ async function createTeam(formRef: FormInstance | undefined) {
             :model="form"
             :rules="formRules"
             status-icon
-            label-width="auto"
+            label-width="100px"
             class="is-width-100"
             @submit.prevent="createTeam(formRef)"
           >
@@ -101,6 +105,18 @@ async function createTeam(formRef: FormInstance | undefined) {
             </ElFormItem>
             <ElFormItem :label="$t('teams.managerCell')" prop="manager_cell" required>
               <ElInput v-model="form.manager_cell" />
+            </ElFormItem>
+            <ElFormItem prop="tent_request">
+              <template #label>
+                <span style="line-height: initial">{{ $t('teams.requestTent') }}</span>
+              </template>
+              <ElCheckbox v-model="form.tent_request" />
+            </ElFormItem>
+            <ElFormItem v-if="form.tent_request" prop="tent_notes">
+              <template #label>
+                <span style="line-height: initial">{{ $t('teams.tentNotes') }}</span>
+              </template>
+              <ElInput v-model="form.tent_notes" type="textarea" :rows="4" id="test" />
             </ElFormItem>
             <ElFormItem class="is-margin-bottom-0">
               <ElButton
