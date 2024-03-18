@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+import type { Ref } from 'vue';
 import type { Race, RaceEventDetails } from '@/api/interfaces';
 import type { TeamWithAttachmentStatus } from './interfaces';
 import { useI18n } from 'vue-i18n';
@@ -15,10 +17,21 @@ import { teamsApi } from '@/api/resources';
 import type { TeamStatus } from './RegistrationCard.vue';
 import { computed } from 'vue';
 import { useAppStore } from '@/store';
-import { ElMessageBox } from 'element-plus';
 
 const { t } = useI18n();
 const store = useAppStore();
+
+/* INTERFACES */
+
+interface Dialog {
+  visible: boolean;
+  title: string;
+  body: string;
+}
+
+/* DATA */
+
+const tentDialog: Ref<Dialog> = ref({ visible: false, title: t('teams.tentNotes'), body: '' });
 
 /* PROPS */
 
@@ -101,10 +114,6 @@ async function downloadAttachment(
   } catch (error) {
     console.log(error);
   }
-}
-
-function openTentNotes(notes: string) {
-  ElMessageBox.alert(notes, t('teams.tentNotes'));
 }
 
 const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
@@ -194,12 +203,16 @@ const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
         {{ scope.row.club || '-' }}
       </template>
     </ElTableColumn>
+    <!-- Tent info -->
     <ElTableColumn :label="$t('teams.tent')">
       <template #default="scope">
         <ElButton
           v-if="scope.row.tent_notes.length > 0"
           link
-          @click="openTentNotes(scope.row.tent_notes)"
+          @click="
+            tentDialog.visible = true;
+            tentDialog.body = scope.row.tent_notes;
+          "
         >
           <ElIcon color="var(--el-color-success)"><CircleCheckFilled /></ElIcon>
           <span class="is-small">{{ $t('general.show') }}</span>
@@ -290,4 +303,12 @@ const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
       </template>
     </ElTableColumn>
   </ElTable>
+  <!-- Notes dialog -->
+  <ElDialog
+    v-model="tentDialog.visible"
+    :title="$t('teams.tentNotes')"
+    @close="tentDialog.visible = false"
+  >
+    <span>{{ tentDialog.body }}</span>
+  </ElDialog>
 </template>
