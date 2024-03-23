@@ -29,6 +29,11 @@ const props = defineProps<{
 const { t } = useI18n();
 const store = useAppStore();
 
+const paymentDetails = {
+  account: 'Circolo Culturale del Gruppo Alpini di Buttrio APS',
+  iban: 'IT04 Q054 8463 6900 0000 0704 537',
+};
+
 /* EVENTS */
 
 const emits = defineEmits(['team-confirmed', 'team-deleted', 'error']);
@@ -160,10 +165,10 @@ async function deleteTeam() {
         <ElCollapseItem :title="$t('teams.paymentDetails')">
           <div class="is-margin-bottom-10">{{ $t('teams.viaBankTransfer') }}</div>
           <ElDescriptions direction="horizontal" :column="1">
-            <ElDescriptionsItem label="IBAN">IT 59 O 05484 63690 CC0270704537</ElDescriptionsItem>
-            <ElDescriptionsItem :label="$t('teams.registeredTo')"
-              >Circolo Culturale del Gruppo Alpini di Buttrio APS</ElDescriptionsItem
-            >
+            <ElDescriptionsItem label="IBAN">{{ paymentDetails.iban }}</ElDescriptionsItem>
+            <ElDescriptionsItem :label="$t('teams.registeredTo')">{{
+              paymentDetails.account
+            }}</ElDescriptionsItem>
             <ElDescriptionsItem :label="$t('teams.paymentCausal')"
               >{{ props.team.payment_code }} {{ props.team.name }}
               {{ props.team.type.name }}</ElDescriptionsItem
