@@ -123,7 +123,6 @@ export default {
     alreadyRegistered: 'Esiste già una iscrizione con i dati appena inseriti',
     amountToPay: 'Da pagare',
     bibNumber: 'Pettorale',
-    phoneNumber: 'Numero cellulare',
     club: "Società d'appartenenza",
     requestTent: 'Richiedi spazio tenda',
     tentNotes: 'Informazioni aggiuntive tenda',
@@ -180,6 +179,7 @@ export default {
     clickHere: 'clicca qui',
     toShowIt: 'per visualizzarlo',
     selectPlaceholder: 'Scegli...',
+    phoneNumber: 'Numero cellulare',
   },
   users: {
     usersTitle: 'Utenti registrati',

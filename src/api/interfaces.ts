@@ -42,6 +42,7 @@ export interface RaceType {
 }
 
 export interface Runner {
+  [x: string]: any;
   id: number | null;
   first_name: string;
   last_name: string;
@@ -54,9 +55,12 @@ export interface Runner {
 }
 
 export interface RunnerUpdate extends Partial<Runner> {
+  [x: string]: any;
   id: number;
   first_name: string;
   last_name: string;
+  manager_cell: string;
+  club: string;
 }
 
 export interface TeamData {

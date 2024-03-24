@@ -4,8 +4,9 @@ import AppPageTitle from '@/components/app/AppPageTitle.vue';
 import { useRoute, useRouter } from 'vue-router';
 import type { FormInstance } from 'element-plus';
 import { teamsApi } from '@/api/resources';
-import IndividualRaceRegistrationForm from '@/components/IndividualRegistrationForm.vue';
-import type { Runner } from '@/api/interfaces';
+import IndividualRaceRegistrationForm, {
+  type RunnerData,
+} from '@/components/IndividualRegistrationForm.vue';
 import { useI18n } from 'vue-i18n';
 
 /* DATA */
@@ -28,11 +29,13 @@ const alert = ref({
 
 /* METHODS */
 
-async function subscribe(formRef: FormInstance | undefined, form: Runner) {
+async function subscribe(formRef: FormInstance | undefined, form: RunnerData) {
   if (!formRef) return;
   await formRef.validate(async (valid: boolean) => {
     if (valid) {
       try {
+        console.log(form);
+
         await teamsApi.createIndividualRaceRegistration(parseInt(eventId), parseInt(raceId), form);
         router.push({
           name: 'race-registrations',

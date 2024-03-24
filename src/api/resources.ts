@@ -64,7 +64,11 @@ export const teamsApi = {
     runnerData: RunnerUpdate,
   ): Promise<Runner> {
     const response = await apiClient
-      .patch(`events/${eventId}/teams/${teamId}`, { runners: [runnerData] })
+      .patch(`events/${eventId}/teams/${teamId}`, {
+        runners: [runnerData],
+        manager_cell: runnerData.manager_cell,
+        club: runnerData.club,
+      })
       .catch((error) => {
         throw error;
       });
@@ -108,6 +112,8 @@ export const teamsApi = {
   ): Promise<Team> {
     const response = await apiClient
       .post(`/events/${eventId}/races/${raceId}/teams`, {
+        manager_cell: runner.manager_cell,
+        club: runner.club,
         runner: runner,
       })
       .catch((error) => {

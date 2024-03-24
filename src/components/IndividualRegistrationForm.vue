@@ -6,6 +6,13 @@ import { resetForm } from '@/utils';
 import { teamsApi } from '@/api/resources';
 import { useI18n } from 'vue-i18n';
 
+/* INTERFACES */
+
+export interface RunnerData extends Runner {
+  manager_cell: string;
+  club: string;
+}
+
 /* PROPS */
 
 const props = defineProps<{
@@ -30,7 +37,7 @@ const emits = defineEmits(['subscribe', 'update-registration', 'data-fetched']);
 
 /* DATA */
 
-const form = reactive<Runner>({
+const form = reactive<RunnerData>({
   id: null,
   first_name: '',
   last_name: '',
@@ -40,6 +47,8 @@ const form = reactive<Runner>({
   csi_id: '',
   other_id: '',
   birth_date: '',
+  manager_cell: '',
+  club: '',
 });
 const formRef = ref<FormInstance>();
 
@@ -66,6 +75,8 @@ async function getSubscriptionData() {
         form.fidal_id = runner.fidal_id;
         form.csi_id = runner.csi_id;
         form.other_id = runner.other_id;
+        form.manager_cell = data.team.manager_cell;
+        form.club = data.team.club;
       }
       emits('data-fetched');
     }
@@ -106,7 +117,6 @@ onMounted(async () => {
       <ElFormItem :label="$t('forms.lastname')" prop="last_name" required>
         <ElInput v-model="form.last_name" />
       </ElFormItem>
-      <ElDivider />
       <ElFormItem :label="$t('forms.birthDate')" prop="birth_date">
         <ElDatePicker
           v-model="form.birth_date"
@@ -115,6 +125,13 @@ onMounted(async () => {
           format="DD/MM/YYYY"
           class="is-width-100"
         />
+      </ElFormItem>
+      <ElFormItem :label="$t('forms.phoneNumber')" prop="manager_cell" required>
+        <ElInput v-model="form.manager_cell" />
+      </ElFormItem>
+      <ElDivider />
+      <ElFormItem :label="$t('teams.club')" prop="club" required>
+        <ElInput v-model="form.club" />
       </ElFormItem>
       <ElFormItem :label="$t('teams.iutaMember')" prop="member_iuta" class="has-help-text">
         <ElSwitch v-model="form.member_iuta" />
