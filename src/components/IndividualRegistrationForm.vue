@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
 import type { Runner } from '@/api/interfaces';
-import type { FormInstance, FormRules } from 'element-plus';
+import type { FormInstance } from 'element-plus';
 import { resetForm } from '@/utils';
 import { teamsApi } from '@/api/resources';
 import { useI18n } from 'vue-i18n';
@@ -52,11 +52,6 @@ const form = reactive<RunnerData>({
 });
 const formRef = ref<FormInstance>();
 
-const formRules = reactive<FormRules>({
-  first_name: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
-  last_name: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
-});
-
 /* METHODS */
 
 async function getSubscriptionData() {
@@ -103,14 +98,7 @@ onMounted(async () => {
 
 <template>
   <div class="is-flex is-justify-space-between is-align-center">
-    <ElForm
-      ref="formRef"
-      :model="form"
-      status-icon
-      :rules="formRules"
-      label-width="auto"
-      class="is-width-100"
-    >
+    <ElForm ref="formRef" :model="form" status-icon label-width="auto" class="is-width-100">
       <ElFormItem :label="$t('forms.firstname')" prop="first_name" required>
         <ElInput v-model="form.first_name" />
       </ElFormItem>
@@ -127,10 +115,10 @@ onMounted(async () => {
         />
       </ElFormItem>
       <ElFormItem :label="$t('forms.phoneNumber')" prop="manager_cell" required>
-        <ElInput v-model="form.manager_cell" />
+        <ElInput v-model="form.manager_cell" type="tel" />
       </ElFormItem>
       <ElDivider />
-      <ElFormItem :label="$t('teams.club')" prop="club" required>
+      <ElFormItem :label="$t('teams.club')" prop="club">
         <ElInput v-model="form.club" />
       </ElFormItem>
       <ElFormItem :label="$t('teams.iutaMember')" prop="member_iuta" class="has-help-text">

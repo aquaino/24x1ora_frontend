@@ -34,8 +34,6 @@ async function subscribe(formRef: FormInstance | undefined, form: RunnerData) {
   await formRef.validate(async (valid: boolean) => {
     if (valid) {
       try {
-        console.log(form);
-
         await teamsApi.createIndividualRaceRegistration(parseInt(eventId), parseInt(raceId), form);
         router.push({
           name: 'race-registrations',
