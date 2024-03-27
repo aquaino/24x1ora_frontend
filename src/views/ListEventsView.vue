@@ -51,20 +51,20 @@ onMounted(async () => {
           :image-alt="$t('general.eventImageAlt')"
           shadow="hover"
           :title="event.name"
-          :subtitle="formatDateTime(event.date, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')"
+          :subtitle="formatDateTime(event.date, 'L')"
         >
           <template #content>
             <ElDescriptions direction="vertical">
               <ElDescriptionsItem :label="$t('events.subscriptionsStart')"
                 >{{
                   event.subscription_from
-                    ? formatDateTime(event.subscription_from, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
+                    ? formatDateTime(event.subscription_from, 'L')
                     : $t('general.undefined')
                 }}
               </ElDescriptionsItem>
               <ElDescriptionsItem :label="$t('events.subscriptionsEnd')">{{
                 event.subscription_to
-                  ? formatDateTime(event.subscription_to, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
+                  ? formatDateTime(event.subscription_to, 'L')
                   : $t('general.undefined')
               }}</ElDescriptionsItem>
             </ElDescriptions>

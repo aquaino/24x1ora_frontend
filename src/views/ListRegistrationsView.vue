@@ -13,7 +13,7 @@ import { useI18n } from 'vue-i18n';
 import RegistrationsAsCards from '@/components/RegistrationsAsCards.vue';
 import RegistrationsAsTable from '@/components/RegistrationsAsTable.vue';
 import type { TeamWithAttachmentStatus } from '@/components/interfaces';
-import { DateTime } from 'luxon';
+import { dayjs } from 'element-plus';
 
 const route = useRoute();
 const store = useAppStore();
@@ -104,7 +104,7 @@ async function refreshAndNotify(teamId: number, action: string) {
 }
 
 function setCurrentEvent() {
-  let currentYear = DateTime.local().year;
+  let currentYear = dayjs().year().toString();
   let currentEvent = events.value.find((event) => {
     return event.date.substring(0, 4) == currentYear;
   });

@@ -8,7 +8,8 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { createI18n } from 'vue-i18n';
 import messages from '@/lang';
 import it from 'element-plus/dist/locale/it.mjs';
-import 'dayjs/locale/it';
+import { dayjs } from 'element-plus';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 
 const app = createApp(App);
 
@@ -28,4 +29,10 @@ app.use(i18n);
 app.use(ElementPlus, {
   locale: it,
 });
+
+import 'dayjs/locale/it';
+dayjs.locale('it');
+dayjs.extend(LocalizedFormat);
+console.log(dayjs);
+
 app.mount('#app');

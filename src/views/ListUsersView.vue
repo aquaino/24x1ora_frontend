@@ -81,7 +81,7 @@ async function getUsers() {
 
 function format(format: string | null, cellValue: any) {
   if (format === 'date') {
-    return formatDateTime(cellValue, 'ISO', 'DATETIME_SHORT');
+    return formatDateTime(cellValue, 'L LT');
   } else if (format === 'boolean') {
     return cellValue === 1 ? t('general.yes') : t('general.no');
   } else {

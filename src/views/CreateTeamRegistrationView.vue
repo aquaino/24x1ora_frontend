@@ -103,7 +103,7 @@ async function createTeam(formRef: FormInstance | undefined) {
             <ElFormItem :label="$t('teams.manager')" prop="manager" required>
               <ElInput v-model="form.manager" />
             </ElFormItem>
-            <ElFormItem :label="$t('teams.managerCell')" prop="manager_cell" required>
+            <ElFormItem :label="$t('forms.phoneNumber')" prop="manager_cell" required>
               <ElInput v-model="form.manager_cell" />
             </ElFormItem>
             <ElFormItem prop="tent_request">

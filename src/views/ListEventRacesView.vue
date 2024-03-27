@@ -90,7 +90,7 @@ onMounted(async () => {
                     }}
                   </ElDescriptionsItem>
                   <ElDescriptionsItem :label="$t('general.date')" width="100px">{{
-                    formatDateTime(event['date'], 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
+                    formatDateTime(event['date'], 'L')
                   }}</ElDescriptionsItem>
                   <ElDescriptionsItem :label="$t('general.start')"
                     >{{ event['start_hour'] + race['type']['start_offset'] }}:00</ElDescriptionsItem

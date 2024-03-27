@@ -230,7 +230,7 @@ const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
         row: TeamWithAttachmentStatus, 
         column: TableColumnCtx<TeamWithAttachmentStatus>, 
         cellValue: string
-      ) => { return formatDateTime(cellValue, 'ISO', 'DATETIME_SHORT') }"
+      ) => { return formatDateTime(cellValue, 'L LT') }"
       sortable
     />
     <!-- State -->

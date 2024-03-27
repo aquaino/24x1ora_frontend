@@ -129,7 +129,7 @@ async function deleteTeam() {
             props.team.club || '-'
           }}</ElDescriptionsItem>
           <ElDescriptionsItem :label="$t('general.date')">{{
-            formatDateTime(event.date, 'yyyy-MM-dd hh:mm:ss', 'DATE_SHORT')
+            formatDateTime(event.date, 'L')
           }}</ElDescriptionsItem>
           <ElDescriptionsItem :label="$t('general.start')"
             >{{ event.start_hour + props.team.type.start_offset }}:00</ElDescriptionsItem
@@ -141,7 +141,7 @@ async function deleteTeam() {
             }}</ElDescriptionsItem
           >
           <ElDescriptionsItem :label="$t('general.created')">{{
-            formatDateTime(props.team.created_at, 'ISO', 'DATETIME_SHORT')
+            formatDateTime(props.team.created_at, 'L LT')
           }}</ElDescriptionsItem>
         </ElDescriptions>
         <div class="is-text-center" style="font-size: 20px; font-weight: 300">

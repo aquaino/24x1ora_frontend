@@ -111,7 +111,6 @@ export default {
     teamInfo: 'Dati squadra',
     teamRunners: 'Elenco partecipanti',
     manager: 'Responsabile',
-    managerCell: 'Telefono',
     deleteTeam: 'Elimina iscrizione',
     teamDeleted: 'Iscrizione eliminata',
     askDeletion: "Eliminare l'iscrizione?",
@@ -179,7 +178,7 @@ export default {
     clickHere: 'clicca qui',
     toShowIt: 'per visualizzarlo',
     selectPlaceholder: 'Scegli...',
-    phoneNumber: 'Numero cellulare',
+    phoneNumber: 'Telefono',
   },
   users: {
     usersTitle: 'Utenti registrati',

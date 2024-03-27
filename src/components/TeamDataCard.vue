@@ -81,7 +81,7 @@ watch(
         <ElFormItem :label="$t('teams.manager')" required>
           <ElInput v-model="form.manager" />
         </ElFormItem>
-        <ElFormItem :label="$t('teams.managerCell')" required>
+        <ElFormItem :label="$t('forms.phoneNumber')" required>
           <ElInput v-model="form.manager_cell" />
         </ElFormItem>
         <ElFormItem prop="tent_request">
