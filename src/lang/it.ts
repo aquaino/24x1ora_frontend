@@ -41,6 +41,9 @@ export default {
     tableView: 'Vista tabellare',
     show: 'Visualizza',
     user: 'Utente | Utenti',
+    participants: 'Partecipanti',
+    hoursFromStart: 'Ore alla partenza',
+    teams: 'Squadre',
   },
   events: {
     subscriptionsStart: 'Inizio iscrizioni',

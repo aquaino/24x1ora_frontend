@@ -128,3 +128,10 @@ export interface RegisterData {
   status: boolean;
   user: User;
 }
+
+export interface StatisticsData {
+  name: string;
+  date: string;
+  teams: number;
+  runners: number;
+}

@@ -33,6 +33,5 @@ app.use(ElementPlus, {
 import 'dayjs/locale/it';
 dayjs.locale('it');
 dayjs.extend(LocalizedFormat);
-console.log(dayjs);
 
 app.mount('#app');

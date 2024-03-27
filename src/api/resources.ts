@@ -12,6 +12,7 @@ import type {
   User,
   UserInput,
   TeamData,
+  StatisticsData,
 } from './interfaces';
 
 export const eventsApi = {
@@ -23,10 +24,17 @@ export const eventsApi = {
   },
 
   async getEvents(): Promise<RaceEvent[]> {
-    const response = await apiClient.get(`/events`).catch((error) => {
+    const response = await apiClient.get('/events').catch((error) => {
       throw error;
     });
     return response.data.events;
+  },
+
+  async getEventStatistics(): Promise<StatisticsData> {
+    const response = await apiClient.get('/info').catch((error) => {
+      throw error;
+    });
+    return response.data.info;
   },
 };
 
