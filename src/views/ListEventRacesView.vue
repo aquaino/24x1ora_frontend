@@ -54,7 +54,7 @@ onMounted(async () => {
       :back-to="{ name: 'events' }"
     />
     <ElEmpty v-if="races.length === 0 && !loading" :description="$t('races.noRaces')" />
-    <div v-else>
+    <div v-else v-loading="loading">
       <ElRow v-if="!store.user.email_verified_at" justify="center">
         <ElCol :xs="24" :sm="16" :md="14" :lg="10" class="is-margin-bottom-15">
           <ElAlert type="error" show-icon :closable="false">

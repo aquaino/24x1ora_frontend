@@ -136,7 +136,7 @@ watch(selectedEventId, async () => {
     :subtitle="$t('teams.teamsSubtitle')"
     :back-to="{ name: 'events' }"
   />
-  <div v-if="loading"></div>
+  <div v-if="loading" v-loading="loading" style="padding: 40px 0"></div>
   <ElEmpty v-else-if="events.length === 0" :description="$t('events.noEvents')" />
   <ElEmpty v-else-if="teams.length === 0" :description="$t('teams.noTeams')" />
   <div v-else>

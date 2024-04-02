@@ -12,7 +12,7 @@ if (html) html.setAttribute('lang', i18n.locale.value);
 </script>
 
 <template>
-  <ElRow justify="center" style="padding: 80px 0">
+  <ElRow justify="center" style="padding: 60px 0">
     <ElCol :xs="24" :sm="12" :md="8" :lg="6" style="padding: 0 20px">
       <TheLoginHeader />
       <RouterView />

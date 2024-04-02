@@ -107,7 +107,7 @@ function format(format: string | null, cellValue: any) {
     :data="users"
     stripe
     :empty-text="$t('general.noData')"
-    :default-sort="{ prop: 'id', order: 'ascending' }"
+    v-loading="!users"
   >
     <!-- Data columns -->
     <ElTableColumn

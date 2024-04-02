@@ -15,7 +15,11 @@ const store = useAppStore();
 /* COMPUTED */
 
 const countdown = computed(() => {
-  return dayjs(statisticsData.value!.date);
+  if (statisticsData.value) {
+    return dayjs(statisticsData.value.date);
+  } else {
+    return 0;
+  }
 });
 
 /* MOUNTED */
@@ -34,15 +38,21 @@ onMounted(async () => {
     <ElImage :src="logo" :alt="$t('general.logoAlt')" />
     <h1>{{ $t('general.portal') }}</h1>
   </div>
-  <ElRow v-if="statisticsData" class="is-text-center">
+  <ElRow v-loading="statisticsData === null" class="is-text-center">
     <ElCol :span="7">
-      <ElStatistic :title="$t('general.participants')" :value="statisticsData?.runners" />
+      <ElStatistic
+        :title="$t('general.participants')"
+        :value="statisticsData ? statisticsData.runners : 0"
+      />
     </ElCol>
     <ElCol :span="10" class="main-column">
       <ElCountdown :title="$t('general.hoursFromStart')" format="HH:mm:ss" :value="countdown" />
     </ElCol>
     <ElCol :span="7">
-      <ElStatistic :title="$t('general.teams')" :value="statisticsData?.teams" />
+      <ElStatistic
+        :title="$t('general.teams')"
+        :value="statisticsData ? statisticsData.teams : 0"
+      />
     </ElCol>
   </ElRow>
 </template>
