@@ -8,7 +8,7 @@ import type {
   Runner,
   LoginData,
   RegisterData,
-  UserInputWihtConfirmPassword,
+  UserInputWithConfirmPassword,
   User,
   UserInput,
   TeamData,
@@ -157,7 +157,7 @@ export const usersApi = {
     return response.data;
   },
 
-  async register(user: UserInput | UserInputWihtConfirmPassword): Promise<RegisterData> {
+  async register(user: UserInput | UserInputWithConfirmPassword): Promise<RegisterData> {
     const response = await apiClient
       .post(`/users/register`, {
         name: user.name,
@@ -174,6 +174,30 @@ export const usersApi = {
     const response = await axios
       .post(`${import.meta.env.VITE_APP_BACKEND_URL}/auth/email-verify`, null, {
         params: { token: token },
+      })
+      .catch((error) => {
+        throw error;
+      });
+    return response.data;
+  },
+
+  async requestPasswordReset(email: string): Promise<LoginData> {
+    const response = await apiClient
+      .post('/auth/password-reset-request', {
+        email: email,
+      })
+      .catch((error) => {
+        throw error;
+      });
+    return response.data;
+  },
+
+  async resetPassword(email: string, password: string, token: string): Promise<LoginData> {
+    const response = await apiClient
+      .post('/auth/password-reset', {
+        email: email,
+        password: password,
+        token: token,
       })
       .catch((error) => {
         throw error;

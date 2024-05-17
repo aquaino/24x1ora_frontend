@@ -113,7 +113,7 @@ export interface UserInput {
   password: string;
 }
 
-export interface UserInputWihtConfirmPassword extends UserInput {
+export interface UserInputWithConfirmPassword extends UserInput {
   confirmPassword: string;
 }
 

@@ -96,6 +96,12 @@ async function login(formRef: FormInstance | undefined) {
     </ElForm>
     <ElDivider />
     <div>
+      {{ $t('auth.askForgotPassword') }}
+      <ElLink>
+        <RouterLink :to="{ name: 'recover-password' }">{{ $t('auth.resetPassword') }}</RouterLink>
+      </ElLink>
+    </div>
+    <div>
       {{ $t('auth.askNotRegistered') }}
       <ElLink>
         <RouterLink :to="{ name: 'register' }">{{ $t('auth.registerNow') }}</RouterLink>

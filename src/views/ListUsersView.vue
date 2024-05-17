@@ -103,12 +103,7 @@ function format(format: string | null, cellValue: any) {
     show-icon
     class="is-margin-top-15"
   />
-  <ElTable
-    :data="users"
-    stripe
-    :empty-text="$t('general.noData')"
-    v-loading="!users"
-  >
+  <ElTable :data="users" stripe :empty-text="$t('general.noData')" v-loading="!users">
     <!-- Data columns -->
     <ElTableColumn
       v-for="col in columns"
