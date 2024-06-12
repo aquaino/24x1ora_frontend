@@ -44,6 +44,7 @@ export default {
     participants: 'Partecipanti',
     hoursFromStart: 'Ore alla partenza',
     teams: 'Squadre',
+    whatsApp: 'WhatsApp',
   },
   events: {
     subscriptionsStart: 'Inizio iscrizioni',

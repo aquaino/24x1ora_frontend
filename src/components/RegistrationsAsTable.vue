@@ -26,12 +26,20 @@ const store = useAppStore();
 interface Dialog {
   visible: boolean;
   title: string;
-  body: string;
+  notes: string;
+  email: string;
+  phone: string;
 }
 
 /* DATA */
 
-const tentDialog: Ref<Dialog> = ref({ visible: false, title: t('teams.tentNotes'), body: '' });
+const tentDialog: Ref<Dialog> = ref({
+  visible: false,
+  title: t('teams.tentNotes'),
+  notes: '',
+  email: '',
+  phone: '',
+});
 
 /* PROPS */
 
@@ -213,7 +221,9 @@ const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
             link
             @click="
               tentDialog.visible = true;
-              tentDialog.body = scope.row.tent_notes;
+              tentDialog.notes = scope.row.tent_notes;
+              tentDialog.email = scope.row.manager_mail;
+              tentDialog.phone = scope.row.manager_cell;
             "
           >
             <ElIcon color="var(--el-color-success)"><CircleCheckFilled /></ElIcon>
@@ -312,6 +322,18 @@ const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
     :title="$t('teams.tentNotes')"
     @close="tentDialog.visible = false"
   >
-    <span>{{ tentDialog.body }}</span>
+    <span>{{ tentDialog.notes }}</span>
+    <template #footer>
+      <span class="is-margin-right-05"
+        >{{ $t('forms.email') }}:
+        <a :href="`mailto:${tentDialog.email}`"> {{ tentDialog.email }}</a></span
+      >
+      <span
+        >{{ $t('general.whatsApp') }}:
+        <a :href="`https://wa.me/${tentDialog.phone}`" target="_blank">
+          {{ tentDialog.phone }}</a
+        ></span
+      >
+    </template>
   </ElDialog>
 </template>

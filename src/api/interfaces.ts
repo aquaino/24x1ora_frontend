@@ -80,6 +80,7 @@ export interface Team {
   number: number;
   manager: string;
   manager_cell: string;
+  manager_mail: string;
   tent_request: number;
   tent_notes: string;
   confirmed: number;
