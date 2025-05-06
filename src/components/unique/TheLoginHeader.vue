@@ -6,11 +6,13 @@ import type { StatisticsData } from '@/api/interfaces';
 import { useAppStore } from '@/store';
 import { eventsApi } from '@/api/resources';
 import { dayjs } from 'element-plus';
+import { useI18n } from 'vue-i18n';
 
 /* DATA */
 
 const statisticsData: Ref<StatisticsData | null> = ref(null);
 const store = useAppStore();
+const { t } = useI18n();
 
 /* COMPUTED */
 
@@ -20,6 +22,10 @@ const countdown = computed(() => {
   } else {
     return 0;
   }
+});
+
+const countdownFormat = computed(() => {
+  return `DD[${t('general.dayShortening')}] HH[h] mm[m] ss[s]`;
 });
 
 /* MOUNTED */
@@ -39,16 +45,16 @@ onMounted(async () => {
     <h1>{{ $t('general.portal') }}</h1>
   </div>
   <ElRow v-loading="statisticsData === null" class="is-text-center">
-    <ElCol :span="7">
+    <ElCol :span="6">
       <ElStatistic
         :title="$t('general.participants')"
         :value="statisticsData ? statisticsData.runners : 0"
       />
     </ElCol>
-    <ElCol :span="10" class="main-column">
-      <ElCountdown :title="$t('general.hoursFromStart')" format="HH:mm:ss" :value="countdown" />
+    <ElCol :span="12">
+      <ElCountdown :title="$t('general.fromStart')" :format="countdownFormat" :value="countdown" />
     </ElCol>
-    <ElCol :span="7">
+    <ElCol :span="6">
       <ElStatistic
         :title="$t('general.teams')"
         :value="statisticsData ? statisticsData.teams : 0"
@@ -61,12 +67,5 @@ onMounted(async () => {
 .logo-wrapper {
   margin-bottom: 2rem;
   text-align: center;
-}
-
-:deep(.main-column .el-statistic__head) {
-  font-size: calc(var(--el-statistic-head-font-size) * 1.25);
-}
-:deep(.main-column .el-statistic__content) {
-  font-size: calc(var(--el-statistic-content-font-size) * 1.25);
 }
 </style>
