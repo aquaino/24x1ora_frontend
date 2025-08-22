@@ -45,7 +45,7 @@ onMounted(async () => {
     <h1>{{ $t('general.portal') }}</h1>
   </div>
   <ElRow
-    v-if="!store.navigation.feedback.type"
+    v-if="store.navigation.feedback.type !== 'error'"
     v-loading="statisticsData === null"
     class="is-text-center"
   >
