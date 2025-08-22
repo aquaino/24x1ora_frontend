@@ -44,7 +44,11 @@ onMounted(async () => {
     <ElImage :src="logo" :alt="$t('general.logoAlt')" />
     <h1>{{ $t('general.portal') }}</h1>
   </div>
-  <ElRow v-loading="statisticsData === null" class="is-text-center">
+  <ElRow
+    v-if="!store.navigation.feedback.type"
+    v-loading="statisticsData === null"
+    class="is-text-center"
+  >
     <ElCol :span="6">
       <ElStatistic
         :title="$t('general.participants')"
@@ -65,7 +69,7 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 .logo-wrapper {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 </style>
