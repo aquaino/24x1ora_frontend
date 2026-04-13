@@ -6,6 +6,10 @@ import type { FormInstance } from 'element-plus';
 import { ref } from 'vue';
 import { teamsApi } from '@/api/resources';
 import FileUpload from './forms/FileUpload.vue';
+import { validateTaxCode } from '@/utils';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 /* PROPS */
 
@@ -19,11 +23,37 @@ defineExpose({ uploadPaymentCertificate });
 
 /* DATA */
 
+const validatePaymentTaxcode = (_rule: any, value: string, callback: any) => {
+  if (!value) {
+    callback(new Error(t('forms.requiredField')));
+  } else if (!validateTaxCode(value)) {
+    callback(new Error(t('forms.invalidTaxCode')));
+  } else {
+    callback();
+  }
+};
+
+const validatePhoneNumber = (_rule: any, value: string, callback: any) => {
+  if (!value) {
+    callback(new Error(t('forms.requiredField')));
+  } else if (!/^[0-9]+$/.test(value)) {
+    callback(new Error(t('forms.invalidPhoneNumber')));
+  } else {
+    callback();
+  }
+};
+
+const formRules = {
+  manager_cell: [{ validator: validatePhoneNumber, trigger: 'blur' }],
+  payment_taxcode: [{ validator: validatePaymentTaxcode, trigger: 'blur' }],
+};
+
 const formRef = ref<FormInstance>();
 const form = reactive({
   name: props.team.name,
   manager: props.team.manager,
   manager_cell: props.team.manager_cell,
+  payment_taxcode: props.team.payment_taxcode,
   tent_request: props.team.tent_request === 1,
   tent_notes: props.team.tent_notes,
 });
@@ -74,15 +104,18 @@ watch(
 <template>
   <AppCard shadow="never" :title="$t('teams.teamInfo')">
     <template #content>
-      <ElForm ref="formRef" :model="form" status-icon label-position="top" @submit.prevent>
+      <ElForm ref="formRef" :model="form" :rules="formRules" status-icon label-position="top" @submit.prevent>
         <ElFormItem :label="$t('forms.name')" required>
           <ElInput v-model="form.name" />
         </ElFormItem>
         <ElFormItem :label="$t('teams.manager')" required>
           <ElInput v-model="form.manager" />
         </ElFormItem>
-        <ElFormItem :label="$t('forms.phoneNumber')" required>
+        <ElFormItem :label="$t('forms.phoneNumber')" prop="manager_cell" required>
           <ElInput v-model="form.manager_cell" />
+        </ElFormItem>
+        <ElFormItem :label="$t('teams.paymentTaxcode')" prop="payment_taxcode" required>
+          <ElInput v-model="form.payment_taxcode" />
         </ElFormItem>
         <ElFormItem prop="tent_request">
           <template #label>

@@ -167,6 +167,19 @@ const raceFilter = (value: string, row: TeamWithAttachmentStatus) => {
       "
     />
     <ElTableColumn prop="payment_code" :label="t('teams.paymentCode')" />
+    <ElTableColumn
+      prop="payment_taxcode"
+      :label="t('teams.paymentTaxcode')"
+      :formatter="
+        (
+          row: TeamWithAttachmentStatus, 
+          column: TableColumnCtx<TeamWithAttachmentStatus>, 
+          cellValue: string
+        ) => {
+          return cellValue || '-';
+        }
+      "
+    />
     <!-- Attachments -->
     <ElTableColumn :label="$t('teams.medcert')">
       <template #default="scope">

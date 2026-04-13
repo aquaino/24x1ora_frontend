@@ -2,7 +2,7 @@
 import { ref, reactive, onMounted } from 'vue';
 import type { Runner } from '@/api/interfaces';
 import type { FormInstance } from 'element-plus';
-import { resetForm } from '@/utils';
+import { resetForm, validateTaxCode } from '@/utils';
 import { teamsApi } from '@/api/resources';
 import { useI18n } from 'vue-i18n';
 
@@ -11,6 +11,7 @@ import { useI18n } from 'vue-i18n';
 export interface RunnerData extends Runner {
   manager_cell: string;
   club: string;
+  payment_taxcode: string;
 }
 
 /* PROPS */
@@ -49,8 +50,34 @@ const form = reactive<RunnerData>({
   birth_date: '',
   manager_cell: '',
   club: '',
+  payment_taxcode: '',
 });
 const formRef = ref<FormInstance>();
+
+const validatePaymentTaxcode = (_rule: any, value: string, callback: any) => {
+  if (!value) {
+    callback(new Error(t('forms.requiredField')));
+  } else if (!validateTaxCode(value)) {
+    callback(new Error(t('forms.invalidTaxCode')));
+  } else {
+    callback();
+  }
+};
+
+const validatePhoneNumber = (_rule: any, value: string, callback: any) => {
+  if (!value) {
+    callback(new Error(t('forms.requiredField')));
+  } else if (!/^[0-9]+$/.test(value)) {
+    callback(new Error(t('forms.invalidPhoneNumber')));
+  } else {
+    callback();
+  }
+};
+
+const formRules = {
+  manager_cell: [{ validator: validatePhoneNumber, trigger: 'blur' }],
+  payment_taxcode: [{ validator: validatePaymentTaxcode, trigger: 'blur' }],
+};
 
 /* METHODS */
 
@@ -72,6 +99,7 @@ async function getSubscriptionData() {
         form.other_id = runner.other_id;
         form.manager_cell = data.team.manager_cell;
         form.club = data.team.club;
+        form.payment_taxcode = data.team.payment_taxcode;
       }
       emits('data-fetched');
     }
@@ -98,7 +126,7 @@ onMounted(async () => {
 
 <template>
   <div class="is-flex is-justify-space-between is-align-center">
-    <ElForm ref="formRef" :model="form" status-icon label-width="auto" class="is-width-100">
+    <ElForm ref="formRef" :model="form" :rules="formRules" status-icon label-width="auto" class="is-width-100">
       <ElFormItem :label="$t('forms.firstname')" prop="first_name" required>
         <ElInput v-model="form.first_name" />
       </ElFormItem>
@@ -116,6 +144,9 @@ onMounted(async () => {
       </ElFormItem>
       <ElFormItem :label="$t('forms.phoneNumber')" prop="manager_cell" required>
         <ElInput v-model="form.manager_cell" type="tel" />
+      </ElFormItem>
+      <ElFormItem :label="$t('teams.paymentTaxcode')" prop="payment_taxcode" required>
+        <ElInput v-model="form.payment_taxcode" />
       </ElFormItem>
       <ElDivider />
       <ElFormItem :label="$t('teams.club')" prop="club">

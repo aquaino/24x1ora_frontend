@@ -76,6 +76,7 @@ export const teamsApi = {
         runners: [runnerData],
         manager_cell: runnerData.manager_cell,
         club: runnerData.club,
+        payment_taxcode: runnerData.payment_taxcode,
       })
       .catch((error) => {
         throw error;
@@ -122,6 +123,7 @@ export const teamsApi = {
       .post(`/events/${eventId}/races/${raceId}/teams`, {
         manager_cell: runner.manager_cell,
         club: runner.club,
+        payment_taxcode: runner.payment_taxcode,
         runner: runner,
       })
       .catch((error) => {

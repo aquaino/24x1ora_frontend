@@ -7,6 +7,7 @@ import { useI18n } from 'vue-i18n';
 import type { FormInstance, FormRules } from 'element-plus';
 import { teamsApi } from '@/api/resources';
 import { onBeforeRouteLeave } from 'vue-router';
+import { validateTaxCode } from '@/utils';
 import { useAppStore } from '@/store';
 
 const { t } = useI18n();
@@ -20,6 +21,7 @@ interface TeamBasicData {
   name: string;
   manager: string;
   manager_cell: string;
+  payment_taxcode: string;
   tent_request: boolean;
   tent_notes: string;
 }
@@ -35,13 +37,35 @@ const form: TeamBasicData = reactive({
   name: '',
   manager: '',
   manager_cell: '',
+  payment_taxcode: '',
   tent_request: false,
   tent_notes: '',
 });
+const validatePaymentTaxcode = (_rule: any, value: string, callback: any) => {
+  if (!value) {
+    callback(new Error(t('forms.requiredField')));
+  } else if (!validateTaxCode(value)) {
+    callback(new Error(t('forms.invalidTaxCode')));
+  } else {
+    callback();
+  }
+};
+
+const validatePhoneNumber = (_rule: any, value: string, callback: any) => {
+  if (!value) {
+    callback(new Error(t('forms.requiredField')));
+  } else if (!/^[0-9]+$/.test(value)) {
+    callback(new Error(t('forms.invalidPhoneNumber')));
+  } else {
+    callback();
+  }
+};
+
 const formRules = reactive<FormRules>({
   name: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
   manager: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
-  manager_cell: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
+  manager_cell: [{ validator: validatePhoneNumber, trigger: 'blur' }],
+  payment_taxcode: [{ validator: validatePaymentTaxcode, trigger: 'blur' }],
 });
 
 /* BEFORE ROUTE LEAVE */
@@ -93,7 +117,7 @@ async function createTeam(formRef: FormInstance | undefined) {
             :model="form"
             :rules="formRules"
             status-icon
-            label-width="100px"
+            label-width="120px"
             class="is-width-100"
             @submit.prevent="createTeam(formRef)"
           >
@@ -105,6 +129,9 @@ async function createTeam(formRef: FormInstance | undefined) {
             </ElFormItem>
             <ElFormItem :label="$t('forms.phoneNumber')" prop="manager_cell" required>
               <ElInput v-model="form.manager_cell" />
+            </ElFormItem>
+            <ElFormItem :label="$t('teams.paymentTaxcode')" prop="payment_taxcode" required>
+              <ElInput v-model="form.payment_taxcode" />
             </ElFormItem>
             <ElFormItem prop="tent_request">
               <template #label>

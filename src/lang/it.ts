@@ -102,6 +102,7 @@ export default {
     paymentUploaded: 'Ricevuta di bonifico caricata',
     paymentNotUploaded: 'Ricevuta di bonifico non caricata',
     paymentCode: 'Codice pagamento',
+    paymentTaxcode: 'Codice fiscale',
     paymentDetails: 'Dettagli pagamento',
     viaBankTransfer: 'Pagamento tramite bonifico bancario',
     registeredTo: 'Intestato a',
@@ -171,6 +172,8 @@ export default {
   forms: {
     requiredField: 'Questo campo è obbligatorio',
     insertValidEmail: 'Inserisci un indirizzo e-mail valido',
+    invalidTaxCode: 'Codice fiscale o Partita IVA non valido',
+    invalidPhoneNumber: 'Il numero di telefono deve contenere solo cifre',
     passwordsNotMatching: 'Le due password non coincidono',
     fullname: 'Nome e cognome',
     email: 'Indirizzo e-mail',
