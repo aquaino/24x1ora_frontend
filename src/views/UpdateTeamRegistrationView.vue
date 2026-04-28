@@ -75,6 +75,7 @@ onMounted(async () => {
             team!.manager = basicTeamData.manager;
             team!.manager_cell = basicTeamData.manager_cell;
             team!.payment_taxcode = basicTeamData.payment_taxcode;
+            team!.payment_holder = basicTeamData.payment_holder;
             team!.tent_request = basicTeamData.tent_request;
             team!.tent_notes = basicTeamData.tent_notes;
           }

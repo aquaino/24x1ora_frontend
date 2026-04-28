@@ -46,6 +46,7 @@ const validatePhoneNumber = (_rule: any, value: string, callback: any) => {
 const formRules = {
   manager_cell: [{ validator: validatePhoneNumber, trigger: 'blur' }],
   payment_taxcode: [{ validator: validatePaymentTaxcode, trigger: 'blur' }],
+  payment_holder: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
 };
 
 const formRef = ref<FormInstance>();
@@ -54,6 +55,7 @@ const form = reactive({
   manager: props.team.manager,
   manager_cell: props.team.manager_cell,
   payment_taxcode: props.team.payment_taxcode,
+  payment_holder: props.team.payment_holder,
   tent_request: props.team.tent_request === 1,
   tent_notes: props.team.tent_notes,
 });
@@ -114,9 +116,16 @@ watch(
         <ElFormItem :label="$t('forms.phoneNumber')" prop="manager_cell" required>
           <ElInput v-model="form.manager_cell" />
         </ElFormItem>
+        <ElDivider />
+        <div class="is-help-text is-bold">{{ $t('teams.paymentReceiptData') }}</div>
+        <div class="is-help-text is-margin-top-05 is-margin-bottom-15">{{ $t('teams.paymentReceiptDescription') }}</div>
+        <ElFormItem :label="$t('teams.paymentHolder')" prop="payment_holder" required>
+          <ElInput v-model="form.payment_holder" />
+        </ElFormItem>
         <ElFormItem :label="$t('teams.paymentTaxcode')" prop="payment_taxcode" required>
           <ElInput v-model="form.payment_taxcode" />
         </ElFormItem>
+        <ElDivider />
         <ElFormItem prop="tent_request">
           <template #label>
             <span style="line-height: initial">{{ $t('teams.requestTent') }}</span>
@@ -142,3 +151,4 @@ watch(
     </template>
   </AppCard>
 </template>
+

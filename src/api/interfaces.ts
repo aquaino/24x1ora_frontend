@@ -61,7 +61,6 @@ export interface RunnerUpdate extends Partial<Runner> {
   last_name: string;
   manager_cell: string;
   club: string;
-  payment_taxcode: string;
 }
 
 export interface TeamData {
@@ -69,6 +68,7 @@ export interface TeamData {
   manager: string;
   manager_cell: string;
   payment_taxcode: string;
+  payment_holder: string;
   tent_request: boolean;
   tent_notes: string;
 }
@@ -95,6 +95,7 @@ export interface Team {
   attachments: string[];
   payment_code: string;
   payment_taxcode: string;
+  payment_holder: string;
   type: RaceType;
   runners: Runner[];
   club: string;

@@ -125,6 +125,9 @@ async function deleteTeam() {
           <ElDescriptionsItem :label="$t('teams.paymentTaxcode')">{{
             props.team.payment_taxcode || '-'
           }}</ElDescriptionsItem>
+          <ElDescriptionsItem :label="$t('teams.paymentHolder')">{{
+            props.team.payment_holder || '-'
+          }}</ElDescriptionsItem>
           <ElDescriptionsItem :label="$t('forms.phoneNumber')">{{
             props.team.manager_cell || '-'
           }}</ElDescriptionsItem>

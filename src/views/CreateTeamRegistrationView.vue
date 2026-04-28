@@ -22,6 +22,7 @@ interface TeamBasicData {
   manager: string;
   manager_cell: string;
   payment_taxcode: string;
+  payment_holder: string;
   tent_request: boolean;
   tent_notes: string;
 }
@@ -38,6 +39,7 @@ const form: TeamBasicData = reactive({
   manager: '',
   manager_cell: '',
   payment_taxcode: '',
+  payment_holder: '',
   tent_request: false,
   tent_notes: '',
 });
@@ -66,6 +68,7 @@ const formRules = reactive<FormRules>({
   manager: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
   manager_cell: [{ validator: validatePhoneNumber, trigger: 'blur' }],
   payment_taxcode: [{ validator: validatePaymentTaxcode, trigger: 'blur' }],
+  payment_holder: [{ required: true, message: t('forms.requiredField'), trigger: 'none' }],
 });
 
 /* BEFORE ROUTE LEAVE */
@@ -130,9 +133,16 @@ async function createTeam(formRef: FormInstance | undefined) {
             <ElFormItem :label="$t('forms.phoneNumber')" prop="manager_cell" required>
               <ElInput v-model="form.manager_cell" />
             </ElFormItem>
+            <ElDivider />
+            <div class="is-help-text is-bold">{{ $t('teams.paymentReceiptData') }}</div>
+            <div class="is-help-text is-margin-top-05 is-margin-bottom-15">{{ $t('teams.paymentReceiptDescription') }}</div>
+            <ElFormItem :label="$t('teams.paymentHolder')" prop="payment_holder" required>
+              <ElInput v-model="form.payment_holder" />
+            </ElFormItem>
             <ElFormItem :label="$t('teams.paymentTaxcode')" prop="payment_taxcode" required>
               <ElInput v-model="form.payment_taxcode" />
             </ElFormItem>
+            <ElDivider />
             <ElFormItem prop="tent_request">
               <template #label>
                 <span style="line-height: initial">{{ $t('teams.requestTent') }}</span>
@@ -159,3 +169,4 @@ async function createTeam(formRef: FormInstance | undefined) {
     </ElCol>
   </ElRow>
 </template>
+
