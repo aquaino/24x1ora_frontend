@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import type { Ref } from 'vue';
 import AppPageTitle from '@/components/app/AppPageTitle.vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -10,6 +10,7 @@ import type { RunnerUpdate, Team } from '@/api/interfaces';
 import AppCard from '@/components/app/AppCard.vue';
 import FileUpload from '@/components/forms/FileUpload.vue';
 import { useI18n } from 'vue-i18n';
+import { hasAttachment } from '@/utils';
 
 /* DATA */
 
@@ -25,6 +26,13 @@ const availableDiscount = route.query.availableDiscount
   : 0;
 
 const loading = ref(true);
+const teamLoaded = ref(false);
+
+const bothDocumentsUploaded = computed(
+  () =>
+    hasAttachment(/medcert.*/, team.value.attachments ?? []) &&
+    hasAttachment(/payment.*/, team.value.attachments ?? []),
+);
 
 const medcertUploadRef = ref();
 const paymentUploadRef = ref();
@@ -92,6 +100,7 @@ onMounted(async () => {
   try {
     const eventAndTeam = await teamsApi.getEventTeamDetails(eventId, teamId);
     team.value = eventAndTeam.team;
+    teamLoaded.value = true;
   } catch (error) {
     alert.value = { type: 'error', text: t('api.generalError') };
   }
@@ -106,6 +115,14 @@ onMounted(async () => {
   />
   <ElRow justify="center">
     <ElCol :xs="24" :sm="16" :md="12" :lg="8">
+      <ElAlert
+        v-if="teamLoaded && !bothDocumentsUploaded"
+        :title="$t('teams.uploadMedcertAndPayment')"
+        type="error"
+        show-icon
+        :closable="false"
+        class="is-margin-bottom-15"
+      />
       <AppCard :title="$t('teams.participantInfo')" shadow="never">
         <template #content>
           <IndividualRaceRegistrationForm
